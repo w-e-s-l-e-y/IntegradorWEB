@@ -7,28 +7,29 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div>
-        <ul>
-            <li>
-                <a href="#">Home</a>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <a href="#">Lista de afaseres</a>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <a href="#">Técnica Pomodoro</a>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <a href="#">Calendário</a>
-            </li>
-        </ul>
-
+    <div id="menudiv">
+        <nav>
+            <ul class="menuul">
+                <li>
+                    <a href="#home">Home</a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="#agenda">Lista de afaseres</a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="#pomodoro">Técnica Pomodoro</a>
+                </li>
+            </ul>
+            <ul>
+                <li>
+                    <a href="#calendar">Calendário</a>
+                </li>
+            </ul>
+        </nav>
     </div>
     
 <!-- Agenda de Tarefas -->
@@ -47,31 +48,34 @@
 </div>
 
 <!-- Calendário -->
-<h1>Calendário</h1>
+<div class="calendar">
+    <h1>Calendário</h1>
  
-<div>
-    <button onclick="previousMonth()">Anterior</button>
-    <span id="currentMonthYear">Abril 2024</span>
-    <button onclick="nextMonth()">Próximo</button>
-</div>
-    <div class="calendario">  
-        <table>
-            <thead>
-                <tr>
-                    <th>Domingo</th>
-                    <th>Segunda</th>
-                    <th>Terça</th>
-                    <th>Quarta</th>
-                    <th>Quinta</th>
-                    <th>Sexta</th>
-                    <th>Sábado</th>
-                </tr>
-            </thead>
-            <tbody id="calendarBody">
-                <!-- Os dias do mês serão inseridos aqui com JavaScript -->
-            </tbody>
-        </table>
+    <div>
+        <button onclick="previousMonth()">Anterior</button>
+        <span id="currentMonthYear">Abril 2024</span>
+        <button onclick="nextMonth()">Próximo</button>
     </div>
+        <div class="calendario">  
+            <table>
+                <thead>
+                    <tr>
+                        <th>Domingo</th>
+                        <th>Segunda</th>
+                        <th>Terça</th>
+                        <th>Quarta</th>
+                        <th>Quinta</th>
+                        <th>Sexta</th>
+                        <th>Sábado</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Os dias do mês serão inseridos aqui com JavaScript -->
+                </tbody>
+            </table>
+        </div>
+</div>
+
 <script src="script.js"></script>
 </body>
 </html>
