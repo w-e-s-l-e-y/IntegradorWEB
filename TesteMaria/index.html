@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Agenda</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div>
+        <ul>
+            <li>
+                <a href="#">Home</a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="#">Lista de afaseres</a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="#">Técnica Pomodoro</a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="#">Calendário</a>
+            </li>
+        </ul>
+
+    </div>
+    
+<!-- Agenda de Tarefas -->
+<div class="agenda">
+    <h2>Agenda de Tarefas</h2>
+    <input type="text" id="taskInput" placeholder="Adicionar nova tarefa">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+    <ul id="taskList"></ul>
+</div>
+
+<!-- Técnica Pomodoro -->
+<div class="pomodoro">
+    <h2>Técnica Pomodoro</h2>
+    <button onclick="startPomodoro()">Iniciar Pomodoro</button>
+    <div id="pomodoroTimer">25:00</div>
+</div>
+
+<!-- Calendário -->
+<h1>Calendário</h1>
+ 
+<div>
+    <button onclick="previousMonth()">Anterior</button>
+    <span id="currentMonthYear">Abril 2024</span>
+    <button onclick="nextMonth()">Próximo</button>
+</div>
+    <div class="calendario">  
+        <table>
+            <thead>
+                <tr>
+                    <th>Domingo</th>
+                    <th>Segunda</th>
+                    <th>Terça</th>
+                    <th>Quarta</th>
+                    <th>Quinta</th>
+                    <th>Sexta</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+                <!-- Os dias do mês serão inseridos aqui com JavaScript -->
+            </tbody>
+        </table>
+    </div>
+<script src="script.js"></script>
+</body>
+</html>
