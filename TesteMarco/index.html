@@ -1,71 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro</title>
-
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Minha Agenda</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
-<header>
-
-    <h1>Life Sync</h1>
-
-    <ul>
-        <li><a href="">Home</a></li>
-        <li><a href="index.html">Lista | calendário</a></li>
-        <li><a href="">Pomodoro</a></li>
-        <li><a href="">Cadastrar</a></li>
-        <li><a href="">Login</a></li>
-    </ul>
-
-</header>
-
 <body>
+<!-- Agenda de Tarefas -->
+<div class="agenda">
+    <h2>Agenda de Tarefas</h2>
+    <input type="text" id="taskInput" placeholder="Adicionar nova tarefa">
+    <button onclick="addTask()">Adicionar Tarefa</button>
+    <ul id="taskList"></ul>
+</div>
 
-        
-
-    <main>
-        <h1>Cadastro</h1>
-        <h3>Insira os dados abaixo</h3>
-
-        <form action="dados.php" id="cadastro" autocomplete="on" method="post"></form>
-
-        <p> <label for="nome">Nome </label><input type="text" name="Nome" id="nome" required minlength="5" maxlength="50" size="25"></p>
-        <p><label for="email">E-Mail </label><input type="email" name="Email" id="email" required minlength="10" maxlength="50" size="25"></p>
-        <p><label for="senha">Senha </label><input type="password" name="Senha" id="senha" required minlength="8" maxlength="18" size="25"></p>
-        <p><label for="confirmarSenha">Confirmar Senha </label> <input type="password" name="confirmarSenha" id="confirmarSenha" required minlength="8" maxlength="18" size="25"></p>
-
-        <p><a href="Entrar"><button>Cadastrar</button></a></p>
-
-    </main>
-
-    <footer id="rodape">
-            
-        <h3>Nosso contatos!</h3>
-        <ol>
-            <li>
-                Telefones: (xx) x.xxxx-xxxx ou (xx) yyyy-yyyy
-            </li>
-            <li>
-                emails: atendimento@email.com ou faleconosco@email.com
-            </li>
-
-        </ol>
-        <h3>Nossas redes sociais</h3>
-        <ol>
-            <li><a href="https://br.linkedin.com"
-                    target="_blank" rel="next">linkedin</a></li>
-            <li><a href="https://www.instagram.com/" target="_blank" rel="next">Instagram</a></li>
-            <li><a href="https://twitter.com" target="_blank" rel="next">X</a></li>
-        </ol>
-        
-    
-</footer>
-    
-
-
-
+<!-- Calendário -->
+<div class="calendario">
+    <h2>Calendário</h2>
+    <div>
+        <button onclick="previousMonth()">Anterior</button>
+        <span id="currentMonthYear">Abril 2024</span>
+        <button onclick="nextMonth()">Próximo</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Domingo</th>
+                <th>Segunda</th>
+                <th>Terça</th>
+                <th>Quarta</th>
+                <th>Quinta</th>
+                <th>Sexta</th>
+                <th>Sábado</th>
+            </tr>
+        </thead>
+        <tbody id="calendarBody">
+            <!-- Os dias do mês serão inseridos aqui com JavaScript -->
+        </tbody>
+    </table>
+</div>
+<script src="script.js"></script>
 </body>
 </html>
