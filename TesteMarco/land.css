@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    background-color: #f4fefe;
+}
+
+header {
+    background-color: #79a1f8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 10%;
+}
+
+.nav_links {
+    list-style: none;
+}
+
+.nav_links li {
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.nav_links li a {
+    text-decoration: none; /* Remova sublinhado dos links */
+    color: #000; /* Cor padrão para links */
+    transition: color 0.3s ease; /* Transição apenas para cor */
+}
+
+.nav_links li a:hover {
+    color: #215dac;
+}
