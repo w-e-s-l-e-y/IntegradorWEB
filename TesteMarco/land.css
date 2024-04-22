@@ -2,6 +2,7 @@
 
 * {
     font-family: 'Roboto', sans-serif;
+    font-style: inherit;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -9,28 +10,35 @@
 }
 
 header {
-    background-color: #79a1f8;
+    background-color: #356189;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 30px 10%;
 }
 
+h1{
+    background-color: #356189;
+}
+
 .nav_links {
     list-style: none;
+    background-color: #356189;
 }
 
 .nav_links li {
     display: inline-block;
     padding: 0 20px;
+    background-color: #356189;
 }
 
 .nav_links li a {
-    text-decoration: none; /* Remova sublinhado dos links */
-    color: #000; /* Cor padrão para links */
-    transition: color 0.3s ease; /* Transição apenas para cor */
+    text-decoration: none; 
+    color: #000; 
+    transition: color 0.3s ease; 
+    background-color: #356189;
 }
 
 .nav_links li a:hover {
-    color: #215dac;
+    color: white;
 }
