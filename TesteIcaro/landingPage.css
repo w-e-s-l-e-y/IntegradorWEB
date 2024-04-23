@@ -1,0 +1,63 @@
+/* Importação de Fontes */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&display=swap');
+
+/* Reset de Estilos */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* Estilos Globais */
+body {
+    font-family: 'Roboto', sans-serif;
+    font-style: inherit;
+    background-color: #ebf3ff;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #8290f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2.5% 10%;
+}
+
+h1 {
+    color: #ffffff;
+}
+
+/* Navegação */
+.nav_links {
+    list-style: none;
+    background-color: #8290f5;
+}
+
+.nav_links li {
+    display: inline-block;
+    padding: 0 20px;
+}
+
+.nav_links li a {
+    text-decoration: none;
+    color: #ffffff;
+    transition: color 0.3s ease;
+    font-size: large;
+}
+
+.nav_links li a:hover {
+    color: black;
+}
+
+/* Título da Seção */
+h2 {
+    /* Adicione estilos para h2 aqui */
+}
+
+/* Parágrafo */
+p {
+    text-align-last: left;
+    vertical-align: auto;
+    text-indent: 50px;
+}
