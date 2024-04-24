@@ -52,12 +52,27 @@ h1 {
 
 /* Título da Seção */
 h2 {
-    /* Adicione estilos para h2 aqui */
+    margin: auto;
+    width: 50%;
+}
+
+/* Imagem */
+img{
+    display: block; 
+    margin: auto;
+    border-radius: 10%;
+    max-width: 100%;
+    height: auto;
 }
 
 /* Parágrafo */
 p {
-    text-align-last: left;
+    text-align-last: center;
     vertical-align: auto;
-    text-indent: 50px;
+    line-height: 1.5;
+    margin: auto;
+    width: 50%;
+    font-size: large;
 }
+
+
