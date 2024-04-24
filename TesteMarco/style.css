@@ -1,122 +1,57 @@
 /* styles.css */
-/* Estilos básicos para o layout */
 
-* {
-    box-sizing: border-box;
-}
-
+/* Estilos básicos */
 body {
-    font-family: Arial, sans-serif, 'Times New Roman', Times, serif;
+    background-color: #EBF3FF; /* Rroxo bem claro */
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 15px;
 }
 
 h2 {
-    margin-bottom: 10px;
-    margin-top: 20px;
-    font-size: 20px;
+    color: #7877dd; /* roxo */
+    text-shadow: none;
+    font-size: 24px;
     font-weight: bold;
     text-align: center;
-    color: #333;
     text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #007bff, 0 0 20px #007bff, 0 0 25px #007bff, 0 0 30px #007bff, 0 0 35px #007bff;
-    text-decoration: underline;
-    text-decoration-color: #007bff;
+    margin-top: 30px;
 }
 
-.agenda, .pomodoro, .calendario {
-    margin-bottom: 30px;
-    padding: 20px;
-    border: 1px solid #ccc;
+button {
+    background-color: #8290F5; /* roxo */
+    color: #fff; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
     border-radius: 5px;
-    box-shadow: 0 0 10px #ccc;
-    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7877dd; /* roxo mais escuro ao passar o mouse */
+}
+
+/* Estilos específicos */
+.calendario {
+    text-align: center; /* Centraliza o conteúdo */
 }
 
 table {
-    width: 50%;
+    width: 100%; /* Preenche a largura da div */
     border-collapse: collapse;
     margin-top: 20px;
 }
 
 th, td {
-    border: 1px solid black;
+    border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-td {
-    cursor: pointer;
-}
-
-td:hover {
-    background-color: #e6e6e6;
-}
-
-.today {
-    background-color: #ffcc00;
-}
-
-/* Estilos específicos para o calendário */
-thead th {
-    background-color: #007BFF; /* Azul mais escuro para os dias da semana */
-    color: white;
-}
-
-tbody td {
-    background-color: #E6F7FF; /* Azul claro e suave para as datas */
-}
-
-/* Paleta de cores sugerida */
-.agenda, .pomodoro, .calendario {
-    background-color: #AED9E0; /* Azul Claro */
-}
-
-h2 {
-    color: #333; /* Preto */
-    text-shadow: none;
-}
-
-button {
-    background-color: #C9E2C9; /* Verde Suave */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    color: #333; /* Preto */
-}
-
-button:hover {
-    background-color: #a0d8a8; /* Verde Suave mais escuro */
-}
-
-table {
-    border: 1px solid #ccc; /* Cinza Claro */
-}
-
-th, td {
-    border: 1px solid #ccc; /* Cinza Claro */
 }
 
 th {
     background-color: #f2f2f2; /* Cinza Mais Claro */
 }
 
-.calendario {
-    align-items: center;
-    display: flex;
-    justify-content: center
-}
-
-#stopButton {
-    background-color: #FF6347; /* Vermelho */
-}
-
-#stopButton:hover {
-    background-color: #CD5C5C; /* Vermelho mais escuro ao passar o mouse */
+.today {
+    background-color: #9ca9f8; /* roxo(não sei o nome) */
 }
