@@ -1,0 +1,57 @@
+/* styles.css */
+
+/* Estilos básicos */
+body {
+    background-color: #EBF3FF; /* Rroxo bem claro */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 15px;
+}
+
+h2 {
+    color: #7877dd; /* roxo */
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 30px;
+}
+
+button {
+    background-color: #8290F5; /* roxo */
+    color: #fff; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7877dd; /* roxo mais escuro ao passar o mouse */
+}
+
+/* Estilos específicos */
+.calendario {
+    text-align: center; /* Centraliza o conteúdo */
+}
+
+table {
+    width: 100%; /* Preenche a largura da div */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2; /* Cinza Mais Claro */
+}
+
+.today {
+    background-color: #9ca9f8; /* roxo(não sei o nome) */
+}
