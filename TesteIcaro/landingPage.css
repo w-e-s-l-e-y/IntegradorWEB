@@ -13,7 +13,9 @@ body {
     font-family: 'Roboto', sans-serif;
     font-style: inherit;
     background-color: #ebf3ff;
+    padding-top: 100px; /* Adicionando um espaço superior equivalente à altura do cabeçalho */
 }
+
 
 /* Cabeçalho */
 header {
@@ -21,8 +23,14 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 2.5% 10%;
+    padding: 2% 10%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999; /* Para garantir que o cabeçalho fique acima de outros elementos */
 }
+
+
 
 h1 {
     color: #ffffff;
@@ -47,22 +55,25 @@ h1 {
 }
 
 .nav_links li a:hover {
-    color: black;
+    color: #fec868;
 }
 
 /* Título da Seção */
 h2 {
-    margin: auto;
+    margin: 2% auto 0; 
     width: 50%;
 }
 
+
 /* Imagem */
-img{
+img {
     display: block; 
     margin: auto;
-    border-radius: 10%;
-    max-width: 100%;
+    border-radius: 10px;
+    max-width: 50%; 
     height: auto;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); 
+    border: 2px solid #ddd; 
 }
 
 /* Parágrafo */
@@ -70,9 +81,24 @@ p {
     text-align-last: center;
     vertical-align: auto;
     line-height: 1.5;
-    margin: auto;
+    margin: 0 auto 0.5%;
     width: 50%;
     font-size: large;
+}
+
+/* footer */
+
+footer {
+    background-color:  #8290f5;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    margin: 2% auto 0;
+    width: 100%;
+}
+
+footer p {
+    margin: auto;
 }
 
 
