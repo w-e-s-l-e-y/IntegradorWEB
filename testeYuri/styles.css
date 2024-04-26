@@ -1,5 +1,3 @@
-/* styles.css */
-
 /* Estilos básicos */
 body {
     background-color: #EBF3FF; /* Roxo bem claro */
@@ -60,7 +58,57 @@ th {
     height: 8px;
     width: 8px;
     border-radius: 50%;
-    background-color: #ff5252; /* Vermelho */
     display: inline-block;
     margin-left: 2px;
+}
+
+/* Estilos para a lista de tarefas */
+.agenda {
+    margin-top: 50px;
+}
+
+#taskInput {
+    margin-right: 10px;
+    padding: 8px;
+    width: 250px;
+}
+
+#taskDate {
+    padding: 8px;
+}
+
+#taskColor {
+    padding: 8px;
+}
+
+#taskList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#taskList li {
+    margin-bottom: 10px;
+}
+
+.tab {
+    background-color: #8290F5; /* Roxo */
+    color: #fff; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.tab.active {
+    background-color: #7877dd; /* Roxo mais escuro ao passar o mouse */
+}
+
+.tab-content {
+    display: none;
+    padding: 10px;
+}
+
+.content {
+    margin-top: 20px;
 }
