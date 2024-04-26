@@ -104,3 +104,15 @@ footer div ul li a {
     color: #fff;
     text-decoration: none;
 }
+
+/* Estilos para os links do rodapé */
+footer div ul li a {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+footer div ul li a img {
+    width: 40px; /* Tamanho das imagens */
+    height: auto;
+    border-radius: 50%; /* Para tornar as imagens redondas */
+}
