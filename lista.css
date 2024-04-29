@@ -1,0 +1,114 @@
+/* Estilos básicos */
+body {
+    background-color: #EBF3FF; /* Roxo bem claro */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 15px;
+}
+
+h2 {
+    color: #7877dd; /* Roxo */
+    text-shadow: none;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+    margin-top: 30px;
+}
+
+button {
+    background-color: #8290F5; /* Roxo */
+    color: #fff; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #7877dd; /* Roxo mais escuro ao passar o mouse */
+}
+
+/* Estilos específicos */
+.calendario {
+    text-align: center; /* Centraliza o conteúdo */
+}
+
+table {
+    width: 100%; /* Preenche a largura da div */
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+}
+
+th {
+    background-color: #f2f2f2; /* Cinza Mais Claro */
+}
+
+.today {
+    background-color: #9ca9f8; /* Roxo */
+}
+
+.task-indicator {
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+/* Estilos para a lista de tarefas */
+.agenda {
+    margin-top: 50px;
+}
+
+#taskInput {
+    margin-right: 10px;
+    padding: 8px;
+    width: 250px;
+}
+
+#taskDate {
+    padding: 8px;
+}
+
+#taskColor {
+    padding: 8px;
+}
+
+#taskList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#taskList li {
+    margin-bottom: 10px;
+}
+
+.tab {
+    background-color: #8290F5; /* Roxo */
+    color: #fff; /* Texto branco */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.tab.active {
+    background-color: #7877dd; /* Roxo mais escuro ao passar o mouse */
+}
+
+.tab-content {
+    display: none;
+    padding: 10px;
+}
+
+.content {
+    margin-top: 20px;
+}

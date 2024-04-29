@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro</title>
+    <link rel="stylesheet" href="cadastro.css">
+</head>
+
+<body>
+    <header>
+        <h1>Life Sync</h1>
+    </header>
+
+    <main>
+        <h1>Cadastro</h1>
+        <h3>Insira os dados abaixo</h3>
+
+        <form action="../TesteIcaro/landingPage.html" id="cadastro" autocomplete="on" method="post">
+            <p><label for="nome">Nome </label><input type="text" name="Nome" id="nome" required minlength="5" maxlength="50" size="25"></p>
+            <p><label for="email">E-Mail </label><input type="email" name="Email" id="email" required minlength="10" maxlength="50" size="25"></p>
+            <p><label for="senha">Senha </label><input type="password" name="Senha" id="senha" required minlength="8" maxlength="18" size="25"></p>
+            <p><button type="submit">Cadastrar</button></p>
+        </form>
+    </main>
+
+    <footer id="rodape">
+        <div>
+            <h3>Nossos contatos</h3>
+            <ul>
+                <li>Telefones: (xx) x.xxxx-xxxx ou (xx) yyyy-yyyy</li>
+                <li>
+                    <a href="https://br.linkedin.com" target="_blank" rel="next">LinkedIn</a>
+                    <a href="https://www.instagram.com/" target="_blank" rel="next">Instagram</a>
+                    <a href="https://twitter.com" target="_blank" rel="next">Twitter</a>
+                </li>
+            </ul>
+        </div>
+    </footer>
+</body>
+</html>
