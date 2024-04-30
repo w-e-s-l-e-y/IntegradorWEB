@@ -5,13 +5,6 @@ const months = [
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
-const colors = {
-    red: "Vermelho",
-    blue: "Azul",
-    green: "Verde",
-    yellow: "Amarelo"
-};
-
 function generateCalendar() {
     const calendarBody = document.getElementById("calendarBody");
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -46,6 +39,16 @@ function generateCalendar() {
                     const taskIndicator = document.createElement("span");
                     taskIndicator.className = "task-indicator";
                     taskIndicator.style.backgroundColor = task.color;
+                    taskIndicator.onclick = function() {
+                        if (task.color === "blue" || task.color === "red") {
+                            // Mudar a cor da tarefa para verde se for azul ou vermelho
+                            task.color = "green";
+                        } else {
+                            // Mudar a cor da tarefa para cinza escuro se for verde ou cinza escuro
+                            task.color = "gray";
+                        }
+                        updateTabs();
+                    };
                     cell.appendChild(taskIndicator);
                 });
                 date++;
@@ -87,7 +90,6 @@ function addTask() {
     }
 }
 
-
 function formatDate(year, month, day) {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 }
@@ -124,17 +126,33 @@ function changeTab(color) {
 function updateTabs() {
     const taskList = document.getElementById("taskList");
     const tasks = taskList.getElementsByTagName("li");
-    Object.keys(colors).forEach(color => {
-        const tabContent = document.getElementById(color);
-        tabContent.innerHTML = "";
-        for (var i = 0; i < tasks.length; i++) {
-            if (tasks[i].style.color === color) {
-                const task = document.createElement("li");
-                task.textContent = tasks[i].textContent;
-                tabContent.appendChild(task);
-            }
+    const redTab = document.getElementById("red");
+    const blueTab = document.getElementById("blue");
+    const greenTab = document.getElementById("green");
+    const grayTab = document.getElementById("gray");
+    redTab.innerHTML = "";
+    blueTab.innerHTML = "";
+    greenTab.innerHTML = "";
+    grayTab.innerHTML = "";
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].style.color === "red") {
+            const task = document.createElement("li");
+            task.textContent = tasks[i].textContent;
+            redTab.appendChild(task);
+        } else if (tasks[i].style.color === "blue") {
+            const task = document.createElement("li");
+            task.textContent = tasks[i].textContent;
+            blueTab.appendChild(task);
+        } else if (tasks[i].style.color === "green") {
+            const task = document.createElement("li");
+            task.textContent = tasks[i].textContent;
+            greenTab.appendChild(task);
+        } else if (tasks[i].style.color === "gray") {
+            const task = document.createElement("li");
+            task.textContent = tasks[i].textContent;
+            grayTab.appendChild(task);
         }
-    });
+    }
 }
 
 function previousMonth() {
