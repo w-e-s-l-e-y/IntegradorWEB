@@ -1,74 +1,11 @@
-// Lógica JavaScript para a funcionalidade do site
-
-// Agenda de Tarefas
-function addTask() {
-    var taskInput = document.getElementById("taskInput");
-    var taskDate = document.getElementById("taskDate").value;
-    var taskList = document.getElementById("taskList");
-    var task = taskInput.value;
-    if (task.trim() !== "" && taskDate.trim() !== "") {
-        var li = document.createElement("li");
-        li.textContent = task + " - " + taskDate;
-        taskList.appendChild(li);
-        taskInput.value = "";
-        taskDate.value = "";
-        // Atualiza o calendário após adicionar a tarefa
-        generateCalendar();
-    } else {
-        alert("Por favor, insira uma tarefa válida e selecione uma data.");
-    }
-}
-
-let timerInterval; // Variável para armazenar o intervalo do temporizador
-
-function startPomodoro() {
-    document.getElementById("startButton").style.display = "none"; // Ocultar botão Iniciar
-    document.getElementById("stopButton").style.display = "inline-block"; // Exibir botão Parar
-
-    let pomodoroTimer = document.getElementById("pomodoroTimer");
-    let minutes = 25;
-    let seconds = 0;
-
-    // Inicializar o temporizador apenas se não estiver em execução
-    if (!timerInterval) {
-        timerInterval = setInterval(function() {
-            if (seconds === 0) {
-                if (minutes === 0) {
-                    clearInterval(timerInterval);
-                    timerInterval = null; // Limpar o intervalo
-                    alert("Pomodoro concluído!");
-                    document.getElementById("startButton").style.display = "inline-block"; // Exibir botão Iniciar
-                    document.getElementById("stopButton").style.display = "none"; // Ocultar botão Parar
-                } else {
-                    minutes--;
-                    seconds = 59;
-                }
-            } else {
-                seconds--;
-            }
-            pomodoroTimer.textContent = (minutes < 10 ? "0" + minutes : minutes) + ":" + (seconds < 10 ? "0" + seconds : seconds);
-        }, 1000);
-    }
-}
-
-function stopPomodoro() {
-    clearInterval(timerInterval); // Parar o temporizador
-    timerInterval = null; // Limpar o intervalo
-    document.getElementById("startButton").style.display = "inline-block"; // Exibir botão Iniciar
-    document.getElementById("stopButton").style.display = "none"; // Ocultar botão Parar
-    document.getElementById("pomodoroTimer").textContent = "25:00"; // Redefinir o temporizador para o valor padrão
-}
-
-// Calendário
-// Você pode usar bibliotecas como FullCalendar para implementar o calendário, mas para este exemplo, deixarei como exercício adicional.
-// Adicione este código ao final do seu arquivo script.js
-
 let currentMonth = 3; // Janeiro é 0, Fevereiro é 1, ..., Dezembro é 11
 let currentYear = 2024;
 const months = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
+
+document.getElementById("addTaskButton").addEventListener("click", addTask);
 
 function generateCalendar() {
     const calendarBody = document.getElementById("calendarBody");
@@ -97,17 +34,25 @@ function generateCalendar() {
                 }
 
                 cell.appendChild(cellText);
-                cell.dataset.date = `${currentYear}-${currentMonth + 1}-${date}`;
-                cell.addEventListener("click", function() {
-                    document.getElementById("taskDate").value = this.dataset.date;
-                });
-                // Verifica se existe uma tarefa para este dia
-                const taskExists = checkTaskExists(`${currentYear}-${currentMonth + 1}-${date}`);
-                if (taskExists) {
+                const formattedDate = formatDate(currentYear, currentMonth + 1, date);
+                cell.dataset.date = formattedDate;
+                const tasks = getTasksForDate(formattedDate);
+                tasks.forEach(task => {
                     const taskIndicator = document.createElement("span");
                     taskIndicator.className = "task-indicator";
+                    taskIndicator.style.backgroundColor = task.color;
+                    taskIndicator.onclick = function() {
+                        if (task.color === "blue" || task.color === "red") {
+                            // Mudar a cor da tarefa para verde se for azul ou vermelho
+                            task.color = "green";
+                        } else {
+                            // Mudar a cor da tarefa para cinza escuro se for verde ou cinza escuro
+                            task.color = "gray";
+                        }
+                        updateTabs();
+                    };
                     cell.appendChild(taskIndicator);
-                }
+                });
                 date++;
             }
 
@@ -122,6 +67,128 @@ function generateCalendar() {
     }
 
     document.getElementById("currentMonthYear").textContent = `${months[currentMonth]} ${currentYear}`;
+}
+
+function addTask() {
+    var taskInput = document.getElementById("taskInput");
+    var taskDateInput = document.getElementById("taskDate").value; // Obtém a data do input como string
+    var taskColor = document.getElementById("taskColor").value;
+    var taskList = document.getElementById("taskList");
+    var task = taskInput.value;
+    if (task.trim() !== "" && taskDateInput.trim() !== "") {
+        var dateParts = taskDateInput.split('-'); // Divide a string da data em partes
+        var taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Cria a data a partir das partes da string
+        const formattedTaskDate = formatDate(taskDate.getFullYear(), taskDate.getMonth() + 1, taskDate.getDate());
+        var li = document.createElement("li");
+        li.innerHTML = `<span class="task-text">${task} - ${formattedTaskDate}</span>
+                        <button class="edit-button" onclick="editTask(this)">Editar</button>
+                        <button class="delete-button" onclick="deleteTask(this)">Excluir</button>`;
+        li.style.color = taskColor;
+        taskList.appendChild(li);
+        taskInput.value = "";
+        document.getElementById("taskDate").value = ""; // Limpa o campo de data após adicionar a tarefa
+        generateCalendar(); // Atualiza o calendário após adicionar a tarefa
+        updateTabs();
+    } else {
+        alert("Por favor, insira uma tarefa válida e selecione uma data.");
+    }
+}
+
+function formatDate(year, month, day) {
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+}
+
+function getTasksForDate(date) {
+    const taskList = document.getElementById("taskList");
+    const tasks = taskList.getElementsByTagName("li");
+    const filteredTasks = [];
+    for (var i = 0; i < tasks.length; i++) {
+        const taskDate = tasks[i].textContent.split(' - ')[1];
+        if (taskDate === date) {
+            filteredTasks.push({
+                text: tasks[i].textContent,
+                color: tasks[i].style.color
+            });
+        }
+    }
+    return filteredTasks;
+}
+
+function editTask(button) {
+    var taskItem = button.parentNode;
+    var taskText = taskItem.querySelector(".task-text").textContent;
+    var newTaskText = prompt("Editar tarefa:", taskText);
+    if (newTaskText !== null && newTaskText.trim() !== "") {
+        taskItem.querySelector(".task-text").textContent = newTaskText;
+    }
+}
+
+function deleteTask(button) {
+    var taskItem = button.parentNode;
+    taskItem.parentNode.removeChild(taskItem);
+    updateTabs();
+}
+
+function changeTab(color) {
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+    tabContents.forEach(tabContent => {
+        tabContent.style.display = 'none';
+    });
+    document.getElementById(color + "-tab").classList.add('active');
+    const filteredTasks = getTasksByColor(color);
+    updateTaskList(filteredTasks);
+}
+
+function getTasksByColor(color) {
+    const taskList = document.getElementById("taskList");
+    const tasks = taskList.getElementsByTagName("li");
+    const filteredTasks = [];
+    for (var i = 0; i < tasks.length; i++) {
+        if (tasks[i].style.color === color) {
+            filteredTasks.push(tasks[i]);
+        }
+    }
+    return filteredTasks;
+}
+
+function updateTaskList(tasks) {
+    const redTab = document.getElementById("red");
+    const blueTab = document.getElementById("blue");
+    const greenTab = document.getElementById("green");
+    const grayTab = document.getElementById("gray");
+    redTab.innerHTML = "";
+    blueTab.innerHTML = "";
+    greenTab.innerHTML = "";
+    grayTab.innerHTML = "";
+    for (var i = 0; i < tasks.length; i++) {
+        const task = document.createElement("li");
+        task.innerHTML = tasks[i].innerHTML; // mantém o HTML original
+        task.style.color = tasks[i].style.color;
+        if (tasks[i].style.color === "red") {
+            redTab.appendChild(task);
+        } else if (tasks[i].style.color === "blue") {
+            blueTab.appendChild(task);
+        } else if (tasks[i].style.color === "green") {
+            greenTab.appendChild(task);
+        } else if (tasks[i].style.color === "gray") {
+            grayTab.appendChild(task);
+        }
+    }
+}
+
+function updateTabs() {
+    const redTasks = getTasksByColor("red");
+    const blueTasks = getTasksByColor("blue");
+    const greenTasks = getTasksByColor("green");
+    const grayTasks = getTasksByColor("gray");
+    updateTaskList(redTasks);
+    updateTaskList(blueTasks);
+    updateTaskList(greenTasks);
+    updateTaskList(grayTasks);
 }
 
 function previousMonth() {
@@ -144,18 +211,6 @@ function nextMonth() {
     }
 
     generateCalendar();
-}
-
-// Verifica se existe uma tarefa para o dia especificado
-function checkTaskExists(date) {
-    var taskList = document.getElementById("taskList");
-    var tasks = taskList.getElementsByTagName("li");
-    for (var i = 0; i < tasks.length; i++) {
-        if (tasks[i].textContent.includes(date)) {
-            return true;
-        }
-    }
-    return false;
 }
 
 // Gerar o calendário inicial

@@ -13,216 +13,53 @@
         <input type="text" id="taskInput" placeholder="Adicionar nova tarefa">
         <input type="date" id="taskDate">
         <select id="taskColor">
-            <option value="red">Vermelho</option>
-            <option value="blue">Azul</option>
-            <option value="green">Verde</option>
-            <option value="yellow">Amarelo</option>
+            <option value="red">Alta Prioridade (Vermelho)</option>
+            <option value="blue">Baixa Prioridade (Azul)</option>
         </select>
-        <button onclick="addTask()">Adicionar Tarefa</button>
-        <ul id="taskList"></ul>
+        <button id="addTaskButton">Adicionar Tarefa</button>
+        <ul id="taskList">
+            <!-- As tarefas serão inseridas aqui -->
+            <li>
+                <span class="task-text">Tarefa 1 - 2024-05-01</span>
+                <button class="edit-button" onclick="editTask(this)">Editar</button>
+                <button class="delete-button" onclick="deleteTask(this)">Excluir</button>
+            </li>
+        </ul>
     </div>
 
     <!-- Calendário -->
     <div class="calendario">
         <h2>Calendário</h2>
         <div class="tabs" style="margin-bottom: 10px;">
-            <button class="tab" onclick="changeTab('red')">Vermelho</button>
-            <button class="tab" onclick="changeTab('blue')">Azul</button>
-            <button class="tab" onclick="changeTab('green')">Verde</button>
-            <button class="tab" onclick="changeTab('yellow')">Amarelo</button>
+            <button class="tab" id="red-tab" onclick="changeTab('red')">Alta Prioridade (Vermelho)</button>
+            <button class="tab" id="blue-tab" onclick="changeTab('blue')">Baixa Prioridade (Azul)</button>
+            <button class="tab" id="green-tab" onclick="changeTab('green')">Feita (Verde)</button>
+            <button class="tab" id="gray-tab" onclick="changeTab('gray')">Não Feita (Cinza Escuro)</button>
         </div>
         <div>
-            <button onclick="previousMonth()" style="margin-right: 10px;">Anterior</button>
+            <button id="previousMonthButton" onclick="previousMonth()" style="margin-right: 10px;">Anterior</button>
             <span id="currentMonthYear">Abril 2024</span>
-            <button onclick="nextMonth()" style="margin-left: 10px;">Próximo</button>
+            <button id="nextMonthButton" onclick="nextMonth()" style="margin-left: 10px;">Próximo</button>
         </div>
         <div class="content">
-            <div id="red" class="tab-content"></div>
-            <div id="blue" class="tab-content"></div>
-            <div id="green" class="tab-content"></div>
-            <div id="yellow" class="tab-content"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Domingo</th>
+                        <th>Segunda</th>
+                        <th>Terça</th>
+                        <th>Quarta</th>
+                        <th>Quinta</th>
+                        <th>Sexta</th>
+                        <th>Sábado</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Os dias do mês serão inseridos aqui com JavaScript -->
+                </tbody>
+            </table>
         </div>
-        <table>
-            <thead>
-                <tr>
-                    <th>Domingo</th>
-                    <th>Segunda</th>
-                    <th>Terça</th>
-                    <th>Quarta</th>
-                    <th>Quinta</th>
-                    <th>Sexta</th>
-                    <th>Sábado</th>
-                </tr>
-            </thead>
-            <tbody id="calendarBody">
-                <!-- Os dias do mês serão inseridos aqui com JavaScript -->
-            </tbody>
-        </table>
     </div>
-    <script>
-        // Lógica JavaScript para a funcionalidade do site
-
-        let currentMonth = 3; // Janeiro é 0, Fevereiro é 1, ..., Dezembro é 11
-        let currentYear = 2024;
-        const months = [
-            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-        ];
-
-        const colors = {
-            red: "Vermelho",
-            blue: "Azul",
-            green: "Verde",
-            yellow: "Amarelo"
-        };
-
-        function generateCalendar() {
-            const calendarBody = document.getElementById("calendarBody");
-            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
-            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-
-            calendarBody.innerHTML = "";
-
-            let date = 1;
-            for (let i = 0; i < 6; i++) {
-                const row = document.createElement("tr");
-
-                for (let j = 0; j < 7; j++) {
-                    const cell = document.createElement("td");
-
-                    if (i === 0 && j < firstDayOfMonth) {
-                        const cellText = document.createTextNode("");
-                        cell.appendChild(cellText);
-                    } else if (date > daysInMonth) {
-                        break;
-                    } else {
-                        const cellText = document.createTextNode(date);
-
-                        if (date === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
-                            cell.classList.add("today");
-                        }
-
-                        cell.appendChild(cellText);
-                        const formattedDate = formatDate(currentYear, currentMonth + 1, date); // Correção na formatação da data
-                        cell.dataset.date = formattedDate;
-                        // Verifica se existe uma tarefa para este dia
-                        const tasks = getTasksForDate(formattedDate);
-                        tasks.forEach(task => {
-                            const taskIndicator = document.createElement("span");
-                            taskIndicator.className = "task-indicator";
-                            taskIndicator.style.backgroundColor = task.color;
-                            cell.appendChild(taskIndicator);
-                        });
-                        date++;
-                    }
-
-                    row.appendChild(cell);
-                }
-
-                calendarBody.appendChild(row);
-
-                if (date > daysInMonth) {
-                    break;
-                }
-            }
-
-            document.getElementById("currentMonthYear").textContent = `${months[currentMonth]} ${currentYear}`;
-        }
-
-        function addTask() {
-            var taskInput = document.getElementById("taskInput");
-            var taskDate = new Date(document.getElementById("taskDate").value);
-            var taskColor = document.getElementById("taskColor").value;
-            var taskList = document.getElementById("taskList");
-            var task = taskInput.value;
-            if (task.trim() !== "" && !isNaN(taskDate.getTime())) {
-                const formattedTaskDate = formatDate(taskDate.getFullYear(), taskDate.getMonth() + 1, taskDate.getDate()); // Correção na formatação da data
-                var li = document.createElement("li");
-                li.textContent = task + " - " + formattedTaskDate;
-                li.style.color = taskColor;
-                taskList.appendChild(li);
-                taskInput.value = "";
-                taskDate.value = "";
-                generateCalendar(); // Atualiza o calendário após adicionar a tarefa
-                updateTabs();
-            } else {
-                alert("Por favor, insira uma tarefa válida e selecione uma data.");
-            }
-        }
-
-        function formatDate(year, month, day) {
-            return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
-        }
-
-        function getTasksForDate(date) {
-            const taskList = document.getElementById("taskList");
-            const tasks = taskList.getElementsByTagName("li");
-            const filteredTasks = [];
-            for (var i = 0; i < tasks.length; i++) {
-                const taskDate = tasks[i].textContent.split(' - ')[1];
-                if (taskDate === date) {
-                    filteredTasks.push({
-                        text: tasks[i].textContent,
-                        color: tasks[i].style.color
-                    });
-                }
-            }
-            return filteredTasks;
-        }
-
-        function changeTab(color) {
-            const tabs = document.querySelectorAll('.tab');
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => {
-                tab.classList.remove('active');
-            });
-            tabContents.forEach(tabContent => {
-                tabContent.style.display = 'none';
-            });
-            document.getElementById(color).style.display = 'block';
-            document.getElementById(color + "-tab").classList.add('active');
-        }
-
-        function updateTabs() {
-            const taskList = document.getElementById("taskList");
-            const tasks = taskList.getElementsByTagName("li");
-            Object.keys(colors).forEach(color => {
-                const tabContent = document.getElementById(color);
-                tabContent.innerHTML = "";
-                for (var i = 0; i < tasks.length; i++) {
-                    if (tasks[i].style.color === color) {
-                        const task = document.createElement("li");
-                        task.textContent = tasks[i].textContent;
-                        tabContent.appendChild(task);
-                    }
-                }
-            });
-        }
-
-        function previousMonth() {
-            if (currentMonth === 0) {
-                currentMonth = 11;
-                currentYear--;
-            } else {
-                currentMonth--;
-            }
-
-            generateCalendar();
-        }
-
-        function nextMonth() {
-            if (currentMonth === 11) {
-                currentMonth = 0;
-                currentYear++;
-            } else {
-                currentMonth++;
-            }
-
-            generateCalendar();
-        }
-
-        // Gerar o calendário inicial
-        generateCalendar();
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
