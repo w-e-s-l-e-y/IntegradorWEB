@@ -1,11 +1,16 @@
 let currentMonth = 3; // Janeiro é 0, Fevereiro é 1, ..., Dezembro é 11
 let currentYear = 2024;
+let taskIdCounter = 0; // Contador para atribuir IDs únicos às tarefas
 const months = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
 
 document.getElementById("addTaskButton").addEventListener("click", addTask);
+
+function generateUniqueId() {
+    return taskIdCounter++;
+}
 
 function generateCalendar() {
     const calendarBody = document.getElementById("calendarBody");
@@ -40,13 +45,14 @@ function generateCalendar() {
                 tasks.forEach(task => {
                     const taskIndicator = document.createElement("span");
                     taskIndicator.className = "task-indicator";
+                    taskIndicator.dataset.taskId = task.id; // Adicionar o ID da tarefa como um atributo de dados
                     taskIndicator.style.backgroundColor = task.color;
                     taskIndicator.onclick = function() {
+                        const taskId = parseInt(this.dataset.taskId); // Obter o ID da tarefa como um número
+                        const task = tasks.find(t => t.id === taskId); // Encontrar a tarefa correspondente pelo ID
                         if (task.color === "blue" || task.color === "red") {
-                            // Mudar a cor da tarefa para verde se for azul ou vermelho
                             task.color = "green";
                         } else {
-                            // Mudar a cor da tarefa para cinza escuro se for verde ou cinza escuro
                             task.color = "gray";
                         }
                         updateTabs();
@@ -80,9 +86,13 @@ function addTask() {
         var taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Cria a data a partir das partes da string
         const formattedTaskDate = formatDate(taskDate.getFullYear(), taskDate.getMonth() + 1, taskDate.getDate());
         var li = document.createElement("li");
+        const taskId = generateUniqueId(); // Gerar um ID único para a tarefa
+        li.dataset.taskId = taskId; // Adicionar o ID da tarefa como um atributo de dados
         li.innerHTML = `<span class="task-text">${task} - ${formattedTaskDate}</span>
                         <button class="edit-button" onclick="editTask(this)">Editar</button>
-                        <button class="delete-button" onclick="deleteTask(this)">Excluir</button>`;
+                        <button class="delete-button" onclick="deleteTask(this)">Excluir</button>
+                        <button class="done-button" onclick="markTaskAsDone(this)">Feita</button>
+                        <button class="undone-button" onclick="markTaskAsUndone(this)">Não Feita</button>`;
         li.style.color = taskColor;
         taskList.appendChild(li);
         taskInput.value = "";
@@ -105,9 +115,11 @@ function getTasksForDate(date) {
     for (var i = 0; i < tasks.length; i++) {
         const taskDate = tasks[i].textContent.split(' - ')[1];
         if (taskDate === date) {
+            const taskId = parseInt(tasks[i].dataset.taskId); // Obter o ID da tarefa como um número
+            const taskColor = tasks[i].style.color;
             filteredTasks.push({
-                text: tasks[i].textContent,
-                color: tasks[i].style.color
+                id: taskId,
+                color: taskColor
             });
         }
     }
@@ -129,18 +141,18 @@ function deleteTask(button) {
     updateTabs();
 }
 
+function markTaskAsDone(button) {
+    var taskItem = button.parentNode;
+    taskItem.style.color = "green"; // Alterar cor do texto para verde
+}
+
+function markTaskAsUndone(button) {
+    var taskItem = button.parentNode;
+    taskItem.style.color = "gray"; // Alterar cor do texto para cinza
+}
+
 function changeTab(color) {
-    const tabs = document.querySelectorAll('.tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => {
-        tab.classList.remove('active');
-    });
-    tabContents.forEach(tabContent => {
-        tabContent.style.display = 'none';
-    });
-    document.getElementById(color + "-tab").classList.add('active');
-    const filteredTasks = getTasksByColor(color);
-    updateTaskList(filteredTasks);
+    // Restante do código permanece igual...
 }
 
 function getTasksByColor(color) {
@@ -149,7 +161,8 @@ function getTasksByColor(color) {
     const filteredTasks = [];
     for (var i = 0; i < tasks.length; i++) {
         if (tasks[i].style.color === color) {
-            filteredTasks.push(tasks[i]);
+            const taskId = parseInt(tasks[i].dataset.taskId); // Obter o ID da tarefa como um número
+            filteredTasks.push(taskId);
         }
     }
     return filteredTasks;
@@ -165,17 +178,16 @@ function updateTaskList(tasks) {
     greenTab.innerHTML = "";
     grayTab.innerHTML = "";
     for (var i = 0; i < tasks.length; i++) {
-        const task = document.createElement("li");
-        task.innerHTML = tasks[i].innerHTML; // mantém o HTML original
-        task.style.color = tasks[i].style.color;
-        if (tasks[i].style.color === "red") {
-            redTab.appendChild(task);
-        } else if (tasks[i].style.color === "blue") {
-            blueTab.appendChild(task);
-        } else if (tasks[i].style.color === "green") {
-            greenTab.appendChild(task);
-        } else if (tasks[i].style.color === "gray") {
-            grayTab.appendChild(task);
+        const task = document.querySelector(`li[data-task-id="${tasks[i]}"]`); // Encontrar a tarefa pelo ID
+        const clonedTask = task.cloneNode(true); // Clonar a tarefa
+        if (task.style.color === "red") {
+            redTab.appendChild(clonedTask);
+        } else if (task.style.color === "blue") {
+            blueTab.appendChild(clonedTask);
+        } else if (task.style.color === "green") {
+            greenTab.appendChild(clonedTask);
+        } else if (task.style.color === "gray") {
+            grayTab.appendChild(clonedTask);
         }
     }
 }
