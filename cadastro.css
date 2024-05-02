@@ -1,48 +1,46 @@
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #D1DAFD;
+    font-family: Arial, sans-serif;
+    background-color: #EBF3FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
 header {
     background-color: #8290F5;
     color: #fff;
     padding: 15px;
+    width: 100%;
+    position: absolute;
+    top: 0;
 }
 
 header h1 {
     margin: 0;
-}
-
-main h1 {
-    font-size: 48px;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-ul li {
-    display: inline;
-    margin-right: 20px;
-}
-
-ul li a {
-    color: #fff;
-    text-decoration: none;
+    text-align: center;
 }
 
 main {
     padding: 20px;
     background-color: #D1DAFD;
     color: #8b66f0;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin-top: 70px;
+}
+
+main h1 {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
 }
 
 form {
-    max-width: 400px;
-    margin: 0 auto;
+    margin-bottom: 20px;
 }
 
 form p {
@@ -50,35 +48,42 @@ form p {
 }
 
 label {
-    display: inline-block;
-    width: 120px;
+    display: block;
+    margin-bottom: 8px;
 }
 
 input[type="text"],
 input[type="email"],
-input[type="password"] {
-    width: calc(100% - 120px);
-    padding: 8px;
-    border: 1px solid #8290F5;
+input[type="password"],
+.login-container input[type="text"],
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    border: none;
     border-radius: 5px;
     font-size: 16px;
+    box-sizing: border-box;
+    background-color: #B7C2FA;
 }
 
-button {
+button,
+.login-container input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 5px;
     background-color: #8290F5;
     color: #fff;
-    border: none;
-    padding: 10px 20px;
     cursor: pointer;
-    border-radius: 5px;
 }
 
-button:hover {
+button:hover,
+.login-container input[type="submit"]:hover {
     background-color: #D1DAFD;
 }
 
 footer {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     width: 100%;
     background-color: #8290F5;
@@ -109,14 +114,3 @@ footer div ul li a {
     text-decoration: none;
 }
 
-/* Estilos para os links do rodapé */
-footer div ul li a {
-    display: inline-block;
-    margin-right: 10px;
-}
-
-footer div ul li a img {
-    width: 40px; /* Tamanho das imagens */
-    height: auto;
-    border-radius: 50%; /* Para tornar as imagens redondas */
-}
