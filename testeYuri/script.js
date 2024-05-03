@@ -47,13 +47,14 @@ function generateCalendar() {
                     taskIndicator.className = "task-indicator";
                     taskIndicator.dataset.taskId = task.id; // Adicionar o ID da tarefa como um atributo de dados
                     taskIndicator.style.backgroundColor = task.color;
+                    cell.appendChild(taskIndicator);
                     taskIndicator.onclick = function() {
                         const taskId = parseInt(this.dataset.taskId); // Obter o ID da tarefa como um número
                         const task = tasks.find(t => t.id === taskId); // Encontrar a tarefa correspondente pelo ID
                         if (task.color === "blue" || task.color === "red") {
                             task.color = "green";
                         } else {
-                            task.color = "gray";
+                            task.color = "black";
                         }
                         updateTabs();
                     };
@@ -148,7 +149,7 @@ function markTaskAsDone(button) {
 
 function markTaskAsUndone(button) {
     var taskItem = button.parentNode;
-    taskItem.style.color = "gray"; // Alterar cor do texto para cinza
+    taskItem.style.color = "black"; // Alterar cor do texto para cinza
 }
 
 function changeTab(color) {
