@@ -152,7 +152,16 @@ function markTaskAsUndone(button) {
 }
 
 function changeTab(color) {
-    // Restante do código permanece igual...
+    const tabs = document.querySelectorAll('.tab');
+    const tabContents = document.querySelectorAll('.tab-content');
+    tabs.forEach(tab => {
+        tab.classList.remove('active');
+    });
+    tabContents.forEach(tabContent => {
+        tabContent.style.display = 'none';
+    });
+    document.getElementById(color).style.display = 'block';
+    document.getElementById(color + "-tab").classList.add('active');
 }
 
 function getTasksByColor(color) {

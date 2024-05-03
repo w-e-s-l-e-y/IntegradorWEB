@@ -18,26 +18,21 @@
         </select>
         <button id="addTaskButton">Adicionar Tarefa</button>
         <ul id="taskList">
-            <!-- As tarefas serão inseridas aqui -->
             <li>
-                <span class="task-text">Tarefa 1 - 2024-05-01</span>
-                <button class="edit-button" onclick="editTask(this)">Editar</button>
-                <button class="delete-button" onclick="deleteTask(this)">Excluir</button>
-                <button class="done-button" onclick="markTaskAsDone(this)">Feita</button>
-                <button class="undone-button" onclick="markTaskAsUndone(this)">Não Feita</button>
+                <!-- As tarefas estão inseridas aqui -->
             </li>
         </ul>
-    </div>
-
-    <!-- Calendário -->
-    <div class="calendario">
-        <h2>Calendário</h2>
+        <hr>
         <div class="tabs" style="margin-bottom: 10px;">
             <button class="tab" id="red-tab" onclick="changeTab('red')">Alta Prioridade (Vermelho)</button>
             <button class="tab" id="blue-tab" onclick="changeTab('blue')">Baixa Prioridade (Azul)</button>
             <button class="tab" id="green-tab" onclick="changeTab('green')">Feita (Verde)</button>
             <button class="tab" id="gray-tab" onclick="changeTab('gray')">Não Feita (Cinza Escuro)</button>
         </div>
+    </div>
+    <!-- Calendário --> 
+    <div class="calendario">
+        <h2>Calendário</h2>
         <div>
             <button id="previousMonthButton" onclick="previousMonth()" style="margin-right: 10px;">Anterior</button>
             <span id="currentMonthYear">Abril 2024</span>
