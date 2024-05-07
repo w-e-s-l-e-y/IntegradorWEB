@@ -9,6 +9,20 @@ body {
     height: 100vh;
 }
 
+header {
+    background-color: #8290F5;
+    color: #fff;
+    padding: 15px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+}
+
+header h1 {
+    margin: 0;
+    text-align: center;
+}
+
 .login-container {
     background-color: #D1DAFD;
     padding: 20px;
@@ -22,7 +36,7 @@ body {
     color: #8290F5;
 }
 
-.login-container input[type="text"],
+.login-container input[type="email"],
 .login-container input[type="password"] {
     width: 100%;
     padding: 10px;
