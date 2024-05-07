@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro no Firebase</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Cadastro no Firebase</h1>
+
+  <h2>Cadastrar Usuário</h2>
+  <form id="formUsuario">
+    <input type="text" id="nomeUsuario" placeholder="Nome do Usuário">
+    <input type="email" id="emailUsuario" placeholder="Email do Usuário">
+    <button type="submit">Cadastrar Usuário</button>
+  </form>
+
+  <h2>Cadastrar Tarefa</h2>
+  <form id="formTarefa">
+    <input type="text" id="descricaoTarefa" placeholder="Descrição da Tarefa">
+    <input type="date" id="dataTarefa">
+    <button type="submit">Cadastrar Tarefa</button>
+  </form>
+
+  <h2>Cadastrar Evento no Calendário</h2>
+  <form id="formEvento">
+    <input type="date" id="dataEvento">
+    <input type="text" id="descricaoEvento" placeholder="Descrição do Evento">
+    <button type="submit">Cadastrar Evento</button>
+  </form>
+
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.24.0/firebase-database.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
