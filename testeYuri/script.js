@@ -32,34 +32,32 @@ function generateCalendar() {
             } else if (date > daysInMonth) {
                 break;
             } else {
-                const cellText = document.createTextNode(date);
+                const button = document.createElement("button");
+                button.textContent = date;
+                button.classList.add("calendar-day");
+                button.dataset.date = formatDate(currentYear, currentMonth + 1, date);
 
-                if (date === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
-                    cell.classList.add("today");
-                }
-
-                cell.appendChild(cellText);
-                const formattedDate = formatDate(currentYear, currentMonth + 1, date);
-                cell.dataset.date = formattedDate;
-                const tasks = getTasksForDate(formattedDate);
+                const tasks = getTasksForDate(button.dataset.date);
                 tasks.forEach(task => {
                     const taskIndicator = document.createElement("span");
                     taskIndicator.className = "task-indicator";
-                    taskIndicator.dataset.taskId = task.id; // Adicionar o ID da tarefa como um atributo de dados
+                    taskIndicator.dataset.taskId = task.id;
                     taskIndicator.style.backgroundColor = task.color;
-                    cell.appendChild(taskIndicator);
+                    button.appendChild(taskIndicator);
                     taskIndicator.onclick = function() {
-                        const taskId = parseInt(this.dataset.taskId); // Obter o ID da tarefa como um número
-                        const task = tasks.find(t => t.id === taskId); // Encontrar a tarefa correspondente pelo ID
+                        const taskId = parseInt(this.dataset.taskId);
+                        const task = tasks.find(t => t.id === taskId);
                         if (task.color === "blue" || task.color === "red") {
                             task.color = "green";
                         } else {
                             task.color = "black";
                         }
                         updateTabs();
+                        generateCalendar();
                     };
-                    cell.appendChild(taskIndicator);
                 });
+
+                cell.appendChild(button);
                 date++;
             }
 
@@ -74,21 +72,23 @@ function generateCalendar() {
     }
 
     document.getElementById("currentMonthYear").textContent = `${months[currentMonth]} ${currentYear}`;
+
+    updateCalendarColors(); // Atualiza as cores dos botões do calendário
 }
 
 function addTask() {
     var taskInput = document.getElementById("taskInput");
-    var taskDateInput = document.getElementById("taskDate").value; // Obtém a data do input como string
+    var taskDateInput = document.getElementById("taskDate").value;
     var taskColor = document.getElementById("taskColor").value;
     var taskList = document.getElementById("taskList");
     var task = taskInput.value;
     if (task.trim() !== "" && taskDateInput.trim() !== "") {
-        var dateParts = taskDateInput.split('-'); // Divide a string da data em partes
-        var taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]); // Cria a data a partir das partes da string
+        var dateParts = taskDateInput.split('-');
+        var taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
         const formattedTaskDate = formatDate(taskDate.getFullYear(), taskDate.getMonth() + 1, taskDate.getDate());
         var li = document.createElement("li");
-        const taskId = generateUniqueId(); // Gerar um ID único para a tarefa
-        li.dataset.taskId = taskId; // Adicionar o ID da tarefa como um atributo de dados
+        const taskId = generateUniqueId();
+        li.dataset.taskId = taskId;
         li.innerHTML = `<span class="task-text">${task} - ${formattedTaskDate}</span>
                         <button class="edit-button" onclick="editTask(this)">Editar</button>
                         <button class="delete-button" onclick="deleteTask(this)">Excluir</button>
@@ -97,11 +97,26 @@ function addTask() {
         li.style.color = taskColor;
         taskList.appendChild(li);
         taskInput.value = "";
-        document.getElementById("taskDate").value = ""; // Limpa o campo de data após adicionar a tarefa
-        generateCalendar(); // Atualiza o calendário após adicionar a tarefa
+        document.getElementById("taskDate").value = "";
+        updateCalendarColors(); // Atualiza as cores dos botões do calendário
         updateTabs();
     } else {
         alert("Por favor, insira uma tarefa válida e selecione uma data.");
+    }
+}
+
+function updateCalendarColors() {
+    const taskList = document.getElementById("taskList");
+    const tasks = taskList.getElementsByTagName("li");
+    for (let i = 0; i < tasks.length; i++) {
+        const taskText = tasks[i].querySelector(".task-text").textContent;
+        const taskDate = taskText.split(' - ')[1];
+        const taskColor = tasks[i].style.color;
+        const formattedTaskDate = formatDate(new Date(taskDate).getFullYear(), new Date(taskDate).getMonth() + 1, new Date(taskDate).getDate());
+        const cells = document.querySelectorAll(`[data-date="${formattedTaskDate}"]`);
+        cells.forEach(cell => {
+            cell.style.backgroundColor = taskColor;
+        });
     }
 }
 
@@ -116,7 +131,7 @@ function getTasksForDate(date) {
     for (var i = 0; i < tasks.length; i++) {
         const taskDate = tasks[i].textContent.split(' - ')[1];
         if (taskDate === date) {
-            const taskId = parseInt(tasks[i].dataset.taskId); // Obter o ID da tarefa como um número
+            const taskId = parseInt(tasks[i].dataset.taskId);
             const taskColor = tasks[i].style.color;
             filteredTasks.push({
                 id: taskId,
@@ -144,12 +159,12 @@ function deleteTask(button) {
 
 function markTaskAsDone(button) {
     var taskItem = button.parentNode;
-    taskItem.style.color = "green"; // Alterar cor do texto para verde
+    taskItem.style.color = "green";
 }
 
 function markTaskAsUndone(button) {
     var taskItem = button.parentNode;
-    taskItem.style.color = "black"; // Alterar cor do texto para cinza
+    taskItem.style.color = "black";
 }
 
 function changeTab(color) {
@@ -171,7 +186,7 @@ function getTasksByColor(color) {
     const filteredTasks = [];
     for (var i = 0; i < tasks.length; i++) {
         if (tasks[i].style.color === color) {
-            const taskId = parseInt(tasks[i].dataset.taskId); // Obter o ID da tarefa como um número
+            const taskId = parseInt(tasks[i].dataset.taskId);
             filteredTasks.push(taskId);
         }
     }
@@ -188,8 +203,8 @@ function updateTaskList(tasks) {
     greenTab.innerHTML = "";
     grayTab.innerHTML = "";
     for (var i = 0; i < tasks.length; i++) {
-        const task = document.querySelector(`li[data-task-id="${tasks[i]}"]`); // Encontrar a tarefa pelo ID
-        const clonedTask = task.cloneNode(true); // Clonar a tarefa
+        const task = document.querySelector(`li[data-task-id="${tasks[i]}"]`);
+        const clonedTask = task.cloneNode(true);
         if (task.style.color === "red") {
             redTab.appendChild(clonedTask);
         } else if (task.style.color === "blue") {
@@ -220,7 +235,6 @@ function previousMonth() {
     } else {
         currentMonth--;
     }
-
     generateCalendar();
 }
 
@@ -231,9 +245,5 @@ function nextMonth() {
     } else {
         currentMonth++;
     }
-
     generateCalendar();
 }
-
-// Gerar o calendário inicial
-generateCalendar();
