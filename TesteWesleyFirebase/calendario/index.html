@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seu Título</title>
+    <!-- Adicione o estilo CSS aqui -->
+    <style>
+        /* Estilo fornecido */
+        :root {
+            --blue: #007bff;
+            --indigo: #6610f2;
+            --purple: #6f42c1;
+            --pink: #e83e8c;
+            --red: #dc3545;
+            --orange: #fd7e14;
+            --yellow: #ffc107;
+            --green: #28a745;
+            --teal: #20c997;
+            --cyan: #17a2b8;
+            --white: #fff;
+            --gray: #6c757d;
+            --gray-dark: #343a40;
+            --primary: #007bff;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --info: #17a2b8;
+            --warning: #ffc107;
+            --danger: #dc3545;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --breakpoint-xs: 0;
+            --breakpoint-sm: 576px;
+            --breakpoint-md: 768px;
+            --breakpoint-lg: 992px;
+            --breakpoint-xl: 1200px;
+            --font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        }
+
+        /* Aplicando o estilo ao elemento .row */
+        .row {
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: left;
+            font-family: 'OpenSans', sans-serif;
+            color: #003f7b;
+            box-sizing: border-box;
+            display: flex;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -15px;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <!-- CRONOGRAMA -->
+    <div class="mt-4 col-lg-12" id="divCronograma">
+        <div class="card h-100">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md">
+                        <h4 class="size-xs">Calendário de programação de aulas</h4>
+                        <div class="mt-4">
+                            <div class="datepicker cronogramaCurso"><div class="datepicker datepicker-inline"><div class="datepicker-days" style=""><table class="table-condensed"><thead><tr><th colspan="7" class="datepicker-title" style="display: none;"></th></tr><tr><th class="prev">«</th><th colspan="5" class="datepicker-switch">Maio 2024</th><th class="next">»</th></tr><tr><th class="dow">Do</th><th class="dow">Se</th><th class="dow">Te</th><th class="dow">Qu</th><th class="dow">Qu</th><th class="dow">Se</th><th class="dow">Sa</th></tr></thead><tbody><tr><td class="old day" data-date="1714262400000">28</td><td class="old day" data-date="1714348800000">29</td><td class="old day" data-date="1714435200000">30</td><td class="day" data-date="1714521600000">1</td><td class="active day" data-date="1714608000000">2</td><td class="active day" data-date="1714694400000">3</td><td class="day" data-date="1714780800000">4</td></tr><tr><td class="day" data-date="1714867200000">5</td><td class="active day" data-date="1714953600000">6</td><td class="active day" data-date="1715040000000">7</td><td class="active day" data-date="1715126400000">8</td><td class="today active day" data-date="1715212800000">9</td><td class="active day" data-date="1715299200000">10</td><td class="day" data-date="1715385600000">11</td></tr><tr><td class="day" data-date="1715472000000">12</td><td class="active day" data-date="1715558400000">13</td><td class="active day" data-date="1715644800000">14</td><td class="active day daySelected" data-date="1715731200000">15</td><td class="active day" data-date="1715817600000">16</td><td class="active day" data-date="1715904000000">17</td><td class="day" data-date="1715990400000">18</td></tr><tr><td class="day" data-date="1716076800000">19</td><td class="active day" data-date="1716163200000">20</td><td class="active day" data-date="1716249600000">21</td><td class="active day" data-date="1716336000000">22</td><td class="active day" data-date="1716422400000">23</td><td class="active day" data-date="1716508800000">24</td><td class="day" data-date="1716595200000">25</td></tr><tr><td class="day" data-date="1716681600000">26</td><td class="active day" data-date="1716768000000">27</td><td class="active day" data-date="1716854400000">28</td><td class="active day" data-date="1716940800000">29</td><td class="day" data-date="1717027200000">30</td><td class="day" data-date="1717113600000">31</td><td class="new day" data-date="1717200000000">1</td></tr><tr><td class="new day" data-date="1717286400000">2</td><td class="new day" data-date="1717372800000">3</td><td class="new day" data-date="1717459200000">4</td><td class="new day" data-date="1717545600000">5</td><td class="new day" data-date="1717632000000">6</td><td class="new day" data-date="1717718400000">7</td><td class="new day" data-date="1717804800000">8</td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">Hoje</th></tr><tr><th colspan="7" class="clear" style="display: none;">Limpar</th></tr></tfoot></table></div><div class="datepicker-months" style="display: none;"><table class="table-condensed"><thead><tr><th colspan="7" class="datepicker-title" style="display: none;"></th></tr><tr><th class="prev">«</th><th colspan="5" class="datepicker-switch">2024</th><th class="next">»</th></tr></thead><tbody><tr><td colspan="7"><span class="month">Jan</span><span class="month">Fev</span><span class="month">Mar</span><span class="month">Abr</span><span class="month focused active">Mai</span><span class="month">Jun</span><span class="month">Jul</span><span class="month">Ago</span><span class="month">Set</span><span class="month">Out</span><span class="month">Nov</span><span class="month">Dez</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">Hoje</th></tr><tr><th colspan="7" class="clear" style="display: none;">Limpar</th></tr></tfoot></table></div><div class="datepicker-years" style="display: none;"><table class="table-condensed"><thead><tr><th colspan="7" class="datepicker-title" style="display: none;"></th></tr><tr><th class="prev">«</th><th colspan="5" class="datepicker-switch">2020-2029</th><th class="next">»</th></tr></thead><tbody><tr><td colspan="7"><span class="year old">2019</span><span class="year">2020</span><span class="year">2021</span><span class="year">2022</span><span class="year">2023</span><span class="year active focused">2024</span><span class="year">2025</span><span class="year">2026</span><span class="year">2027</span><span class="year">2028</span><span class="year">2029</span><span class="year new">2030</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">Hoje</th></tr><tr><th colspan="7" class="clear" style="display: none;">Limpar</th></tr></tfoot></table></div><div class="datepicker-decades" style="display: none;"><table class="table-condensed"><thead><tr><th colspan="7" class="datepicker-title" style="display: none;"></th></tr><tr><th class="prev">«</th><th colspan="5" class="datepicker-switch">2000-2090</th><th class="next">»</th></tr></thead><tbody><tr><td colspan="7"><span class="decade old">1990</span><span class="decade">2000</span><span class="decade">2010</span><span class="decade active focused">2020</span><span class="decade">2030</span><span class="decade">2040</span><span class="decade">2050</span><span class="decade">2060</span><span class="decade">2070</span><span class="decade">2080</span><span class="decade">2090</span><span class="decade new">2100</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">Hoje</th></tr><tr><th colspan="7" class="clear" style="display: none;">Limpar</th></tr></tfoot></table></div><div class="datepicker-centuries" style="display: none;"><table class="table-condensed"><thead><tr><th colspan="7" class="datepicker-title" style="display: none;"></th></tr><tr><th class="prev">«</th><th colspan="5" class="datepicker-switch">2000-2900</th><th class="next">»</th></tr></thead><tbody><tr><td colspan="7"><span class="century old">1900</span><span class="century active focused">2000</span><span class="century">2100</span><span class="century">2200</span><span class="century">2300</span><span class="century">2400</span><span class="century">2500</span><span class="century">2600</span><span class="century">2700</span><span class="century">2800</span><span class="century">2900</span><span class="century new">3000</span></td></tr></tbody><tfoot><tr><th colspan="7" class="today" style="display: none;">Hoje</th></tr><tr><th colspan="7" class="clear" style="display: none;">Limpar</th></tr></tfoot></table></div></div></div>
+                        </div>
+                    </div>
+                    <div class="col-md cronogramaContainer"><div><h4 class="size-xs">Quarta-feira, 15 de Maio de 2024</h4><ul class="list-unstyled list-blue mt-4 p-0"><li class="toggle-content toggle-next toggle-dirty"><span class="title">Unidade Curricular:</span><span class="d-block">Realizar operações de suporte junto ao usuário</span></li><li class="none detalheDisciplina pt-0"><div class="py-1"><span class="title">Orientador:</span><span class="d-block">MARUZAM BUENO FERREIRA JUNIOR</span></div><div class="py-1"><span class="title">Local:</span><span class="d-block">Amb. Externo – ESTÁGIO</span></div><div class="py-1 row"><div class="col"><span class="title">Início:</span><span class="d-block">13:00</span></div><div class="col"><span class="title">Término:</span><span class="d-block">17:00</span></div></div><div class="py-1"><span class="title">Tipo:</span><span class="d-block">Aula</span></div></li></ul></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</body>
+</html>
