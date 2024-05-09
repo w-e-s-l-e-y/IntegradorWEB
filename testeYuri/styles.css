@@ -112,3 +112,16 @@ th {
 .content {
     margin-top: 20px;
 }
+
+/* Estilo para os botões do calendário */
+.calendar-day {
+    width: 40px;
+    height: 40px;
+    background-color: #a0a0a0; /* Cinza */
+    border: none;
+    border-radius: 50%;
+    margin: 5px;
+    cursor: pointer;
+    color: #fff;
+    outline: none;
+}
