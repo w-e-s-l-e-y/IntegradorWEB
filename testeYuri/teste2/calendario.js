@@ -108,9 +108,9 @@ document.getElementById('prev').addEventListener('click', () => {
 
 document.getElementById('next').addEventListener('click', () => {
     currentDate.setMonth(currentDate.getMonth() + 1);
-    loadCalendar();
+    loadCalendar(); 
 });
-
+                                                                  
 // Submit do formulário de tarefa
 document.getElementById('taskForm').addEventListener('submit', (event) => {
     event.preventDefault();
