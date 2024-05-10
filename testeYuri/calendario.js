@@ -38,9 +38,11 @@ function createCalendar(year, month) {
 
     // Marcando tarefas no calendário
     tasks.forEach(task => {
-        const dayElement = calendar.querySelector(`[data-day="${task.day}"]`);
-        if (dayElement) {
-            dayElement.classList.add(task.status ? 'done' : 'not-done');
+        if (task.month === month && task.year === year) {
+            const dayElement = calendar.querySelector(`[data-day="${task.day}"]`);
+            if (dayElement) {
+                dayElement.classList.add(task.status ? 'done' : 'not-done');
+            }
         }
     });
 
@@ -49,17 +51,22 @@ function createCalendar(year, month) {
     days.forEach(day => {
         day.addEventListener('click', () => {
             const selectedDay = day.getAttribute('data-day');
-            addTaskToList(selectedDay);
+            addTaskToList(selectedDay, month, year);
         });
     });
 }
 
 // Adiciona tarefa à lista
-function addTaskToList(day) {
+function addTaskToList(day, month, year) {
     const task = taskInput.value.trim();
     if (task === '') return;
 
-    tasks.push({ day: parseInt(day), task: task, status: false });
+    const existingTask = tasks.find(item => item.day === parseInt(day) && item.month === month && item.year === year);
+    if (existingTask) {
+        existingTask.task = task;
+    } else {
+        tasks.push({ day: parseInt(day), month, year, task: task, status: false });
+    }
     updateCalendar();
     updateTaskList();
 
@@ -75,7 +82,7 @@ function updateTaskList() {
     taskList.innerHTML = '';
     tasks.forEach(task => {
         const listItem = document.createElement('li');
-        listItem.innerText = `Dia ${task.day}: ${task.task}`;
+        listItem.innerText = `${task.day}/${task.month + 1}/${task.year}: ${task.task}`;
         listItem.style.textDecoration = task.status ? 'line-through' : 'none';
         listItem.addEventListener('click', () => {
             task.status = !task.status;
@@ -107,5 +114,8 @@ document.getElementById('next').addEventListener('click', () => {
 // Submit do formulário de tarefa
 document.getElementById('taskForm').addEventListener('submit', (event) => {
     event.preventDefault();
-    addTaskToList(currentDate.getDate());
+    const selectedDay = currentDate.getDate();
+    const selectedMonth = currentDate.getMonth();
+    const selectedYear = currentDate.getFullYear();
+    addTaskToList(selectedDay, selectedMonth, selectedYear);
 });
