@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda</title>
+    <link rel="stylesheet" href="calendario.css">
+</head>
+<body>
+    <div class="calendar-container">
+        <button id="prev">&lt;</button>
+        <h2 id="monthName"></h2>
+        <button id="next">&gt;</button>
+        <div id="weekdays" class="weekdays"></div>
+        <div id="calendar"></div>
+    </div>
+    <div class="tasks-container">
+        <h2>Adicionar Tarefa</h2>
+        <form id="taskForm">
+            <input type="text" id="taskInput" placeholder="Digite sua tarefa...">
+            <button type="submit">Adicionar</button>
+        </form>
+        <h2>Tarefas</h2>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script src="calendario.js"></script>
+</body>
+</html>

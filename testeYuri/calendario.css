@@ -1,0 +1,96 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+.calendar-container {
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.tasks-container {
+    max-width: 400px;
+    margin: 20px auto;
+}
+
+.tasks-container h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+}
+
+#weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    font-weight: bold;
+}
+
+#calendar div {
+    padding: 10px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+#calendar .done {
+    background-color: lightgreen;
+}
+
+#calendar .not-done {
+    background-color: lightcoral;
+}
+
+#calendar div:hover {
+    background-color: #f0f0f0;
+}
+
+#taskForm {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+#taskInput {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+}
+
+#taskForm button {
+    padding: 8px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+#taskForm button:hover {
+    background-color: #45a049;
+}
+
+#taskList {
+    list-style-type: none;
+    padding: 0;
+}
+
+#taskList li {
+    padding: 8px;
+    border-bottom: 1px solid #ccc;
+}
+
+#taskList li:last-child {
+    border-bottom: none;
+}
+
+#taskList li:hover {
+    background-color: #f0f0f0;
+    cursor: pointer;
+    text-decoration: line-through;
+}
