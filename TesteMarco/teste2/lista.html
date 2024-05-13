@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Agenda</title>
+    <link rel="stylesheet" href="lista.css">
+</head>
+<body>
+    <!-- Agenda de Tarefas -->
+    <div class="agenda">
+        <h2>Agenda de Tarefas</h2>
+        <input type="text" id="taskInput" placeholder="Adicionar nova tarefa">
+        <input type="date" id="taskDate">
+        <select id="taskColor">
+            <option value="red">Alta Prioridade (Vermelho)</option>
+            <option value="blue">Baixa Prioridade (Azul)</option>
+        </select>
+        <button onclick="addTask()">Adicionar Tarefa</button>
+        <ul id="taskList"></ul>
+    </div>
+
+    <!-- Calendário -->
+    <div class="calendario">
+        <h2>Calendário</h2>
+        <div class="tabs" style="margin-bottom: 10px;">
+            <button class="tab" onclick="changeTab('red')">Alta Prioridade (Vermelho)</button>
+            <button class="tab" onclick="changeTab('blue')">Baixa Prioridade (Azul)</button>
+            <button class="tab" onclick="changeTab('green')">Feita (Verde)</button>
+            <button class="tab" onclick="changeTab('gray')">Não Feita (Cinza Escuro)</button>
+        </div>
+        <div>
+            <button onclick="previousMonth()" style="margin-right: 10px;">Anterior</button>
+            <span id="currentMonthYear">Abril 2024</span>
+            <button onclick="nextMonth()" style="margin-left: 10px;">Próximo</button>
+        </div>
+        <div class="content">
+            <div id="red" class="tab-content"></div>
+            <div id="blue" class="tab-content"></div>
+            <div id="green" class="tab-content"></div>
+            <div id="gray" class="tab-content"></div>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Domingo</th>
+                    <th>Segunda</th>
+                    <th>Terça</th>
+                    <th>Quarta</th>
+                    <th>Quinta</th>
+                    <th>Sexta</th>
+                    <th>Sábado</th>
+                </tr>
+            </thead>
+            <tbody id="calendarBody">
+                <!-- Os dias do mês serão inseridos aqui com JavaScript -->
+            </tbody>
+        </table>
+    </div>
+    <script src="lista.js"></script>
+</body>
+</html>
