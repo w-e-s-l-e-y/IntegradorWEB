@@ -75,6 +75,27 @@ function formatDate(year, month, day) {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
 }
 
+function highlightTaskDate(date) {
+    const cells = document.querySelectorAll('td[data-date="' + date + '"]');
+    cells.forEach(cell => {
+        if (!cell.classList.contains('task-added')) {
+            cell.classList.add('task-added');
+        }
+    });
+}
+
+function updateTaskIndicators() {
+    const calendarCells = document.querySelectorAll('#calendarBody td');
+    calendarCells.forEach(cell => {
+        const date = cell.dataset.date;
+        const tasks = getTasksForDate(date);
+        if (tasks.length > 0) {
+            const indicator = document.createElement('span');
+            indicator.classList.add('task-indicator');
+            cell.appendChild(indicator);
+        }
+    });
+}
 
 function addTask() {
     var taskInput = document.getElementById("taskInput");
@@ -94,11 +115,12 @@ function addTask() {
         document.getElementById("taskDate").value = ""; // Limpa o campo de data após adicionar a tarefa
         generateCalendar(); // Atualiza o calendário após adicionar a tarefa
         updateTabs();
+        highlightTaskDate(formatDate(dateParts[0], dateParts[1], dateParts[2])); // Destaca a data no calendário
+        updateTaskIndicators(); // Atualiza os indicadores de tarefa no calendário
     } else {
         alert("Por favor, insira uma tarefa válida e selecione uma data.");
     }
 }
-
 
 function formatDate(year, month, day) {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
@@ -106,18 +128,34 @@ function formatDate(year, month, day) {
 
 function getTasksForDate(date) {
     const taskList = document.getElementById("taskList");
-    const tasks = taskList.getElementsByTagName("li");
-    const filteredTasks = [];
-    for (var i = 0; i < tasks.length; i++) {
-        const taskDate = tasks[i].textContent.split(' - ')[1];
+    const tasks = [];
+    const lis = taskList.getElementsByTagName("li");
+    for (let i = 0; i < lis.length; i++) {
+        const taskDate = lis[i].textContent.split(' ')[1];
         if (taskDate === date) {
-            filteredTasks.push({
-                text: tasks[i].textContent,
-                color: tasks[i].style.color
-            });
+            const text = lis[i].textContent.split(' ')[0];
+            const color = lis[i].style.color;
+            tasks.push({ text, color });
         }
     }
-    return filteredTasks;
+    return tasks;
+}
+
+function showTasks(cell) {
+    const date = cell.dataset.date;
+    const tasks = getTasksForDate(date);
+    
+    // Limpar a lista de tarefas anteriores
+    const taskDisplay = document.getElementById("taskDisplay");
+    taskDisplay.innerHTML = "";
+    
+    // Adicionar as tarefas marcadas ao elemento de exibição
+    tasks.forEach(task => {
+        const taskElement = document.createElement("li");
+        taskElement.textContent = task.text;
+        taskElement.style.color = task.color;
+        taskDisplay.appendChild(taskElement);
+    });
 }
 
 function changeTab(color) {

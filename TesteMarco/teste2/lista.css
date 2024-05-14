@@ -115,3 +115,13 @@ th {
 .content {
     margin-top: 20px;
 }
+
+.task-indicator {
+    display: block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: lightgray; /* Altere a cor conforme necessário */
+    margin: 2px auto;
+}
+
