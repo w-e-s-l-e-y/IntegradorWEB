@@ -1,0 +1,61 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background-color: #8290F5; /* cor de fundo */
+  }
+  
+  .timer {
+    text-align: center;
+  }
+  
+  #timer {
+    font-size: 3em;
+    color: #EBF3FF; /* cor do texto */
+    animation: pulse 1s infinite alternate;
+  }
+  
+  button {
+    margin-top: 20px;
+    font-size: 1.2em;
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #9CA9F8; /* cor de fundo dos botões */
+    border: none;
+    color: #EBF3FF; /* cor do texto dos botões */
+    border-radius: 5px;
+  }
+  
+  button:hover {
+    background-color: #B7C2FA; /* cor de fundo dos botões ao passar o mouse */
+  }
+  
+  button:active {
+    background-color: #D1DAFD; /* cor de fundo dos botões ao clicar */
+  }
+  
+  .time-up {
+    animation: blink 1s infinite;
+  }
+  
+  @keyframes pulse {
+    from {
+      transform: scale(1);
+    }
+    to {
+      transform: scale(1.1);
+    }
+  }
+  
+  @keyframes blink {
+    0%, 50%, 100% {
+      opacity: 1;
+    }
+    25%, 75% {
+      opacity: 0;
+    }
+  }
+  
