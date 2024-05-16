@@ -127,19 +127,29 @@ function editTask(taskItem) {
     var taskDetails = taskText.split(' - ');
     var taskName = taskDetails[0];
     var taskDate = taskDetails[1];
+    var taskPriority = taskDetails[2]; // Adicionando a prioridade da tarefa
 
     var newTaskName = prompt("Edite a tarefa:", taskName);
     if (newTaskName !== null && newTaskName.trim() !== "") {
-        var newTaskDate = prompt("Edite a data (AAAA-MM-DD):", taskDate);
+        var newTaskDate = prompt("Edite a data (DD-MM-AAAA):", taskDate);
         if (newTaskDate !== null && newTaskDate.trim() !== "") {
-            var dateParts = newTaskDate.split('-');
-            var formattedDate = formatDate(dateParts[0], dateParts[1], dateParts[2]);
-            taskItem.childNodes[0].textContent = newTaskName + " - " + formattedDate;
-            generateCalendar();
-            updateTabs();
+            var newTaskPriority = prompt("Edite a prioridade (red para alta, blue para baixa):", taskPriority); // Prompt para editar a prioridade
+            if (newTaskPriority !== null) {
+                if (newTaskPriority.trim() === "red" || newTaskPriority.trim() === "blue") { // Verifica se a prioridade é válida
+                    var dateParts = newTaskDate.split('-');
+                    var formattedDate = formatDate(dateParts[2], dateParts[1], dateParts[0]);
+                    taskItem.childNodes[0].textContent = newTaskName + " - " + formattedDate; // Atualiza o texto da tarefa sem a prioridade
+                    taskItem.style.color = newTaskPriority.trim(); // Altera a cor da fonte de acordo com a prioridade
+                } else {
+                    alert("Por favor, insira uma prioridade válida (red para alta, blue para baixa).");
+                }
+                
+            }
         }
     }
 }
+
+
 
 function deleteTask(taskItem) {
     var taskList = document.getElementById("taskList");
@@ -164,8 +174,13 @@ function restoreOriginalColor(taskItem) {
 
 
 function formatDate(year, month, day) {
-    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+    // Adicionando zeros à esquerda se necessário
+    const paddedDay = day.toString().padStart(2, '0');
+    const paddedMonth = month.toString().padStart(2, '0');
+    // Retornando a data no formato DD-MM-AAAA
+    return `${paddedDay}-${paddedMonth}-${year}`;
 }
+
 
 function getTasksForDate(date) {
     const taskList = document.getElementById("taskList");
