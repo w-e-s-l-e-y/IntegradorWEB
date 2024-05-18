@@ -10,6 +10,8 @@ const months = [
 ];
 
 function generateCalendar() {
+  
+
     const calendarBody = document.getElementById("calendarBody");
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -47,10 +49,10 @@ function generateCalendar() {
                         if (task.color === "blue" || task.color === "red") {
                             // Mudar a cor da tarefa para verde se for azul ou vermelho
                             task.color = "green";
-                        } else {
+                        } /*else {
                             // Mudar a cor da tarefa para cinza escuro se for verde ou cinza escuro
                             task.color = "orange";
-                        }
+                        }*/
                         updateTabs();
                     };
                     cell.appendChild(taskIndicator);
