@@ -1,0 +1,173 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #EBF3FF;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.timer {
+    font-size: 72px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.controls {
+    margin-bottom: 30px;
+}
+
+.controls button {
+    background-color: #8290F5;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.controls button:hover {
+    background-color: #9CA9F8;
+}
+
+.task-input {
+    margin-bottom: 30px;
+}
+
+.task-input input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+    font-size: 16px;
+    width: 60%;
+    transition: border-color 0.3s;
+}
+
+.task-input input:focus {
+    outline: none;
+    border-color: #8290F5;
+}
+
+.task-input button {
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.task-input button:hover {
+    background-color: #45A049;
+}
+
+#taskList {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 30px;
+}
+
+#taskList li {
+    background-color: #D1DAFD;
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#taskList li.done {
+    background-color: #B7C2FA;
+    color: #666;
+    text-decoration: line-through;
+}
+
+.complete-btn, .delete-btn {
+    background-color: #FF6B6B;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.complete-btn:hover, .delete-btn:hover {
+    background-color: #FF5252;
+}
+
+.motivational {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.quote {
+    position: absolute;
+    font-size: 20px;
+    opacity: 0;
+    animation: float 10s infinite;
+}
+
+.quote:nth-child(1) {
+    top: 20%;
+    left: 20%;
+    animation-delay: 0s;
+    color: #8290F5;
+}
+
+.quote:nth-child(2) {
+    top: 50%;
+    left: 70%;
+    animation-delay: 2.5s;
+    color: #9CA9F8;
+}
+
+.quote:nth-child(3) {
+    top: 80%;
+    left: 30%;
+    animation-delay: 5s;
+    color: #B7C2FA;
+}
+
+.quote:nth-child(4) {
+    top: 30%;
+    left: 50%;
+    animation-delay: 7.5s;
+    color: #D1DAFD;
+}
+
+@keyframes float {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(20px);
+    }
+}
