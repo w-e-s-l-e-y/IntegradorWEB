@@ -10,8 +10,6 @@ const months = [
 ];
 
 function generateCalendar() {
-  
-
     const calendarBody = document.getElementById("calendarBody");
     const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
     const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
@@ -40,20 +38,23 @@ function generateCalendar() {
                 cell.appendChild(cellText);
                 const formattedDate = formatDate(currentYear, currentMonth + 1, date);
                 cell.dataset.date = formattedDate;
+
                 const tasks = getTasksForDate(formattedDate);
+                console.log(`Date: ${formattedDate}, Tasks: `, tasks); // Log para ver as tarefas
+
+                if (tasks.length > 0) {
+                    cell.classList.add("task-day");
+                }
+
                 tasks.forEach(task => {
                     const taskIndicator = document.createElement("span");
                     taskIndicator.className = "task-indicator";
                     taskIndicator.style.backgroundColor = task.color;
                     taskIndicator.onclick = function() {
                         if (task.color === "blue" || task.color === "red") {
-                            // Mudar a cor da tarefa para verde se for azul ou vermelho
                             task.color = "green";
-                        } /*else {
-                            // Mudar a cor da tarefa para cinza escuro se for verde ou cinza escuro
-                            task.color = "orange";
-                        }*/
-                        updateTabs();
+                        }
+                        generateCalendar(); // Regerar o calendário para atualizar as cores
                     };
                     cell.appendChild(taskIndicator);
                 });
@@ -117,7 +118,7 @@ function addTask() {
 
         taskInput.value = "";
         document.getElementById("taskDate").value = "";
-        generateCalendar();
+        generateCalendar(); // Atualizar o calendário após adicionar uma tarefa
         updateTabs();
     } else {
         alert("Por favor, insira uma tarefa válida e selecione uma data.");
@@ -188,7 +189,7 @@ function getTasksForDate(date) {
     const taskList = document.getElementById("taskList");
     const tasks = taskList.getElementsByTagName("li");
     const filteredTasks = [];
-    for (var i = 0; i < tasks.length; i++) {
+    for (let i = 0; i < tasks.length; i++) {
         const taskDate = tasks[i].textContent.split(' - ')[1];
         if (taskDate === date) {
             filteredTasks.push({
@@ -199,6 +200,7 @@ function getTasksForDate(date) {
     }
     return filteredTasks;
 }
+
 
 function changeTab(color) {
     const tabs = document.querySelectorAll('.tab');
