@@ -1,6 +1,4 @@
-
 const currentDate = new Date();
-
 
 let currentMonth = currentDate.getMonth(); // Janeiro é 0, Fevereiro é 1, ..., Dezembro é 11
 let currentYear = currentDate.getFullYear();
@@ -8,6 +6,8 @@ const months = [
     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
     "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
 ];
+
+let tasks = {};
 
 function generateCalendar() {
     const calendarBody = document.getElementById("calendarBody");
@@ -39,14 +39,17 @@ function generateCalendar() {
                 const formattedDate = formatDate(currentYear, currentMonth + 1, date);
                 cell.dataset.date = formattedDate;
 
-                const tasks = getTasksForDate(formattedDate);
-                console.log(`Date: ${formattedDate}, Tasks: `, tasks); // Log para ver as tarefas
+                const tasksForDate = getTasksForDate(formattedDate);
 
-                if (tasks.length > 0) {
+                if (tasksForDate.length > 0) {
                     cell.classList.add("task-day");
                 }
 
-                tasks.forEach(task => {
+                cell.addEventListener("click", () => {
+                    displayTasks(formattedDate, tasksForDate);
+                });
+
+                tasksForDate.forEach(task => {
                     const taskIndicator = document.createElement("span");
                     taskIndicator.className = "task-indicator";
                     taskIndicator.style.backgroundColor = task.color;
@@ -74,38 +77,55 @@ function generateCalendar() {
     document.getElementById("currentMonthYear").textContent = `${months[currentMonth]} ${currentYear}`;
 }
 
+function displayTasks(date, tasks) {
+    if (tasks.length > 0) {
+        let taskList = tasks.map(task => task.text).join("\n");
+        alert(`Tarefas para ${date}:\n${taskList}`);
+    } else {
+        alert(`Nenhuma tarefa para ${date}`);
+    }
+}
+
 function addTask() {
-    var taskInput = document.getElementById("taskInput");
-    var taskDateInput = document.getElementById("taskDate").value;
-    var taskColor = document.getElementById("taskColor").value;
-    var taskList = document.getElementById("taskList");
-    var task = taskInput.value;
+    const taskInput = document.getElementById("taskInput");
+    const taskDateInput = document.getElementById("taskDate").value;
+    const taskColor = document.getElementById("taskColor").value;
+    const taskList = document.getElementById("taskList");
+    const task = taskInput.value;
     if (task.trim() !== "" && taskDateInput.trim() !== "") {
-        var dateParts = taskDateInput.split('-');
-        var taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+        const dateParts = taskDateInput.split('-');
+        const taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
         const formattedTaskDate = formatDate(taskDate.getFullYear(), taskDate.getMonth() + 1, taskDate.getDate());
 
-        var li = document.createElement("li");
+        if (!tasks[formattedTaskDate]) {
+            tasks[formattedTaskDate] = [];
+        }
+        tasks[formattedTaskDate].push({
+            text: task,
+            color: taskColor
+        });
+
+        const li = document.createElement("li");
         li.textContent = task + " - " + formattedTaskDate;
         li.style.color = taskColor;
         li.dataset.originalColor = taskColor; // Armazena a cor original
 
         // Botão de Editar
-        var editButton = document.createElement("button");
+        const editButton = document.createElement("button");
         editButton.textContent = "Editar";
         editButton.onclick = function() {
             editTask(li);
         };
 
         // Botão de Excluir
-        var deleteButton = document.createElement("button");
+        const deleteButton = document.createElement("button");
         deleteButton.textContent = "Excluir";
         deleteButton.onclick = function() {
             deleteTask(li);
         };
 
         // Botão de Marcar como Feita
-        var doneButton = document.createElement("button");
+        const doneButton = document.createElement("button");
         doneButton.textContent = "Feita";
         doneButton.onclick = function() {
             markAsDone(li);
@@ -126,48 +146,85 @@ function addTask() {
 }
 
 function editTask(taskItem) {
-    var taskText = taskItem.childNodes[0].textContent;
-    var taskDetails = taskText.split(' - ');
-    var taskName = taskDetails[0];
-    var taskDate = taskDetails[1];
-    var taskPriority = taskDetails[2]; // Adicionando a prioridade da tarefa
+    const taskText = taskItem.childNodes[0].textContent;
+    const taskDetails = taskText.split(' - ');
+    const taskName = taskDetails[0];
+    const taskDate = taskDetails[1];
+    const taskPriority = taskItem.dataset.originalColor;
 
-    var newTaskName = prompt("Edite a tarefa:", taskName);
+    const newTaskName = prompt("Edite a tarefa:", taskName);
     if (newTaskName !== null && newTaskName.trim() !== "") {
-        var newTaskDate = prompt("Edite a data (DD-MM-AAAA):", taskDate);
+        const newTaskDate = prompt("Edite a data (DD-MM-AAAA):", taskDate);
         if (newTaskDate !== null && newTaskDate.trim() !== "") {
-            var newTaskPriority = prompt("Edite a prioridade (red para alta, blue para baixa):", taskPriority); // Prompt para editar a prioridade
-            if (newTaskPriority !== null) {
-                if (newTaskPriority.trim() === "red" || newTaskPriority.trim() === "blue") { // Verifica se a prioridade é válida
-                    var dateParts = newTaskDate.split('-');
-                    var formattedDate = formatDate(dateParts[2], dateParts[1], dateParts[0]);
-                    taskItem.childNodes[0].textContent = newTaskName + " - " + formattedDate; // Atualiza o texto da tarefa sem a prioridade
-                    taskItem.style.color = newTaskPriority.trim(); // Altera a cor da fonte de acordo com a prioridade
-                } else {
-                    alert("Por favor, insira uma prioridade válida (red para alta, blue para baixa).");
-                }
-                
+            const newTaskPriority = prompt("Edite a prioridade (red para alta, blue para baixa):", taskPriority);
+            if (newTaskPriority !== null && (newTaskPriority.trim() === "red" || newTaskPriority.trim() === "blue")) {
+                const dateParts = newTaskDate.split('-');
+                const formattedDate = formatDate(dateParts[2], dateParts[1], dateParts[0]);
+                taskItem.childNodes[0].textContent = newTaskName + " - " + formattedDate;
+                taskItem.style.color = newTaskPriority.trim();
+                taskItem.dataset.originalColor = newTaskPriority.trim();
+                updateTaskInList(taskDetails[1], taskDetails[0], formattedDate, newTaskName, newTaskPriority.trim());
+            } else {
+                alert("Por favor, insira uma prioridade válida (red para alta, blue para baixa).");
             }
         }
     }
 }
 
+function updateTaskInList(oldDate, oldName, newDate, newName, newPriority) {
+    if (tasks[oldDate]) {
+        const taskIndex = tasks[oldDate].findIndex(task => task.text.includes(oldName));
+        if (taskIndex !== -1) {
+            tasks[oldDate].splice(taskIndex, 1);
+        }
+        if (tasks[oldDate].length === 0) {
+            delete tasks[oldDate];
+        }
+    }
 
+    if (!tasks[newDate]) {
+        tasks[newDate] = [];
+    }
+    tasks[newDate].push({
+        text: newName,
+        color: newPriority
+    });
+
+    generateCalendar();
+}
 
 function deleteTask(taskItem) {
-    var taskList = document.getElementById("taskList");
-    taskList.removeChild(taskItem);
+    const taskText = taskItem.childNodes[0].textContent;
+    const taskDetails = taskText.split(' - ');
+    const taskDate = taskDetails[1];
+
+    const taskIndex = tasks[taskDate].findIndex(task => task.text.includes(taskDetails[0]));
+    if (taskIndex !== -1) {
+        tasks[taskDate].splice(taskIndex, 1);
+        if (tasks[taskDate].length === 0) {
+            delete tasks[taskDate];
+        }
+    }
+
+    taskItem.remove();
     generateCalendar();
     updateTabs();
 }
 
 function markAsDone(taskItem) {
+    const taskText = taskItem.childNodes[0].textContent;
+    const taskDetails = taskText.split(' - ');
+    const taskDate = taskDetails[1];
+
+    const taskIndex = tasks[taskDate].findIndex(task => task.text.includes(taskDetails[0]));
+    if (taskIndex !== -1) {
+        tasks[taskDate][taskIndex].color = "green";
+    }
+
     taskItem.style.color = "green";
     generateCalendar();
     updateTabs();
 }
-
-
 
 function restoreOriginalColor(taskItem) {
     taskItem.style.color = taskItem.dataset.originalColor;
@@ -175,32 +232,15 @@ function restoreOriginalColor(taskItem) {
     updateTabs();
 }
 
-
 function formatDate(year, month, day) {
-    // Adicionando zeros à esquerda se necessário
     const paddedDay = day.toString().padStart(2, '0');
     const paddedMonth = month.toString().padStart(2, '0');
-    // Retornando a data no formato DD-MM-AAAA
     return `${paddedDay}-${paddedMonth}-${year}`;
 }
 
-
 function getTasksForDate(date) {
-    const taskList = document.getElementById("taskList");
-    const tasks = taskList.getElementsByTagName("li");
-    const filteredTasks = [];
-    for (let i = 0; i < tasks.length; i++) {
-        const taskDate = tasks[i].textContent.split(' - ')[1];
-        if (taskDate === date) {
-            filteredTasks.push({
-                text: tasks[i].textContent,
-                color: tasks[i].style.color
-            });
-        }
-    }
-    return filteredTasks;
+    return tasks[date] || [];
 }
-
 
 function changeTab(color) {
     const tabs = document.querySelectorAll('.tab');
@@ -226,7 +266,7 @@ function updateTabs() {
     blueTab.innerHTML = "";
     greenTab.innerHTML = "";
     orangeTab.innerHTML = "";
-    for (var i = 0; i < tasks.length; i++) {
+    for (let i = 0; i < tasks.length; i++) {
         if (tasks[i].style.color === "red") {
             const task = document.createElement("li");
             task.textContent = tasks[i].textContent;
