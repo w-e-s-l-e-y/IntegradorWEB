@@ -79,12 +79,16 @@ function generateCalendar() {
 
 function displayTasks(date, tasks) {
     if (tasks.length > 0) {
-        let taskList = tasks.map(task => `${task.text} (${task.priority})`).join("\n");
+        let taskList = tasks.map(task => {
+            let status = task.color === "green" ? "Feito" : "";
+            return `${task.text} - ${task.priority} Prioridade (${status})`;
+        }).join("\n");
         alert(`Tarefas para ${date}:\n${taskList}`);
     } else {
         alert(`Nenhuma tarefa para ${date}`);
     }
 }
+
 
 function addTask() {
     const taskInput = document.getElementById("taskInput");
