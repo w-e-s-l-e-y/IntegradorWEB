@@ -79,7 +79,7 @@ function generateCalendar() {
 
 function displayTasks(date, tasks) {
     if (tasks.length > 0) {
-        let taskList = tasks.map(task => task.text).join("\n");
+        let taskList = tasks.map(task => `${task.text} (${task.priority})`).join("\n");
         alert(`Tarefas para ${date}:\n${taskList}`);
     } else {
         alert(`Nenhuma tarefa para ${date}`);
@@ -102,7 +102,8 @@ function addTask() {
         }
         tasks[formattedTaskDate].push({
             text: task,
-            color: taskColor
+            color: taskColor,
+            priority: taskColor === "red" ? "Alta" : "Baixa"
         });
 
         const li = document.createElement("li");
@@ -130,8 +131,7 @@ function addTask() {
         doneButton.onclick = function() {
             markAsDone(li);
         };
-
-        li.appendChild(editButton);
+	        li.appendChild(editButton);
         li.appendChild(deleteButton);
         li.appendChild(doneButton);
         taskList.appendChild(li);
@@ -187,7 +187,8 @@ function updateTaskInList(oldDate, oldName, newDate, newName, newPriority) {
     }
     tasks[newDate].push({
         text: newName,
-        color: newPriority
+        color: newPriority,
+        priority: newPriority === "red" ? "Alta" : "Baixa"
     });
 
     generateCalendar();
@@ -311,3 +312,5 @@ function nextMonth() {
 
 // Gerar o calendário inicial
 generateCalendar();
+
+
