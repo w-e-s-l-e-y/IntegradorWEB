@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="pomodoro.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Pomodoro Timer</h1>
+        <div class="timer">
+            <span id="minutes">25</span>:<span id="seconds">00</span>
+        </div>
+        <div class="controls">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div class="task-input">
+            <input type="text" id="task" placeholder="Adicione uma tarefa">
+            <button id="addTask">Adicionar</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <div class="motivational">
+        <span class="quote">"Você é capaz de coisas incríveis!"</span>
+        <span class="quote">"Continue focado e produtivo!"</span>
+        <span class="quote">"Cada passo conta!"</span>
+        <span class="quote">"Mantenha-se motivado!"</span>
+    </div>
+    <script src="pomodoro.js"></script>
+</body>
+</html>
