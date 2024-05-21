@@ -115,3 +115,22 @@ th {
 .content {
     margin-top: 20px;
 }
+
+/* Novo estilo para dias com tarefas */
+.task-day {
+    background-color: orange; /* Laranja */
+}
+
+.task-indicator {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-left: 5px;
+}
+
+.task-day {
+    font-weight: bold;
+    background-color: #f0f0f0;
+}
+
