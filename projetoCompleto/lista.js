@@ -147,6 +147,8 @@ function addTask() {
     } else {
         alert("Por favor, insira uma tarefa válida e selecione uma data.");
     }
+
+    
 }
 
 function editTask(taskItem) {

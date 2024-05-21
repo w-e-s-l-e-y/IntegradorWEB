@@ -1,136 +1,220 @@
-/* Estilos básicos */
-body {
-    background-color: #EBF3FF; /* Roxo bem claro */
-    font-family: Arial, sans-serif;
+/* Reset de Estilos */
+* {
     margin: 0;
-    padding: 15px;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-h2 {
-    color: #7877dd; /* Roxo */
+/* Estilo do Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #EBF3FF;
+}
+
+/* Estilo do Header */
+header {
+    background-color: #8290f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2% 10%;
+    width: 100%;
+    top: 0;
+    z-index: 999; 
+}
+
+header h1 a{
+    margin: 0;
+    text-align: left;
+    color: white;
+    text-decoration: none;   
+}
+
+.nav_links {
+    list-style: none;
+    text-align: right;
+}
+
+.nav_links li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.nav_links li a {
+    color: #fff;
+    font-size: large;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav_links li a:hover {
+    color: #B7C2FA; /* Mudança de cor ao passar o mouse */
+}
+
+/* Estilo da Agenda */
+.agenda {
+    background-color: #D1DAFD;
+    color: #8b66f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: calc(50% - 20px); /* Alteração da largura da agenda */
+    max-width: 600px; /* Ajuste do máximo de largura */
+    
+}
+
+.agenda h2 {
     font-size: 24px;
-    font-weight: bold;
     text-align: center;
-    text-transform: uppercase;
-    margin-top: 30px;
+    margin-bottom: 20px;
 }
 
-button {
-    background-color: #8290F5; /* Roxo */
-    color: #fff; /* Texto branco */
+.agenda input[type="text"],
+.agenda input[type="date"],
+.agenda select,
+.agenda button {
+    width: calc(100% - 22px); /* Ajuste do tamanho dos inputs e botão para compensar o padding */
+    padding: 10px;
+    margin-bottom: 10px;
     border: none;
-    padding: 10px 20px;
     border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.agenda button {
+    background-color: #8290F5;
+    color: #fff;
     cursor: pointer;
 }
 
-button:hover {
-    background-color: #7877dd; /* Roxo mais escuro ao passar o mouse */
+.agenda button:hover {
+    background-color: #9ca9f8;
 }
 
-/* Estilos específicos */
+/* Estilo do Calendário */
 .calendario {
-    text-align: center; /* Centraliza o conteúdo */
+    background-color: #B7C2FA;
+    color: #8b66f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: calc(50% - 20px); /* Alteração da largura do calendário */
+    max-width: 600px;
+    
+}
+
+.calendario h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendario > div {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendario > div button {
+    background-color: #8290F5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.calendario > div button:hover {
+    background-color: #9ca9f8;
 }
 
 table {
-    width: 100%; /* Preenche a largura da div */
+    width: 100%;
     border-collapse: collapse;
-    margin-top: 20px;
 }
 
-th, td {
-    border: 1px solid #ccc;
+th,
+td {
     padding: 10px;
     text-align: center;
 }
 
-th {
-    background-color: #f2f2f2; /* Cinza Mais Claro */
+thead {
+    background-color: #D1DAFD;
+}
+
+tbody {
+    background-color: #EBF3FF;
 }
 
 .today {
-    background-color: #9ca9f8; /* Roxo */
+    background-color: #D1DAFD;
+}
+
+.task-day {
+    position: relative;
 }
 
 .task-indicator {
-    height: 8px;
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
     width: 8px;
+    height: 8px;
     border-radius: 50%;
     display: inline-block;
     margin-left: 2px;
 }
 
-/* Estilos para a lista de tarefas */
-.agenda {
-    margin-top: 50px;
-}
-
-.input-group {
-    display: flex;
-    margin-bottom: 10px;
-}
-
-.input-group input[type="text"],
-.input-group input[type="date"],
-.input-group input[type="color"] {
-    flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.input-group input[type="date"] {
-    margin-right: 10px;
-}
-
-#taskList {
-    list-style-type: none;
-    padding: 0;
-}
-
-#taskList li {
-    margin-bottom: 10px;
-}
-
+/* Tabulação */
 .tab {
-    background-color: #8290F5; /* Roxo */
-    color: #fff; /* Texto branco */
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
+    display: none;
 }
 
 .tab.active {
-    background-color: #7877dd; /* Roxo mais escuro ao passar o mouse */
+    display: block;
 }
 
 .tab-content {
-    display: none;
-    padding: 10px;
+    margin-bottom: 20px;
 }
 
-.content {
-    margin-top: 20px;
+.tab-content li {
+    padding: 5px 0;
 }
 
-/* Novo estilo para dias com tarefas */
-.task-day {
-    background-color: orange; /* Laranja */
+/* Estilo do Container de Tarefas */
+.task-container {
+    background-color: #EBF3FF;
+    color: #8b66f0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 10px;
+    width: calc(50% - 20px); /* Definindo a largura do container de tarefas */
+    float: left; /* Mover para a esquerda */
+    display: flex; /* Exibir os itens em linha */
+    align-items: center; /* Alinhar verticalmente os itens ao centro */
 }
 
-.task-indicator {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    margin-left: 5px;
+.task-container p {
+    margin: 0;
 }
 
-.task-day {
-    font-weight: bold;
-    background-color: #f0f0f0;
+/* Estilo dos Botões de Função */
+.task-container button {
+    background-color: transparent;
+    color: #8290F5;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px; /* Adicionando margem entre os botões */
 }
 
+.task-container button:hover {
+    color: #9ca9f8;
+}
+
+/* Estilo do Container Principal */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}

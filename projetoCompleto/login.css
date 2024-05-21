@@ -1,3 +1,4 @@
+/* Estilos básicos */
 body {
     margin: 0;
     padding: 0;
@@ -9,55 +10,98 @@ body {
     height: 100vh;
 }
 
-header {
-    background-color: #8290F5;
-    color: #fff;
-    padding: 15px;
-    width: 100%;
-    position: absolute;
-    top: 0;
-}
-
 header h1 {
     margin: 0;
     text-align: center;
 }
 
-.login-container {
+main {
+    padding: 100px;
     background-color: #D1DAFD;
-    padding: 20px;
+    color: #8b66f0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin-top: 70px;
 }
 
-.login-container h2 {
+main h1 {
+    font-size: 32px;
     text-align: center;
     margin-bottom: 20px;
-    color: #8290F5;
 }
 
-.login-container input[type="email"],
+form {
+    margin-bottom: 20px;
+}
+
+form p {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+.login-container input[type="text"],
 .login-container input[type="password"] {
     width: 100%;
     padding: 10px;
-    margin-bottom: 10px;
     border: none;
     border-radius: 5px;
+    font-size: 16px;
     box-sizing: border-box;
     background-color: #B7C2FA;
 }
 
+button,
 .login-container input[type="submit"] {
     width: 100%;
-    padding: 10px;
+    padding: 15px;
     border: none;
     border-radius: 5px;
-    box-sizing: border-box;
-    background-color: #9CA9F8;
-    color: white;
+    background-color: #8290F5;
+    color: #fff;
     cursor: pointer;
 }
 
+button:hover,
 .login-container input[type="submit"]:hover {
+    background-color: #D1DAFD;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
     background-color: #8290F5;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+footer div {
+    margin-bottom: 20px;
+}
+
+footer div h3 {
+    margin-bottom: 10px;
+}
+
+footer div ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+footer div ul li {
+    margin-bottom: 10px;
+}
+
+footer div ul li a {
+    color: #fff;
+    text-decoration: none;
 }

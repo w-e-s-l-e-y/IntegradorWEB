@@ -8,18 +8,17 @@
 </head>
 <body>
 
-    <header>
-        <h1>Life Sync</h1>
-    </header>
+    <main>
+        <h1>Login</h1>
+        <h3>Insira os dados abaixo</h3>
 
-    <div class="login-container">
-        <h2>Login</h2>
-        <form id="loginForm">
-            <input type="email" id="username" placeholder="E-Mail">
-            <input type="password" id="password" placeholder="Senha">
-            <input type="submit" value="Entrar">
+        <form action="#" id="loginForm" autocomplete="off" method="post">
+            <p><label for="email">E-Mail </label><input type="email" name="Email" id="email" placeholder="E-Mail" required minlength="5" maxlength="50" size="25"></p>
+            <p><label for="senha">Senha </label><input type="password" name="Senha" id="senha" placeholder="Senha" required minlength="5" maxlength="50" size="25"></p>
+            <p><button type="submit">Entrar</button></p>
         </form>
-    </div>
+    </main>
+
     <script src="login.js"></script>
 </body>
 </html>
