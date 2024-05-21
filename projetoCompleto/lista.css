@@ -197,6 +197,7 @@ tbody {
 
 .task-container p {
     margin: 0;
+    font-size: 18px; /* Aumentando o tamanho da fonte */
 }
 
 /* Estilo dos Botões de Função */
@@ -218,3 +219,14 @@ tbody {
     justify-content: space-between;
     align-items: flex-start;
 }
+
+/* Estilo do Container de Botões */
+.button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-container button {
+    margin-right: 10px; /* Espaçamento entre os botões */
+}
+

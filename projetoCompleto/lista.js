@@ -115,6 +115,10 @@ function addTask() {
         li.style.color = taskColor;
         li.dataset.originalColor = taskColor; // Armazena a cor original
 
+        // Criar container para os botões
+        const buttonContainer = document.createElement("div");
+        buttonContainer.classList.add("button-container");
+
         // Botão de Editar
         const editButton = document.createElement("button");
         editButton.textContent = "Editar";
@@ -135,9 +139,14 @@ function addTask() {
         doneButton.onclick = function() {
             markAsDone(li);
         };
-	        li.appendChild(editButton);
-        li.appendChild(deleteButton);
-        li.appendChild(doneButton);
+
+        // Adicionar os botões ao container
+        buttonContainer.appendChild(editButton);
+        buttonContainer.appendChild(deleteButton);
+        buttonContainer.appendChild(doneButton);
+
+        // Adicionar o container de botões ao item da lista
+        li.appendChild(buttonContainer);
         taskList.appendChild(li);
 
         taskInput.value = "";
@@ -147,9 +156,8 @@ function addTask() {
     } else {
         alert("Por favor, insira uma tarefa válida e selecione uma data.");
     }
-
-    
 }
+
 
 function editTask(taskItem) {
     const taskText = taskItem.childNodes[0].textContent;
