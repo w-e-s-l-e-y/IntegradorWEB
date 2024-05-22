@@ -230,3 +230,8 @@ tbody {
     margin-right: 10px; /* Espaçamento entre os botões */
 }
 
+#taskList li {
+    font-family: "Times New Roman", Times, serif; /* Substitua com a fonte desejada */
+    font-size: 20px; /* Tamanho da fonte */
+    /* Outros estilos de fonte, como cor, peso, etc., podem ser adicionados aqui */
+}
