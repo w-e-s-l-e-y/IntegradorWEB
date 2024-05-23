@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link rel="stylesheet" href="pomodoro.css">
+</head>
+<body>
+ 
+    <header>
+        <h1 id="homeLink">Life Sync</h1>
+        <nav>
+            <ul class="nav_links">
+                <li><a href="lista.html" id="listaLink">Agenda de tarefas</a></li>
+                <li><a href="pomodoro.html" id="pomodoroLink">Pomodoro</a></li>
+                <li><a href="cadastro.html" id="cadastroLink">Cadastrar</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <h1>Pomodoro Timer</h1>
+        <div class="timer">
+            <span id="minutes">25</span>:<span id="seconds">00</span>
+        </div>
+        <div class="controls">
+            <button id="start">Start</button>
+            <button id="pause">Pause</button>
+            <button id="reset">Reset</button>
+        </div>
+        <div class="task-input">
+            <input type="text" id="task" placeholder="Adicione uma tarefa">
+            <button id="addTask">Adicionar</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+    <div class="motivational">
+        <span class="quote">"Você é capaz de coisas incríveis!"</span>
+        <span class="quote">"Continue focado e produtivo!"</span>
+        <span class="quote">"Cada passo conta!"</span>
+        <span class="quote">"Mantenha-se motivado!"</span>
+    </div>
+    <!-- Inicialize o Firebase com sua configuração -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script>
+        // Inicialize o Firebase com sua configuração
+        var firebaseConfig = {
+            apiKey: "AIzaSyBKEbvSnm0uEXBoO9EXphaIDd4muen9ZNU",
+            authDomain: "lifesync-581d7.firebaseapp.com",
+            databaseURL: "https://lifesync-581d7-default-rtdb.firebaseio.com",
+            projectId: "lifesync-581d7",
+            storageBucket: "lifesync-581d7.appspot.com",
+            messagingSenderId: "910441512297",
+            appId: "1:910441512297:web:d193f0df19aef739d791f8"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Verifique o estado de autenticação e atualize o menu de navegação
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // Usuário está logado                
+                document.getElementById("pomodoroLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "none";
+                document.getElementById("cadastroLink").style.display = "none";
+                document.getElementById("logoutLink").style.display = "block";
+            } else {
+                // Usuário não está logado                
+                document.getElementById("pomodoroLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("cadastroLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "none";
+            }
+        });
+
+        // Adicione um evento de clique ao botão "Sair"
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+
+            // Desconectar o usuário
+            firebase.auth().signOut().then(function () {
+                // Logout bem-sucedido
+                alert("Logout bem-sucedido!");
+
+                // Redirecionar para a página inicial (substitua "index.html" pelo nome da sua página inicial)
+                window.location.href = "index.html";
+            }).catch(function (error) {
+                // Trate erros de logout
+                console.error("Erro ao fazer logout:", error);
+            });
+        });
+
+        // Adicione um evento de clique ao h1 "Life Sync"
+        document.getElementById("homeLink").addEventListener("click", function() {
+            window.location.href = "index.html";
+        });
+    </script>
+    <script src="pomodoro.js"></script>
+</body>
+</html>
