@@ -9,13 +9,13 @@
 <body>
 
     <header>
-        <h1>Life Sync</h1>
+        <h1 id="homeLink">Life Sync</h1>
         <nav>
             <ul class="nav_links">
-                <li><a href="lista.html">Agenda de tarefas</a></li>
-                <li><a href="pomodoro.html">Pomodoro</a></li>
-                <li><a href="cadastro.html">Cadastrar</a></li>
-                <li><a href="login.html">Login</a></li>
+                <li><a href="lista.html" id="listaLink">Agenda de tarefas</a></li>
+                <li><a href="pomodoro.html" id="pomodoroLink">Pomodoro</a></li>
+                <li><a href="cadastro.html" id="cadastroLink">Cadastrar</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
                 <li><a href="#" id="logoutLink">Sair</a></li>
             </ul>
         </nav>
@@ -93,6 +93,22 @@
         };
         firebase.initializeApp(firebaseConfig);
 
+        // Verifique o estado de autenticação e atualize o menu de navegação
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // Usuário está logado                
+                document.getElementById("loginLink").style.display = "none";
+                document.getElementById("cadastroLink").style.display = "none";
+                document.getElementById("logoutLink").style.display = "block";
+            } else {
+                // Usuário não está logado
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("cadastroLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "none";
+            }
+        });
+
+
         // Adicione um evento de clique ao botão "Sair"
         document.getElementById("logoutLink").addEventListener("click", function (event) {
             event.preventDefault(); // Evita o comportamento padrão do link
@@ -108,6 +124,11 @@
                 // Trate erros de logout
                 console.error("Erro ao fazer logout:", error);
             });
+        });
+
+        // Adicione um evento de clique ao h1 "Life Sync"
+        document.getElementById("homeLink").addEventListener("click", function() {
+            window.location.href = "index.html";
         });
     </script>
 </body>

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="login.css">
 </head>
 <body>
-
+    <h1 id="homeLink">Life Sync</h1>
     <main>
         <h1>Login</h1>
         <h3>Insira os dados abaixo</h3>
@@ -65,6 +65,11 @@
                 // Usuário logado
                 window.location.href = "index.html";
             }
+        });
+
+        // Adicione um evento de clique ao h1 "Life Sync"
+        document.getElementById("homeLink").addEventListener("click", function () {
+            window.location.href = "index.html";
         });
     </script>
 </body>
