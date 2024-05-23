@@ -80,6 +80,14 @@
                     alert("Erro ao cadastrar usuário: " + errorMessage);
                 });
         });
+
+        // Verifique se o usuário está logado
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // Usuário logado
+                window.location.href = "index.html";
+            }
+        });
     </script>
 </body>
 </html>
