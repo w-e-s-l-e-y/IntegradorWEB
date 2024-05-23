@@ -10,10 +10,35 @@ body {
     height: 100vh;
 }
 
-header h1 {
-    margin: 0;
-    text-align: center;
+header {
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2% 10%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999; /* Para garantir que o cabeçalho fique acima de outros elementos */
 }
+
+header h1 a{
+    color: #8290f5;
+    font-size: 40px;
+    margin: 0; 
+    text-decoration: none;
+
+
+}
+
+header h1 a:hover {
+    
+    cursor: pointer; /* Alterando o cursor para indicar que é clicável */
+}
+
+
+
+
 
 main {
     padding: 100px;
