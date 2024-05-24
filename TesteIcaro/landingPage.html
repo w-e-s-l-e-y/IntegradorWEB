@@ -1,66 +1,171 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 <head>
-    <title>Landing Page</title>
-    <link rel="stylesheet" href="landingPage.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Sync - Organize sua vida!</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="landingPage.css">
 </head>
 <body>
 
-<header>
-    <h1>Life Sync</h1>
-    <nav>
+  <header>
+    <div class="container">
+      <a href="index.html" class="logo">
+        <img src="logo.png" alt="Life Sync">
+      </a>
+
+      <nav>
         <ul class="nav_links">
-            <li><a href="../testeYuri/index.html">Agenda de tarefas</a></li>
-            <li><a href="../TesteMarco/promodoro.html">Pomodoro</a></li>
-            <li><a href="../TesteMarco/cadastro.html">Cadastrar</a></li>
-            <li><a href="#">Login</a></li>
+          <li><a href="#">Sobre nós</a></li>
+          <li><a href="#" id="listaLink">Agenda de tarefas</a></li>
+          <li><a href="#" id="pomodoroLink">Pomodoro</a></li>
+          <li><a href="#" id="cadastroLink">Cadasto</a></li>
+          <li><a href="#" id="loginLink">Login</a></li>
+          <li><a href="#" id="logoutLink">Sair</a></li>
+          <li><a href="cadastro.html" class="btn btn-primary">Comece agora</a></li>
         </ul>
-    </nav>
-</header>
+      </nav>
+    </div>
+  </header>
 
-<main>
+  <main>
+    <section class="hero">
+      <div class="container">
+        <h1>Organize sua vida com o Life Sync</h1>
+        <p>Um aplicativo simples e poderoso para gerenciar suas tarefas, listas e tempo.</p>
+        <a href="cadastro.html" class="btn btn-primary">Comece grátis</a>
+      </div>
+    </section>
+
+    <section class="sobre-nos">
+      <div class="container">
+        <h2>Sobre o Life Sync</h2>
+        <p>O Life Sync é um aplicativo criado para ajudar pessoas a organizar suas vidas e alcançar seus objetivos. Com recursos simples e intuitivos, você pode gerenciar suas tarefas, listas e tempo de forma eficiente.</p>
+        <p>O Life Sync é perfeito para quem busca:</p>
+        <ul>
+          <li>Gerenciar tarefas diárias</li>
+          <li>Criar listas de compras, projetos e metas</li>
+          <li>Utilizar a técnica Pomodoro para aumentar a produtividade</li>
+          <li>Acompanhar seu progresso e alcançar seus objetivos</li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="funcionalidades">
+      <div class="container">
+        <h2>Funcionalidades</h2>
+        <div class="funcionalidades-grid">
+          <div class="card">
+            <img src="icone-lista.svg" alt="Gerenciamento de listas">
+            <h3>Gerenciamento de listas</h3>
+            <p>Crie listas de tarefas, compras, projetos e metas.</p>
+          </div>
+          <div class="card">
+            <img src="icone-pomodoro.svg" alt="Técnica Pomodoro">
+            <h3>Técnica Pomodoro</h3>
+            <p>Aumente sua produtividade com a técnica Pomodoro.</p>
+          </div>
+          <div class="card">
+            <img src="icone-calendario.svg" alt="Calendário">
+            <h3>Calendário</h3>
+            <p>Organize suas tarefas por data e visualize seu progresso.</p>
+          </div>
+          
+        </div>
+      </div>
+    </section>
+
     
-    <h2>Sobre Nós</h2>
-    <br>
-    <p>
-        O Transtorno de Déficit de Atenção e Hiperatividade (TDAH) é uma condição neurológica que afeta pessoas de todas as idades, 
-        mas é mais comum em crianças. Caracteriza-se por sintomas como desatenção, hiperatividade e impulsividade, que podem dificultar o desempenho acadêmico, social e profissional do indivíduo.
-        O diagnóstico precoce e o tratamento adequado,
-        que geralmente envolvem terapia comportamental e medicamentos, podem ajudar a controlar os sintomas e melhorar a qualidade de vida da pessoa com TDAH. É importante que haja uma compreensão e suporte da família,
-        amigos e profissionais de saúde para garantir o bem-estar e desenvolvimento do indivíduo com essa condição. 
-        
-    </p>
-    <br>
-    <p>
-        Preocupados com as dificuldades enfrentadas por esse nicho de pessoas, decidimos inovar para oferecer ajuda, já que nosso propósito é utilizar a tecnologia para facilitar 
-        a vida das pessoas. Reconhecemos que o Transtorno de Déficit de Atenção e Hiperatividade (TDAH) pode apresentar desafios significativos, especialmente para crianças, 
-        e estamos comprometidos em encontrar soluções que possam melhorar sua qualidade de vida. Através de abordagens tecnológicas inovadoras, pretendemos proporcionar 
-        ferramentas e recursos que auxiliem no gerenciamento dos sintomas do TDAH, contribuindo para o bem-estar e desenvolvimento saudável dessas pessoas.
-    </p>
-    <br>
-    <img src="Captura de tela 2024-04-29 160848.png" alt="imagem do app">
-    <br>
-    <img src="Captura de tela 2024-04-29 160938.png" alt="imagem do app">
+    <section class="cta">
+      <div class="container">
+        <h2>Pronto para organizar sua vida?</h2>
+        <p>Cadastre-se gratuitamente e comece a usar o Life Sync hoje mesmo!</p>
+        <a href="cadastro.html" class="btn btn-primary">Comece agora</a>
+      </div>
+    </section>
+  </main>
 
-    <h2>Um aplicativo simples com lista e pomodoro que atende suas necessidades do dia a dia</h2>
-    <br>
-    <p>
-        Selecione um dia no calendário e crie uma lista de tarefas simples e objetivas. Depois de listar todas as atividades que precisa realizar no dia escolhido, 
-        utilize a técnica do pomodoro para auxiliar na sua concentração diária.
-        O método pomodoro consiste em dividir o tempo de trabalho em blocos de aproximadamente 25 minutos, conhecidos como "pomodoros". Durante cada pomodoro, 
-        foque exclusivamente em uma tarefa específica, sem interrupções. 
-        Após completar um pomodoro, faça uma pausa curta de cerca de 5 minutos antes de iniciar o próximo.
-        Essa técnica ajuda a manter a produtividade ao longo do dia, pois evita distrações e mantém a mente focada nas atividades prioritárias. Além disso, 
-        ao dividir as tarefas em blocos de tempo, fica mais fácil mensurar o progresso e ajustar o planejamento conforme necessário.
-        Experimente utilizar o pomodoro no seu dia a dia e sinta a diferença na sua produtividade e concentração. Com disciplina e organização, 
-        é possível otimizar o seu tempo e realizar suas tarefas de forma mais eficiente.
-    </p>
-</main>
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
+      <ul class="footer-links">
+        <li><a href="#">Sobre nós</a></li>
+    
+      </ul>
+      <div id="loginLink" style="display: none;">
+        <a href="login.html">Entrar</a>
+      </div>
+      <div id="cadastroLink" style="display: none;">
+        <a href="cadastro.html">Cadastrar-se</a>
+      </div>
+      <div id="logoutLink" style="display: none;">
+        <a href="#">Sair</a>
+      </div>
+    </div>
+  </footer>
 
-<footer>
-    <p>Desenvolvido por: Alunos talentosos do senac 2001</p>
-    <p>2024 Life Sync</p>
-</footer>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script>
+        // Inicialize o Firebase com sua configuração
+        var firebaseConfig = {
+            apiKey: "AIzaSyBKEbvSnm0uEXBoO9EXphaIDd4muen9ZNU",
+            authDomain: "lifesync-581d7.firebaseapp.com",
+            databaseURL: "https://lifesync-581d7-default-rtdb.firebaseio.com",
+            projectId: "lifesync-581d7",
+            storageBucket: "lifesync-581d7.appspot.com",
+            messagingSenderId: "910441512297",
+            appId: "1:910441512297:web:d193f0df19aef739d791f8"
+        };
+        firebase.initializeApp(firebaseConfig);
 
-</body>
+        // Verifique o estado de autenticação e atualize o menu de navegação
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // Usuário está logado                
+                document.getElementById("loginLink").style.display = "none";
+                document.getElementById("cadastroLink").style.display = "none";
+                document.getElementById("logoutLink").style.display = "block";
+            } else {
+                // Usuário não está logado
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("cadastroLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "none";
+            }
+        });
+
+
+        // Adicione um evento de clique ao botão "Sair"
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault(); // Evita o comportamento padrão do link
+
+            // Desconectar o usuário
+            firebase.auth().signOut().then(function () {
+                // Logout bem-sucedido
+                alert("Logout bem-sucedido!");
+
+                // Redirecionar para a página inicial (substitua "index.html" pelo nome da sua página inicial)
+                window.location.href = "index.html";
+            }).catch(function (error) {
+                // Trate erros de logout
+                console.error("Erro ao fazer logout:", error);
+            });
+        });
+
+        // Adicione um evento de clique ao h1 "Life Sync"
+        document.getElementById("homeLink").addEventListener("click", function() {
+            window.location.href = "index.html";
+        });
+    </script>
+
+
+
+   </body>
 </html>
+
