@@ -1,0 +1,133 @@
+/* Basic Styles */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #EBF3FF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Header */
+  header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2% 10%;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 999;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Added subtle shadow */
+  }
+  
+  header h1 a {
+    color: #8290f5;
+    font-size: 40px;
+    margin: 0;
+    text-decoration: none;
+  }
+  
+  header h1 a:hover {
+    cursor: pointer;
+  }
+  
+  /* Main Content */
+  main {
+    padding: 40px; /* Increased padding for better spacing */
+    background-color: #fff; /* Changed background to white for better contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    margin-top: 70px;
+  }
+  
+  main h1 {
+    font-size: 32px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Form Styles */
+  form {
+    margin-bottom: 20px;
+  }
+  
+  form p {
+    margin-bottom: 15px;
+    color: #333; /* Changed text color for better readability */
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 8px;
+    color: #333; /* Changed text color for better readability */
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="password"] {
+    width: 100%;
+    padding: 12px 20px; /* Increased padding for better user interaction */
+    border: 1px solid #ccc; /* Added a thin border for better visual separation */
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    background-color: #fff; /* Removed background color for clean look */
+  }
+  
+  input:focus {
+    outline: none; /* Removed outline for a cleaner look */
+    border-color: #8290f5; /* Added a highlight color on focus */
+  }
+  
+  button {
+    width: 100%;
+    padding: 15px 20px; /* Increased padding for better user interaction */
+    border: none;
+    border-radius: 5px;
+    background-color: #8290f5;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  button:hover {
+    background-color: #D1DAFD;
+  }
+  
+  /* Footer */
+  footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #8290f5;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  footer div {
+    margin-bottom: 20px;
+  }
+  
+  footer div h3 {
+    margin-bottom: 10px;
+  }
+  
+  footer div ul {
+    padding: 0;
+    list-style-type: none;
+  }
+  
+  footer div ul li {
+    margin-bottom: 10px;
+  }
+  
+  footer div ul li a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
