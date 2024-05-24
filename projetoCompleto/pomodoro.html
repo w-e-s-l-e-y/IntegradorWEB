@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pomodoro com Lista de Tarefas</title>
-    <link rel="stylesheet" href="pomodoro.css">
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <main>
         <h1>Pomodoro com Lista de Tarefas</h1>
@@ -14,17 +16,46 @@
         <ul id="taskList"></ul>
     </main>
 
+    <!-- Inicialize o Firebase com sua configuração -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
     <script>
+        // Inicialize o Firebase com sua configuração
+        var firebaseConfig = {
+            apiKey: "AIzaSyBKEbvSnm0uEXBoO9EXphaIDd4muen9ZNU",
+            authDomain: "lifesync-581d7.firebaseapp.com",
+            databaseURL: "https://lifesync-581d7-default-rtdb.firebaseio.com",
+            projectId: "lifesync-581d7",
+            storageBucket: "lifesync-581d7.appspot.com",
+            messagingSenderId: "910441512297",
+            appId: "1:910441512297:web:d193f0df19aef739d791f8"
+        };
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        // Seleciona os elementos do DOM
         const taskInput = document.getElementById('task');
         const addTaskButton = document.getElementById('addTask');
         const taskList = document.getElementById('taskList');
 
+        // Adiciona uma nova tarefa ao clicar no botão "Adicionar Tarefa"
         addTaskButton.addEventListener('click', () => {
+            const user = firebase.auth().currentUser;
+            if (!user) {
+                alert("Você precisa estar logado para criar tarefas!");
+                return;
+            }
+
             const task = taskInput.value.trim();
             if (task) {
                 const li = document.createElement('li');
                 li.textContent = task;
 
+                // Armazena o tempo de início da tarefa no localStorage
+                const tempoInicial = new Date().getTime();
+                localStorage.setItem(task, tempoInicial.toString());
+
+                // Div para exibir o temporizador Pomodoro
                 const pomodoroDiv = document.createElement('div');
                 pomodoroDiv.className = 'pomodoro';
 
@@ -39,6 +70,7 @@
                 secondsDisplay.className = 'seconds';
                 secondsDisplay.textContent = '00';
 
+                // Botões de controle do temporizador
                 const startButton = document.createElement('button');
                 startButton.textContent = 'Iniciar';
                 const pauseButton = document.createElement('button');
@@ -65,7 +97,10 @@
                         deleteButton.textContent = 'Excluir';
                         deleteButton.className = 'delete-btn';
                         deleteButton.addEventListener('click', () => {
+                            // Remove a tarefa da lista
                             taskList.removeChild(li);
+                            // Remove o tempo da tarefa do localStorage
+                            localStorage.removeItem(task);
                         });
                         li.appendChild(deleteButton);
                     } else {
@@ -84,12 +119,15 @@
                 let seconds = 0;
                 let interval;
                 let isPaused = false;
+                let cycle = 0;
 
+                // Atualiza o display do temporizador
                 function updateDisplay() {
                     minutesDisplay.textContent = String(minutes).padStart(2, '0');
                     secondsDisplay.textContent = String(seconds).padStart(2, '0');
                 }
 
+                // Inicia o temporizador
                 function startTimer() {
                     if (interval) clearInterval(interval);
                     interval = setInterval(() => {
@@ -97,7 +135,21 @@
                             if (seconds === 0) {
                                 if (minutes === 0) {
                                     clearInterval(interval);
-                                    alert("Tempo esgotado!");
+                                    cycle++;
+                                    // Define os intervalos de descanso/trabalho
+                                    if (cycle % 8 === 0) {
+                                        minutes = 15;
+                                        alert("Descanse por 15 minutos!");
+                                    } else if (cycle % 2 === 0) {
+                                        minutes = 5;
+                                        alert("Descanse por 5 minutos!");
+                                    } else {
+                                        minutes = 25;
+                                        alert("Tempo de trabalho!");
+                                    }
+                                    seconds = 0;
+                                    updateDisplay();
+                                    startTimer();
                                 } else {
                                     minutes--;
                                     seconds = 59;
@@ -110,6 +162,7 @@
                     }, 1000);
                 }
 
+                // Eventos dos botões de controle do temporizador
                 startButton.addEventListener('click', () => {
                     isPaused = false;
                     startTimer();
@@ -124,12 +177,25 @@
                     minutes = 25;
                     seconds = 0;
                     isPaused = false;
+                    cycle = 0;
                     updateDisplay();
                 });
 
                 updateDisplay();
             }
         });
+
+
+
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                console.log("Usuário está logado:", user);
+            } else {
+                console.log("Nenhum usuário está logado.");
+            }
+        });
+
     </script>
 </body>
+
 </html>
