@@ -112,22 +112,22 @@
                 li.appendChild(pomodoroDiv);
 
                 const completeButton = document.createElement('button');
-                completeButton.textContent = 'Concluir';
+                completeButton.textContent = 'Finalizar';
                 completeButton.className = 'complete-btn';
                 completeButton.addEventListener('click', () => {
-                    console.log("Botão 'Concluir' clicado...");
+                    console.log("Botão 'finalizar' clicado...");
                     li.classList.toggle('done');
                     if (li.classList.contains('done')) {
-                        console.log("Tarefa concluída.");
+                        console.log("Tarefa finalizada.");
                         const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Excluir';
+                        deleteButton.textContent = 'Limpar';
                         deleteButton.className = 'delete-btn';
                         deleteButton.addEventListener('click', () => {
                             // Remove a tarefa da lista
                             taskList.removeChild(li);
                             // Remove o tempo da tarefa do localStorage
                             localStorage.removeItem(task);
-                            console.log("Tarefa excluída.");
+                            console.log("Tarefa limpada.");
                         });
                         li.appendChild(deleteButton);
                     } else {
@@ -148,6 +148,8 @@
                 let interval;
                 let isPaused = false;
                 let cycle = 0;
+                let currentPhase = 'work'; // Fase atual do ciclo (trabalho ou descanso)
+
 
                 // Atualiza o display do temporizador
                 function updateDisplay() {
@@ -164,20 +166,26 @@
                                 if (minutes === 0) {
                                     clearInterval(interval);
                                     cycle++;
+                                    console.log(`contagem regressiva concluída em ${cycle} ciclos de trabalho.`);
+                                    console.log(`Ciclo concluído: ${currentPhase}`);
                                     // Define os intervalos de descanso/trabalho
-                                    if (cycle % 8 === 0) {
+                                    if (cycle % 7 === 0) {
+                                        currentPhase = 'longBreak'; // Descanso longo após 4 ciclos de trabalho
                                         minutes = 15;
                                         alert("Descanse por 15 minutos!");
-                                    } else if (cycle % 2 === 0) {
+                                    } else if (lastPhase === 'work') {
+                                        currentPhase = 'shortBreak'; // Descanso curto após cada ciclo de trabalho
                                         minutes = 5;
                                         alert("Descanse por 5 minutos!");
                                     } else {
+                                        currentPhase = 'work'; // Tempo de trabalho
                                         minutes = 25;
                                         alert("Tempo de trabalho!");
                                     }
                                     seconds = 0;
                                     updateDisplay();
-                                    startTimer();
+                                    console.log(`Pausa após término do ciclo: ${currentPhase}`);
+                                    isPaused = true; // Pausa o temporizador até que o usuário clique em 'Iniciar'
                                 } else {
                                     minutes--;
                                     seconds = 59;
@@ -188,7 +196,11 @@
                             updateDisplay();
                         }
                     }, 1000);
+
+                    // Atualiza lastPhase para o valor atual de currentPhase
+                    lastPhase = currentPhase;
                 }
+
 
                 // Eventos dos botões de controle do temporizador
                 startButton.addEventListener('click', () => {

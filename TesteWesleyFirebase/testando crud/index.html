@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Firebase</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        input[type="text"], input[type="email"], button {
+            margin: 5px;
+            padding: 8px;
+        }
+        button {
+            cursor: pointer;
+        }
+        #userList {
+            margin: 0 auto;
+            max-width: 600px;
+        }
+        .userItem {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .userItem button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>CRUD Firebase</h1>
+    <form id="userForm">
+        <input type="text" id="name" placeholder="Nome" required>
+        <input type="email" id="email" placeholder="E-mail" required>
+        <button type="submit">Adicionar Usuário</button>
+    </form>
+    <div id="userList"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+        // Inicialize o Firebase
+        var firebaseConfig = {
+            apiKey: "Sua_chave_api",
+            authDomain: "Seu_domínio.firebaseapp.com",
+            databaseURL: "https://Seu_domínio.firebaseio.com",
+            projectId: "Seu_projeto",
+            storageBucket: "Seu_projeto.appspot.com",
+            messagingSenderId: "Seu_id",
+            appId: "Sua_app_id"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        var database = firebase.database();
+
+        // Referência para a coleção de usuários
+        var usersRef = database.ref('users');
+
+        // Formulário de usuário
+        var userForm = document.getElementById('userForm');
+        userForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            var name = document.getElementById('name').value;
+            var email = document.getElementById('email').value;
+            addUser(name, email);
+            userForm.reset();
+        });
+
+        // Adicionar usuário ao banco de dados
+        function addUser(name, email) {
+            usersRef.push({
+                name: name,
+                email: email
+            });
+        }
+
+        // Obter a lista de usuários e exibi-la
+        var userList = document.getElementById('userList');
+        usersRef.on('value', function (snapshot) {
+            userList.innerHTML = '';
+            snapshot.forEach(function (childSnapshot) {
+                var userData = childSnapshot.val();
+                var userKey = childSnapshot.key;
+                var listItem = document.createElement('div');
+                listItem.classList.add('userItem');
+                listItem.innerHTML = '<strong>' + userData.name + '</strong> - ' + userData.email +
+                    ' <button onclick="editUser(\'' + userKey + '\')">Editar</button>' +
+                    ' <button onclick="deleteUser(\'' + userKey + '\')">Excluir</button>';
+                userList.appendChild(listItem);
+            });
+        });
+
+        // Editar usuário
+        function editUser(key) {
+            var newName = prompt('Digite o novo nome:');
+            var newEmail = prompt('Digite o novo e-mail:');
+            usersRef.child(key).update({
+                name: newName,
+                email: newEmail
+            });
+        }
+
+        // Excluir usuário
+        function deleteUser(key) {
+            var confirmDelete = confirm('Tem certeza de que deseja excluir este usuário?');
+            if (confirmDelete) {
+                usersRef.child(key).remove();
+            }
+        }
+    </script>
+</body>
+</html>
