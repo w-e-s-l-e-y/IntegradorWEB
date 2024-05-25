@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
@@ -38,16 +38,39 @@
         const addTaskButton = document.getElementById('addTask');
         const taskList = document.getElementById('taskList');
 
+        console.log("Elementos do DOM selecionados:", taskInput, addTaskButton, taskList);
+
+        // Função para parar todos os outros temporizadores
+        function stopOtherTimers(currentPomodoroDiv) {
+            console.log("currentPomodoroDiv:", currentPomodoroDiv);
+            console.log("Parando outros temporizadores...");
+            const allPomodoros = document.querySelectorAll('.pomodoro');
+            console.log("Todos os outros temporizadores:", allPomodoros);
+            allPomodoros.forEach(pomodoro => {
+                if (pomodoro !== currentPomodoroDiv) {
+                    const pauseButton = pomodoro.querySelector('.pauseButton');
+                    if (pauseButton) {
+                        console.log("Simulando clique no botão 'Pausar'...");
+                        pauseButton.click(); // Simula um clique no botão "Pausar" para interromper o temporizador
+                    }
+                }
+            });
+        }
+
+
         // Adiciona uma nova tarefa ao clicar no botão "Adicionar Tarefa"
         addTaskButton.addEventListener('click', () => {
+            console.log("Botão 'Adicionar Tarefa' clicado...");
             const user = firebase.auth().currentUser;
             if (!user) {
                 alert("Você precisa estar logado para criar tarefas!");
+                console.log("Nenhum usuário logado.");
                 return;
             }
 
             const task = taskInput.value.trim();
             if (task) {
+                console.log("Nova tarefa:", task);
                 const li = document.createElement('li');
                 li.textContent = task;
 
@@ -75,6 +98,7 @@
                 startButton.textContent = 'Iniciar';
                 const pauseButton = document.createElement('button');
                 pauseButton.textContent = 'Pausar';
+                pauseButton.className = 'pauseButton'; // Adiciona a classe 'pauseButton'
                 const resetButton = document.createElement('button');
                 resetButton.textContent = 'Resetar';
 
@@ -91,8 +115,10 @@
                 completeButton.textContent = 'Concluir';
                 completeButton.className = 'complete-btn';
                 completeButton.addEventListener('click', () => {
+                    console.log("Botão 'Concluir' clicado...");
                     li.classList.toggle('done');
                     if (li.classList.contains('done')) {
+                        console.log("Tarefa concluída.");
                         const deleteButton = document.createElement('button');
                         deleteButton.textContent = 'Excluir';
                         deleteButton.className = 'delete-btn';
@@ -101,12 +127,14 @@
                             taskList.removeChild(li);
                             // Remove o tempo da tarefa do localStorage
                             localStorage.removeItem(task);
+                            console.log("Tarefa excluída.");
                         });
                         li.appendChild(deleteButton);
                     } else {
                         const deleteButton = li.querySelector('.delete-btn');
                         if (deleteButton) {
                             li.removeChild(deleteButton);
+                            console.log("Exclusão da tarefa desfeita.");
                         }
                     }
                 });
@@ -164,15 +192,22 @@
 
                 // Eventos dos botões de controle do temporizador
                 startButton.addEventListener('click', () => {
+                    console.log("Botão 'Iniciar' clicado...");
                     isPaused = false;
+                    // Parar
+                    console.log("Iniciando temporizador...");
+                    // Parar todos os outros temporizadores
+                    stopOtherTimers(pomodoroDiv);
                     startTimer();
                 });
 
                 pauseButton.addEventListener('click', () => {
+                    console.log("Botão 'Pausar' clicado...");
                     isPaused = true;
                 });
 
                 resetButton.addEventListener('click', () => {
+                    console.log("Botão 'Resetar' clicado...");
                     clearInterval(interval);
                     minutes = 25;
                     seconds = 0;
@@ -184,8 +219,6 @@
                 updateDisplay();
             }
         });
-
-
 
         firebase.auth().onAuthStateChanged(user => {
             if (user) {
