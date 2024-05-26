@@ -9,6 +9,11 @@
 </head>
 
 <body>
+
+    <header>
+        <h1><a id="homeLink">Life Sync</a></h1>
+    </header>
+
     <main>
         <h1>Pomodoro com Lista de Tarefas</h1>
         <input type="text" id="task" placeholder="Nova tarefa">
@@ -258,6 +263,10 @@
             }
         });
 
+        // Adicione um evento de clique ao h1 "Life Sync"
+        document.getElementById("homeLink").addEventListener("click", function () {
+            window.location.href = "index.html";
+        });
     </script>
 </body>
 

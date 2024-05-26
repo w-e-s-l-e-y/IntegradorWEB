@@ -14,20 +14,15 @@
         <h1><a id="homeLink">Life Sync</a></h1>
     </header>
 
-
     <main>
         <h1>Cadastro</h1>
         <h3>Insira os dados abaixo</h3>
 
         <form id="cadastro" autocomplete="on">
-            <p><label for="nome">Nome </label><input type="text" name="Nome" id="nome" required minlength="5"
-                    maxlength="50" size="25"></p>
-            <p><label for="email">E-Mail </label><input type="email" name="Email" id="email" required minlength="10"
-                    maxlength="50" size="25"></p>
-            <p><label for="senha">Senha </label><input type="password" name="Senha" id="senha" required minlength="8"
-                    maxlength="18" size="25"></p>
-            <p><label for="confirmar_senha">Confirme sua senha </label><input type="password" name="Confirmar_senha"
-                    id="confirmar_senha" required minlength="8" maxlength="18" size="25"></p>
+            <p><label for="nome">Nome </label><input type="text" name="Nome" id="nome" required minlength="5" maxlength="50" size="25"></p>
+            <p><label for="email">E-Mail </label><input type="email" name="Email" id="email" required minlength="10" maxlength="50" size="25"></p>
+            <p><label for="senha">Senha </label><input type="password" name="Senha" id="senha" required minlength="8" maxlength="18" size="25"></p>
+            <p><label for="confirmar_senha">Confirme sua senha </label><input type="password" name="Confirmar_senha" id="confirmar_senha" required minlength="8" maxlength="18" size="25"></p>
             <p><button type="submit">Cadastrar</button></p>
         </form>
     </main>
@@ -35,6 +30,7 @@
     <!-- Inclua os scripts do Firebase -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
 
     <script>
         // Inicialize o Firebase com sua configuração
@@ -49,9 +45,27 @@
         };
         firebase.initializeApp(firebaseConfig);
 
+        var database = firebase.database();
+
+         // Função para adicionar dados ao banco de dados
+         function adicionarDados(uid, userName) {
+            console.log("adicionarDados chamada com UID:", uid, "e Nome:", userName);
+            var usuarioRef = database.ref('usuarios/' + uid);
+
+            return usuarioRef.set({
+                nome: userName
+            }).then(() => {
+                console.log("Nome do usuário adicionado com sucesso!");
+            }).catch((error) => {
+                console.error("Erro ao adicionar nome do usuário:", error);
+                throw error; // Lança o erro para ser capturado na cadeia de promessas
+            });
+        }
+
         // Adicione um evento de "submit" ao formulário para cadastro de usuários
         document.getElementById("cadastro").addEventListener("submit", function (event) {
             event.preventDefault(); // Evita o envio padrão do formulário
+            console.log("Formulário submetido");
 
             // Obtenha os valores dos campos de entrada
             var nome = document.getElementById("nome").value;
@@ -59,9 +73,12 @@
             var senha = document.getElementById("senha").value;
             var confirmarSenha = document.getElementById("confirmar_senha").value;
 
+            console.log("Valores do formulário:", { nome, email, senha, confirmarSenha });
+
             // Verifique se as senhas correspondem
             if (senha !== confirmarSenha) {
                 alert("As senhas não correspondem");
+                console.log("As senhas não correspondem");
                 return;
             }
 
@@ -69,7 +86,14 @@
             firebase.auth().createUserWithEmailAndPassword(email, senha)
                 .then(function(userCredential) {
                     // Cadastro bem-sucedido
-                    alert("Usuário cadastrado com sucesso!");
+                    var user = userCredential.user;
+                    console.log("Usuário cadastrado com sucesso:", user);
+
+                    // Adicionar o nome do usuário no Realtime Database
+                    return adicionarDados(user.uid, nome);
+                })
+                .then(() => {
+                    console.log("Dados do usuário adicionados com sucesso no Realtime Database");
 
                     // Limpar os campos do formulário
                     document.getElementById("nome").value = "";
@@ -82,21 +106,16 @@
                 })
                 .catch(function(error) {
                     // Trate erros de cadastro
+                    var errorCode = error.code;
                     var errorMessage = error.message;
                     alert("Erro ao cadastrar usuário: " + errorMessage);
+                    console.error("Erro ao cadastrar usuário:", errorCode, errorMessage);
                 });
-        });
-
-        // Verifique se o usuário está logado
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                // Usuário logado
-                window.location.href = "index.html";
-            }
         });
 
         // Adicione um evento de clique ao h1 "Life Sync"
         document.getElementById("homeLink").addEventListener("click", function () {
+            console.log("Link 'Life Sync' clicado");
             window.location.href = "index.html";
         });
     </script>
