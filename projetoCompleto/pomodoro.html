@@ -233,6 +233,9 @@
         });
 
         firebase.auth().onAuthStateChanged(user => {
+            // id do usuário
+            const userId = user ? user.uid : null;
+            console.log("ID do Marco é: CqmSSCihvNh0MAL4ldgSlKjhBcf1", userId);
             if (user) {
                 console.log("Usuário está logado:", user);
             } else {

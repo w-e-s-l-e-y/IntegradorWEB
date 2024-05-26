@@ -25,7 +25,7 @@
 
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script>
         // Inicialize o Firebase com sua configuração
         var firebaseConfig = {
@@ -39,6 +39,8 @@
         };
         firebase.initializeApp(firebaseConfig);
 
+        console.log("Firebase inicializado.");
+
         // Adicione um evento de "submit" ao formulário para login de usuário
         document.getElementById("loginForm").addEventListener("submit", function(event) {
             event.preventDefault(); // Evita o envio padrão do formulário
@@ -47,33 +49,72 @@
             var email = document.getElementById("email").value;
             var senha = document.getElementById("senha").value;
 
+            console.log("Tentando login com email:", email);
+
             // Autenticar usuário com email e senha
             firebase.auth().signInWithEmailAndPassword(email, senha)
                 .then(function(userCredential) {
                     // Login bem-sucedido
-                    alert("Login bem-sucedido!");
+                    console.log("Login bem-sucedido!");
 
-                    // Redirecionar para a página inicial (substitua "index.html" pelo nome da sua página inicial)
-                    window.location.href = "index.html";
+                    // Limpar o localStorage
+                    localStorage.clear();
+                    console.log("localStorage limpo.");
+
+                    // Obter o UID do usuário logado
+                    var uid = userCredential.user.uid;
+                    console.log("UID do usuário logado:", uid);
+
+                    // Carregar os dados do Firebase para o localStorage
+                    carregarDados(uid);
                 })
                 .catch(function(error) {
                     // Trate erros de login
+                    var errorCode = error.code;
                     var errorMessage = error.message;
+                    console.error("Erro ao fazer login:", errorCode, errorMessage);
                     alert("Erro ao fazer login: " + errorMessage);
                 });
-        });
-
-        // Verifique se o usuário está logado
-        firebase.auth().onAuthStateChanged(function(user) {
-            if (user) {
-                // Usuário logado
-                window.location.href = "index.html";
-            }
         });
 
         // Adicione um evento de clique ao h1 "Life Sync"
         document.getElementById("homeLink").addEventListener("click", function () {
             window.location.href = "index.html";
+        });
+
+        // Função para carregar dados do Firebase para o localStorage
+        function carregarDados(uid) {
+            console.log("Carregando dados para o UID:", uid);
+            var usuarioRef = firebase.database().ref('usuarios/' + uid);
+
+            usuarioRef.once('value', function(snapshot) {
+                console.log("Dados do usuário recebidos:", snapshot.val());
+                if (snapshot.exists()) {
+                    var dados = snapshot.val();
+                    // Salvar os dados no localStorage
+                    localStorage.setItem('dadosUsuario', JSON.stringify(dados));
+                    console.log("Dados salvos no localStorage.");
+                    // Redirecionar para a página inicial (substitua "index.html" pelo nome da sua página inicial)
+                    window.location.href = "index.html";
+                } else {
+                    console.log("Nenhum dado encontrado para este usuário.");
+                    alert("Nenhum dado encontrado para este usuário.");
+                }
+            }).catch(function(error) {
+                console.error("Erro ao carregar dados:", error);
+                alert("Erro ao carregar dados: " + error.message);
+            });
+        }
+
+        // Verifique se o usuário está logado
+        firebase.auth().onAuthStateChanged(function(user) {
+            if (user) {
+                // Usuário logado
+                console.log("Usuário já está logado. Redirecionando para index.html");
+                //window.location.href = "index.html";
+            } else {
+                console.log("Nenhum usuário logado.");
+            }
         });
     </script>
 </body>

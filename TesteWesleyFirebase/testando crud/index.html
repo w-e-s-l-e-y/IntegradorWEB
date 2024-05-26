@@ -1,122 +1,138 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Firebase</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            text-align: center;
-        }
-        form {
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        input[type="text"], input[type="email"], button {
-            margin: 5px;
-            padding: 8px;
-        }
-        button {
-            cursor: pointer;
-        }
-        #userList {
-            margin: 0 auto;
-            max-width: 600px;
-        }
-        .userItem {
-            margin-bottom: 10px;
-            padding: 10px;
-            background-color: #f5f5f5;
-            border-radius: 5px;
-        }
-        .userItem button {
-            margin-left: 10px;
-        }
-    </style>
-</head>
-<body>
-    <h1>CRUD Firebase</h1>
-    <form id="userForm">
-        <input type="text" id="name" placeholder="Nome" required>
-        <input type="email" id="email" placeholder="E-mail" required>
-        <button type="submit">Adicionar Usuário</button>
-    </form>
-    <div id="userList"></div>
-
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <title>Teste de Firebase</title>
+    <!-- Inclua o SDK do Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script>
-        // Inicialize o Firebase
-        var firebaseConfig = {
-            apiKey: "Sua_chave_api",
-            authDomain: "Seu_domínio.firebaseapp.com",
-            databaseURL: "https://Seu_domínio.firebaseio.com",
-            projectId: "Seu_projeto",
-            storageBucket: "Seu_projeto.appspot.com",
-            messagingSenderId: "Seu_id",
-            appId: "Sua_app_id"
+        // Configurações do seu projeto Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyBKEbvSnm0uEXBoO9EXphaIDd4muen9ZNU",
+            authDomain: "lifesync-581d7.firebaseapp.com",
+            projectId: "lifesync-581d7",
+            storageBucket: "lifesync-581d7.appspot.com",
+            messagingSenderId: "910441512297",
+            appId: "1:910441512297:web:d193f0df19aef739d791f8"
         };
 
+        // Inicializando o Firebase com as configurações
         firebase.initializeApp(firebaseConfig);
-        var database = firebase.database();
 
-        // Referência para a coleção de usuários
-        var usersRef = database.ref('users');
+        // Referência para o banco de dados e autenticação
+        const database = firebase.database();
+        const auth = firebase.auth();
 
-        // Formulário de usuário
-        var userForm = document.getElementById('userForm');
-        userForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            var name = document.getElementById('name').value;
-            var email = document.getElementById('email').value;
-            addUser(name, email);
-            userForm.reset();
+        // Função para login do usuário (Exemplo com e-mail e senha)
+        function login(email, password) {
+            auth.signInWithEmailAndPassword(email, password)
+                .then((userCredential) => {
+                    const user = userCredential.user;
+                    const userName = "Marco";
+                    console.log("Usuário logado:", user.uid);
+                    adicionarDados(user.uid, userName); // Passa o nome do usuário
+                })
+                .catch((error) => {
+                    console.error("Erro ao logar:", error);
+                });
+        }
+
+        // Adicionando dados de exemplo ao banco de dados
+        function adicionarDados(uid, userName) {
+            const usuarioRef = database.ref('usuarios/' + uid);
+
+            // Adiciona o nome do usuário
+            usuarioRef.set({
+                nome: userName
+            });
+
+            const tarefa1ID = usuarioRef.child('tarefas').push().key;
+            const tarefa1Data = {
+                nomeTarefa: "Tarefa 1",
+                tempoInicial: firebase.database.ServerValue.TIMESTAMP,
+                tempoFinal: firebase.database.ServerValue.TIMESTAMP,
+                pomodoroConcluido: 2,
+                evento: "2024-05-30",
+                prioridade: "red",
+                estadoAtual: "ativo"
+            };
+
+            const tarefa2ID = usuarioRef.child('tarefas').push().key;
+            const tarefa2Data = {
+                nomeTarefa: "Tarefa 2",
+                tempoInicial: firebase.database.ServerValue.TIMESTAMP,
+                tempoFinal: firebase.database.ServerValue.TIMESTAMP,
+                pomodoroConcluido: 3,
+                evento: "2024-05-16",
+                prioridade: "blue",
+                estadoAtual: "historico"
+            };
+
+            const tarefa3ID = usuarioRef.child('historico').push().key;
+            const tarefa3Data = {
+                nomeTarefa: "Tarefa 3",
+                tempoInicial: firebase.database.ServerValue.TIMESTAMP,
+                tempoFinal: firebase.database.ServerValue.TIMESTAMP,
+                pomodoroConcluido: 1,
+                evento: "2024-05-10",
+                prioridade: "green",
+                estadoAtual: "historico"
+            };
+
+            const tarefa4ID = usuarioRef.child('historico').push().key;
+            const tarefa4Data = {
+                nomeTarefa: "Tarefa 4",
+                tempoInicial: firebase.database.ServerValue.TIMESTAMP,
+                tempoFinal: firebase.database.ServerValue.TIMESTAMP,
+                pomodoroConcluido: 4,
+                evento: "2024-04-25",
+                prioridade: "yellow",
+                estadoAtual: "historico"
+            };
+
+            const tarefa5ID = usuarioRef.child('historico').push().key;
+            const tarefa5Data = {
+                nomeTarefa: "Tarefa 5",
+                tempoInicial: firebase.database.ServerValue.TIMESTAMP,
+                tempoFinal: firebase.database.ServerValue.TIMESTAMP,
+                pomodoroConcluido: 2,
+                evento: "2024-04-10",
+                prioridade: "orange",
+                estadoAtual: "historico"
+            };
+
+            usuarioRef.child('tarefas/' + tarefa1ID).set(tarefa1Data);
+            usuarioRef.child('tarefas/' + tarefa2ID).set(tarefa2Data);
+            usuarioRef.child('historico/' + tarefa3ID).set(tarefa3Data);
+            usuarioRef.child('historico/' + tarefa4ID).set(tarefa4Data);
+            usuarioRef.child('historico/' + tarefa5ID).set(tarefa5Data)
+                .then(() => {
+                    console.log("Dados adicionados com sucesso!");
+                })
+                .catch((error) => {
+                    console.error("Erro ao adicionar dados:", error);
+                });
+        }
+
+        // Testando a adição de dados após login
+        document.addEventListener('DOMContentLoaded', () => {
+            // Exemplo de login - substituir pelos dados reais do usuário
+            const email = "marco@marco.com";
+            const password = "123456789";
+            login(email, password);
         });
 
-        // Adicionar usuário ao banco de dados
-        function addUser(name, email) {
-            usersRef.push({
-                name: name,
-                email: email
-            });
-        }
-
-        // Obter a lista de usuários e exibi-la
-        var userList = document.getElementById('userList');
-        usersRef.on('value', function (snapshot) {
-            userList.innerHTML = '';
-            snapshot.forEach(function (childSnapshot) {
-                var userData = childSnapshot.val();
-                var userKey = childSnapshot.key;
-                var listItem = document.createElement('div');
-                listItem.classList.add('userItem');
-                listItem.innerHTML = '<strong>' + userData.name + '</strong> - ' + userData.email +
-                    ' <button onclick="editUser(\'' + userKey + '\')">Editar</button>' +
-                    ' <button onclick="deleteUser(\'' + userKey + '\')">Excluir</button>';
-                userList.appendChild(listItem);
-            });
-        });
-
-        // Editar usuário
-        function editUser(key) {
-            var newName = prompt('Digite o novo nome:');
-            var newEmail = prompt('Digite o novo e-mail:');
-            usersRef.child(key).update({
-                name: newName,
-                email: newEmail
-            });
-        }
-
-        // Excluir usuário
-        function deleteUser(key) {
-            var confirmDelete = confirm('Tem certeza de que deseja excluir este usuário?');
-            if (confirmDelete) {
-                usersRef.child(key).remove();
-            }
-        }
     </script>
+</head>
+
+<body>
+    <!-- O corpo da sua página HTML -->
+    <h1>Teste de Firebase</h1>
+    <p>Este é um exemplo simples de como usar o Firebase em um arquivo HTML local.</p>
 </body>
+
 </html>
