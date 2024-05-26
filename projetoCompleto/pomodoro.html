@@ -127,6 +127,7 @@
                             taskList.removeChild(li);
                             // Remove o tempo da tarefa do localStorage
                             localStorage.removeItem(task);
+                            localStorage.removeItem(task + "_pomodoroConcluido");
                             console.log("Tarefa limpada.");
                         });
                         li.appendChild(deleteButton);
@@ -157,6 +158,13 @@
                     secondsDisplay.textContent = String(seconds).padStart(2, '0');
                 }
 
+                // Função para atualizar o contador de Pomodoros no localStorage
+                function updatePomodoroCount(task) {
+                    let pomodoroCount = parseInt(localStorage.getItem(task + "_pomodoroConcluido")) || 0;
+                    pomodoroCount++;
+                    localStorage.setItem(task + "_pomodoroConcluido", pomodoroCount.toString());
+                }
+
                 // Inicia o temporizador
                 function startTimer() {
                     if (interval) clearInterval(interval);
@@ -168,6 +176,12 @@
                                     cycle++;
                                     console.log(`contagem regressiva concluída em ${cycle} ciclos de trabalho.`);
                                     console.log(`Ciclo concluído: ${currentPhase}`);
+
+                                    // Atualiza o contador de Pomodoros somente se a fase de trabalho foi concluída
+                                    if (currentPhase === 'work') {
+                                        updatePomodoroCount(task);
+                                    }
+
                                     // Define os intervalos de descanso/trabalho
                                     if (cycle % 7 === 0) {
                                         currentPhase = 'longBreak'; // Descanso longo após 4 ciclos de trabalho
@@ -195,7 +209,7 @@
                             }
                             updateDisplay();
                         }
-                    }, 1000);
+                    }, 1);
 
                     // Atualiza lastPhase para o valor atual de currentPhase
                     lastPhase = currentPhase;
@@ -225,6 +239,7 @@
                     seconds = 0;
                     isPaused = false;
                     cycle = 0;
+                    currentPhase = 'work'; // Reseta para a fase de trabalho inicial
                     updateDisplay();
                 });
 
