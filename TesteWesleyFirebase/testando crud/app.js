@@ -52,7 +52,7 @@ function updateUI(userId, data) {
     for (let taskId in data.tarefas) {
         const task = data.tarefas[taskId];
         const listItem = document.createElement('li');
-        listItem.textContent = `${task.nomeTarefa} - ${task.evento} - ${task.prioridade}`;
+        listItem.textContent = `${task.nomeTarefa} - ${formatDateToBR(task.evento)} - ${task.prioridade}`;
         taskList.appendChild(listItem);
 
         // Adding delete button
@@ -66,7 +66,24 @@ function updateUI(userId, data) {
         updateButton.textContent = 'Update';
         updateButton.addEventListener('click', () => updateTask(userId, taskId, task));
         listItem.appendChild(updateButton);
+
+        // Adding complete button
+        const completeButton = document.createElement('button');
+        completeButton.textContent = 'Concluido';
+        completeButton.addEventListener('click', () => completeTask(userId, taskId));
+        listItem.appendChild(completeButton);
     }
+}
+
+// Util functions to format date
+function formatDateToBR(date) {
+    const [year, month, day] = date.split('-');
+    return `${day}/${month}/${year}`;
+}
+
+function formatDateFromBR(date) {
+    const [day, month, year] = date.split('/');
+    return `${year}-${month}-${day}`;
 }
 
 document.getElementById('taskForm').addEventListener('submit', (e) => {
@@ -104,15 +121,17 @@ function deleteTask(userId, taskId) {
         });
 }
 
+
 function updateTask(userId, taskId, task) {
     const taskName = prompt("Update Task Name", task.nomeTarefa);
-    const taskDate = prompt("Update Task Date", task.evento);
+    const taskDate = prompt("Update Task Date (dd/mm/yyyy)", formatDateToBR(task.evento));
     const taskPriority = prompt("Update Task Priority", task.prioridade);
 
     if (taskName && taskDate && taskPriority) {
+        const formattedDate = formatDateFromBR(taskDate);
         db.ref('usuarios/' + userId + '/tarefas/' + taskId).update({
             nomeTarefa: taskName,
-            evento: taskDate,
+            evento: formattedDate,
             prioridade: taskPriority,
             tempoFinal: Date.now() // Update the time to current timestamp
         }).then(() => {
@@ -125,3 +144,17 @@ function updateTask(userId, taskId, task) {
         alert('All fields must be filled out to update the task');
     }
 }
+
+
+function completeTask(userId, taskId) {
+    db.ref('usuarios/' + userId + '/tarefas/' + taskId).update({
+        estadoAtual: 'concluido',
+        tempoFinal: Date.now() // Update the time to current timestamp
+    }).then(() => {
+        alert('Task completed successfully');
+    }).catch((error) => {
+        console.error('Error completing task:', error);
+        alert('Failed to complete task: ' + error.message);
+    });
+}
+
