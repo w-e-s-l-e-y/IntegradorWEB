@@ -11,7 +11,16 @@
 <body>
 
     <header>
-        <h1><a id="homeLink">Life Sync</a></h1>
+        <h1 id="homeLink">Life Sync</h1>
+        <nav>
+            <ul class="nav_links">
+                <li><a href="lista.html" id="listaLink">Agenda de tarefas</a></li>
+                <li><a href="pomodoro.html" id="pomodoroLink">Pomodoro</a></li>
+                <li><a href="cadastro.html" id="cadastroLink">Cadastrar</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink">Sair</a></li>
+            </ul>
+        </nav>
     </header>
 
     <main>
@@ -21,11 +30,10 @@
         <ul id="taskList"></ul>
     </main>
 
-    <!-- Inicialize o Firebase com sua configuração -->
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
     <script>
-        // Inicialize o Firebase com sua configuração
         var firebaseConfig = {
             apiKey: "AIzaSyBKEbvSnm0uEXBoO9EXphaIDd4muen9ZNU",
             authDomain: "lifesync-581d7.firebaseapp.com",
@@ -35,227 +43,322 @@
             messagingSenderId: "910441512297",
             appId: "1:910441512297:web:d193f0df19aef739d791f8"
         };
-        // Inicialize o Firebase
         firebase.initializeApp(firebaseConfig);
 
-        // Seleciona os elementos do DOM
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                document.getElementById("loginLink").style.display = "none";
+                document.getElementById("cadastroLink").style.display = "none";
+                document.getElementById("logoutLink").style.display = "block";
+                document.getElementById("pomodoroLink").style.display = "none";
+            } else {
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("cadastroLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "none";
+                document.getElementById("pomodoroLink").style.display = "block";
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (user) {
+                    const userId = user.uid;
+                    loadUserData(userId);
+                }
+            });
+        });
+
+        function loadUserData(userId) {
+            const db = firebase.database();
+            const userRef = db.ref('usuarios/' + userId);
+            userRef.on('value', (snapshot) => {
+                const data = snapshot.val();
+                updateUI(data);
+            });
+        }
+
+        function updateUI(data) {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+
+            if (data && data.tarefas) {
+                for (let taskId in data.tarefas) {
+                    const task = data.tarefas[taskId];
+                    renderTask(task.nomeTarefa, taskId);
+                }
+            } else {
+                alert('Nenhuma Tarefa encontrada!');
+            }
+        }
+
         const taskInput = document.getElementById('task');
         const addTaskButton = document.getElementById('addTask');
         const taskList = document.getElementById('taskList');
 
-        console.log("Elementos do DOM selecionados:", taskInput, addTaskButton, taskList);
-
-        // Função para parar todos os outros temporizadores
-        function stopOtherTimers(currentPomodoroDiv) {
-            console.log("currentPomodoroDiv:", currentPomodoroDiv);
-            console.log("Parando outros temporizadores...");
-            const allPomodoros = document.querySelectorAll('.pomodoro');
-            console.log("Todos os outros temporizadores:", allPomodoros);
-            allPomodoros.forEach(pomodoro => {
-                if (pomodoro !== currentPomodoroDiv) {
-                    const pauseButton = pomodoro.querySelector('.pauseButton');
-                    if (pauseButton) {
-                        console.log("Simulando clique no botão 'Pausar'...");
-                        pauseButton.click(); // Simula um clique no botão "Pausar" para interromper o temporizador
-                    }
-                }
-            });
-        }
-
-
-        // Adiciona uma nova tarefa ao clicar no botão "Adicionar Tarefa"
         addTaskButton.addEventListener('click', () => {
-            console.log("Botão 'Adicionar Tarefa' clicado...");
+            addTaskButton.disabled = true;
+
             const user = firebase.auth().currentUser;
             if (!user) {
                 alert("Você precisa estar logado para criar tarefas!");
-                console.log("Nenhum usuário logado.");
+                addTaskButton.disabled = false;
                 return;
             }
 
             const task = taskInput.value.trim();
             if (task) {
-                console.log("Nova tarefa:", task);
-                const li = document.createElement('li');
-                li.textContent = task;
-
-                // Armazena o tempo de início da tarefa no localStorage
-                const tempoInicial = new Date().getTime();
-                localStorage.setItem(task, tempoInicial.toString());
-
-                // Div para exibir o temporizador Pomodoro
-                const pomodoroDiv = document.createElement('div');
-                pomodoroDiv.className = 'pomodoro';
-
-                const minutesDisplay = document.createElement('span');
-                minutesDisplay.className = 'minutes';
-                minutesDisplay.textContent = '25';
-
-                const colon = document.createElement('span');
-                colon.textContent = ':';
-
-                const secondsDisplay = document.createElement('span');
-                secondsDisplay.className = 'seconds';
-                secondsDisplay.textContent = '00';
-
-                // Botões de controle do temporizador
-                const startButton = document.createElement('button');
-                startButton.textContent = 'Iniciar';
-                const pauseButton = document.createElement('button');
-                pauseButton.textContent = 'Pausar';
-                pauseButton.className = 'pauseButton'; // Adiciona a classe 'pauseButton'
-                const resetButton = document.createElement('button');
-                resetButton.textContent = 'Resetar';
-
-                pomodoroDiv.appendChild(minutesDisplay);
-                pomodoroDiv.appendChild(colon);
-                pomodoroDiv.appendChild(secondsDisplay);
-                pomodoroDiv.appendChild(startButton);
-                pomodoroDiv.appendChild(pauseButton);
-                pomodoroDiv.appendChild(resetButton);
-
-                li.appendChild(pomodoroDiv);
-
-                const completeButton = document.createElement('button');
-                completeButton.textContent = 'Finalizar';
-                completeButton.className = 'complete-btn';
-                completeButton.addEventListener('click', () => {
-                    console.log("Botão 'finalizar' clicado...");
-                    li.classList.toggle('done');
-                    if (li.classList.contains('done')) {
-                        console.log("Tarefa finalizada.");
-                        const deleteButton = document.createElement('button');
-                        deleteButton.textContent = 'Limpar';
-                        deleteButton.className = 'delete-btn';
-                        deleteButton.addEventListener('click', () => {
-                            // Remove a tarefa da lista
-                            taskList.removeChild(li);
-                            // Remove o tempo da tarefa do localStorage
-                            localStorage.removeItem(task);
-                            localStorage.removeItem(task + "_pomodoroConcluido");
-                            console.log("Tarefa limpada.");
-                        });
-                        li.appendChild(deleteButton);
+                const userId = user.uid;
+                const db = firebase.database();
+                const tasksRef = db.ref('usuarios/' + userId + '/tarefas');
+                const taskDate = new Date().toLocaleDateString();
+                const taskPriority = "red";
+                const newTaskRef = tasksRef.push();
+                newTaskRef.set({
+                    nomeTarefa: task,
+                    evento: taskDate,
+                    prioridade: taskPriority,
+                    estadoAtual: 'ativo',
+                    pomodoroConcluido: 0,
+                    tempoInicial: Date.now(),
+                    tempoFinal: Date.now()
+                }).then(() => {
+                    const existingTask = taskList.querySelector(`li[data-task="${task}"]`);
+                    if (!existingTask) {
+                        console.log("Nova tarefa adicionada:", task);
+                        renderTask(task, newTaskRef.key);
                     } else {
-                        const deleteButton = li.querySelector('.delete-btn');
-                        if (deleteButton) {
-                            li.removeChild(deleteButton);
-                            console.log("Exclusão da tarefa desfeita.");
-                        }
+                        console.log("A tarefa já está na lista:", task);
                     }
+                    taskInput.value = '';
+                    addTaskButton.disabled = false;
+                }).catch(error => {
+                    console.error("Erro ao adicionar tarefa ao banco de dados:", error);
+                    addTaskButton.disabled = false;
                 });
-
-                li.appendChild(completeButton);
-                taskList.appendChild(li);
-                taskInput.value = '';
-
-                let minutes = 25;
-                let seconds = 0;
-                let interval;
-                let isPaused = false;
-                let cycle = 0;
-                let currentPhase = 'work'; // Fase atual do ciclo (trabalho ou descanso)
-
-
-                // Atualiza o display do temporizador
-                function updateDisplay() {
-                    minutesDisplay.textContent = String(minutes).padStart(2, '0');
-                    secondsDisplay.textContent = String(seconds).padStart(2, '0');
-                }
-
-                // Função para atualizar o contador de Pomodoros no localStorage
-                function updatePomodoroCount(task) {
-                    let pomodoroCount = parseInt(localStorage.getItem(task + "_pomodoroConcluido")) || 0;
-                    pomodoroCount++;
-                    localStorage.setItem(task + "_pomodoroConcluido", pomodoroCount.toString());
-                }
-
-                // Inicia o temporizador
-                function startTimer() {
-                    if (interval) clearInterval(interval);
-                    interval = setInterval(() => {
-                        if (!isPaused) {
-                            if (seconds === 0) {
-                                if (minutes === 0) {
-                                    clearInterval(interval);
-                                    cycle++;
-                                    console.log(`contagem regressiva concluída em ${cycle} ciclos de trabalho.`);
-                                    console.log(`Ciclo concluído: ${currentPhase}`);
-
-                                    // Atualiza o contador de Pomodoros somente se a fase de trabalho foi concluída
-                                    if (currentPhase === 'work') {
-                                        updatePomodoroCount(task);
-                                    }
-
-                                    // Define os intervalos de descanso/trabalho
-                                    if (cycle % 7 === 0) {
-                                        currentPhase = 'longBreak'; // Descanso longo após 4 ciclos de trabalho
-                                        minutes = 15;
-                                        alert("Descanse por 15 minutos!");
-                                    } else if (lastPhase === 'work') {
-                                        currentPhase = 'shortBreak'; // Descanso curto após cada ciclo de trabalho
-                                        minutes = 5;
-                                        alert("Descanse por 5 minutos!");
-                                    } else {
-                                        currentPhase = 'work'; // Tempo de trabalho
-                                        minutes = 25;
-                                        alert("Tempo de trabalho!");
-                                    }
-                                    seconds = 0;
-                                    updateDisplay();
-                                    console.log(`Pausa após término do ciclo: ${currentPhase}`);
-                                    isPaused = true; // Pausa o temporizador até que o usuário clique em 'Iniciar'
-                                } else {
-                                    minutes--;
-                                    seconds = 59;
-                                }
-                            } else {
-                                seconds--;
-                            }
-                            updateDisplay();
-                        }
-                    }, 1);
-
-                    // Atualiza lastPhase para o valor atual de currentPhase
-                    lastPhase = currentPhase;
-                }
-
-
-                // Eventos dos botões de controle do temporizador
-                startButton.addEventListener('click', () => {
-                    console.log("Botão 'Iniciar' clicado...");
-                    isPaused = false;
-                    // Parar
-                    console.log("Iniciando temporizador...");
-                    // Parar todos os outros temporizadores
-                    stopOtherTimers(pomodoroDiv);
-                    startTimer();
-                });
-
-                pauseButton.addEventListener('click', () => {
-                    console.log("Botão 'Pausar' clicado...");
-                    isPaused = true;
-                });
-
-                resetButton.addEventListener('click', () => {
-                    console.log("Botão 'Resetar' clicado...");
-                    clearInterval(interval);
-                    minutes = 25;
-                    seconds = 0;
-                    isPaused = false;
-                    cycle = 0;
-                    currentPhase = 'work'; // Reseta para a fase de trabalho inicial
-                    updateDisplay();
-                });
-
-                updateDisplay();
+            } else {
+                console.warn("Nenhuma tarefa especificada para adicionar.");
+                addTaskButton.disabled = false;
             }
         });
 
+        function renderTask(taskName, taskId) {
+            console.log("Renderizando tarefa:", taskName);
+
+            const existingTask = taskList.querySelector(`li[data-task="${taskName}"]`);
+            if (existingTask) {
+                console.warn("A tarefa já está na lista:", taskName);
+                return;
+            }
+
+            const li = document.createElement('li');
+            li.textContent = taskName;
+            li.setAttribute('data-task', taskName);
+
+            console.log("Elemento li criado para a tarefa:", li);
+
+            const tempoInicial = new Date().getTime();
+            localStorage.setItem(taskName, tempoInicial.toString());
+
+            const pomodoroDiv = document.createElement('div');
+            pomodoroDiv.className = 'pomodoro';
+
+            const minutesDisplay = document.createElement('span');
+            minutesDisplay.className = 'minutes';
+            minutesDisplay.textContent = '25';
+
+            const colon = document.createElement('span');
+            colon.textContent = ':';
+
+            const secondsDisplay = document.createElement('span');
+            secondsDisplay.className = 'seconds';
+            secondsDisplay.textContent = '00';
+
+            const startButton = document.createElement('button');
+            startButton.textContent = 'Iniciar';
+            const pauseButton = document.createElement('button');
+            pauseButton.textContent = 'Pausar';
+            pauseButton.className = 'pauseButton';
+            const resetButton = document.createElement('button');
+            resetButton.textContent = 'Resetar';
+
+            pomodoroDiv.appendChild(minutesDisplay);
+            pomodoroDiv.appendChild(colon);
+            pomodoroDiv.appendChild(secondsDisplay);
+            pomodoroDiv.appendChild(startButton);
+            pomodoroDiv.appendChild(pauseButton);
+            pomodoroDiv.appendChild(resetButton);
+
+            li.appendChild(pomodoroDiv);
+
+            const completeButton = document.createElement('button');
+            completeButton.textContent = 'Finalizar';
+            completeButton.className = 'complete-btn';
+            completeButton.addEventListener('click', () => {
+                console.log('Botão "Finalizar" clicado');
+                li.classList.toggle('done');
+                console.log('Classe "done" alternada:', li.classList.contains('done'));
+                if (li.classList.contains('done')) {
+                    console.log('Tarefa marcada como concluída');
+
+                    // Atualiza no Firebase
+                    const user = firebase.auth().currentUser;
+                    if (user) {
+                        const userId = user.uid;
+                        const taskRef = firebase.database().ref(`usuarios/${userId}/tarefas/${taskId}`);
+                        taskRef.update({
+                            estadoAtual: "concluido"
+                        }).then(() => {
+                            console.log('Estado atualizado para "concluido" no Firebase');
+                            toggleClearButtonVisibility(li, true); // Atualiza a visibilidade do botão "Limpar"
+                        }).catch((error) => {
+                            console.error('Erro ao atualizar estado no Firebase:', error);
+                        });
+                    }
+
+                } else {
+                    console.log('Tarefa desmarcada como concluída');
+                    toggleClearButtonVisibility(li, false, false);
+                }
+            });
+
+
+            li.appendChild(completeButton);
+
+            // Adicionar botão "Limpar" inicialmente oculto
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Limpar';
+            deleteButton.className = 'delete-btn';
+            deleteButton.style.display = 'none';
+            deleteButton.addEventListener('click', () => {
+                console.log('Botão "Limpar" clicado');
+                taskList.removeChild(li);
+                console.log('Tarefa removida da lista');
+                localStorage.removeItem(taskName);
+                localStorage.removeItem(taskName + "_pomodoroConcluido");
+                console.log('Tarefa removida do localStorage:', taskName);
+            });
+            li.appendChild(deleteButton);
+            toggleClearButtonVisibility(li, false);
+
+            taskList.appendChild(li);
+
+            let minutes = 25;
+            let seconds = 0;
+            let interval;
+            let isPaused = false;
+            let cycle = 0;
+            let currentPhase = 'work';
+
+            function updateDisplay() {
+                minutesDisplay.textContent = String(minutes).padStart(2, '0');
+                secondsDisplay.textContent = String(seconds).padStart(2, '0');
+            }
+
+            function updatePomodoroCount(taskName) {
+                let pomodoroCount = parseInt(localStorage.getItem(taskName + "_pomodoroConcluido")) || 0;
+                pomodoroCount++;
+                localStorage.setItem(taskName + "_pomodoroConcluido", pomodoroCount.toString());
+            }
+
+            function startTimer() {
+                if (interval) clearInterval(interval);
+                interval = setInterval(() => {
+                    if (!isPaused) {
+                        if (seconds === 0) {
+                            if (minutes === 0) {
+                                clearInterval(interval);
+                                cycle++;
+                                if (currentPhase === 'work') {
+                                    updatePomodoroCount(taskName);
+                                }
+
+                                if (cycle % 7 === 0) {
+                                    currentPhase = 'longBreak';
+                                    minutes = 15;
+                                    alert("Descanse por 15 minutos!");
+                                } else if (currentPhase === 'work') {
+                                    currentPhase = 'shortBreak';
+                                    minutes = 5;
+                                    alert("Descanse por 5 minutos!");
+                                } else {
+                                    currentPhase = 'work';
+                                    minutes = 25;
+                                    alert("Tempo de trabalho!");
+                                }
+                                seconds = 0;
+                                updateDisplay();
+                                isPaused = true;
+                            } else {
+                                minutes--;
+                                seconds = 59;
+                            }
+                        } else {
+                            seconds--;
+                        }
+                        updateDisplay();
+                    }
+                }, 1);
+            }
+
+            startButton.addEventListener('click', () => {
+                isPaused = false;
+                stopOtherTimers(pomodoroDiv);
+                startTimer();
+            });
+
+            pauseButton.addEventListener('click', () => {
+                isPaused = true;
+            });
+
+            resetButton.addEventListener('click', () => {
+                clearInterval(interval);
+                minutes = 25;
+                seconds = 0;
+                isPaused = false;
+                cycle = 0;
+                currentPhase = 'work';
+                updateDisplay();
+            });
+
+            updateDisplay();
+        }
+
+        function stopCurrentTimer(taskId) {
+            const taskDiv = document.querySelector(`li[data-task="${taskId}"] .pomodoro`);
+            const pauseButton = taskDiv.querySelector('.pauseButton');
+            if (pauseButton) {
+                pauseButton.click(); // Simula um clique no botão "Pausar" para parar o temporizador
+            }
+        }
+
+
+        function stopOtherTimers(exceptDiv) {
+            const pomodoroDivs = document.querySelectorAll('.pomodoro');
+            pomodoroDivs.forEach(div => {
+                if (div !== exceptDiv) {
+                    const pauseButton = div.querySelector('.pauseButton');
+                    if (pauseButton) {
+                        pauseButton.click();
+                    }
+                }
+            });
+        }
+
+        function toggleClearButtonVisibility(li, visible) {
+            const deleteButton = li.querySelector('.delete-btn');
+            if (deleteButton) {
+                console.log('Botão "Limpar" encontrado:', deleteButton);
+                deleteButton.style.display = visible ? 'block' : 'none'; // Atualiza a visibilidade do botão
+            } else {
+                console.log('Nenhum botão "Limpar" encontrado.');
+            }
+        }
+
+
+
+
         firebase.auth().onAuthStateChanged(user => {
-            // id do usuário
             const userId = user ? user.uid : null;
-            console.log("ID do Marco é: CqmSSCihvNh0MAL4ldgSlKjhBcf1", userId);
             if (user) {
                 console.log("Usuário está logado:", user);
             } else {
@@ -263,7 +366,16 @@
             }
         });
 
-        // Adicione um evento de clique ao h1 "Life Sync"
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault();
+            firebase.auth().signOut().then(function () {
+                alert("Logout bem-sucedido!");
+                window.location.href = "index.html";
+            }).catch(function (error) {
+                console.error("Erro ao fazer logout:", error);
+            });
+        });
+
         document.getElementById("homeLink").addEventListener("click", function () {
             window.location.href = "index.html";
         });
