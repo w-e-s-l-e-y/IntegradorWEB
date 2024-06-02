@@ -144,7 +144,7 @@
         function renderTask(taskName, taskId) {
             console.log("Renderizando tarefa:", taskName);
 
-            const existingTask = taskList.querySelector(`li[data-task="${taskName}"]`);
+            const existingTask = taskList.querySelector(`li[data-task="${taskId}"]`);
             if (existingTask) {
                 console.warn("A tarefa já está na lista:", taskName);
                 return;
@@ -152,12 +152,9 @@
 
             const li = document.createElement('li');
             li.textContent = taskName;
-            li.setAttribute('data-task', taskName);
+            li.setAttribute('data-task', taskId);
 
             console.log("Elemento li criado para a tarefa:", li);
-
-            const tempoInicial = new Date().getTime();
-            localStorage.setItem(taskName, tempoInicial.toString());
 
             const pomodoroDiv = document.createElement('div');
             pomodoroDiv.className = 'pomodoro';
@@ -181,6 +178,7 @@
             const resetButton = document.createElement('button');
             resetButton.textContent = 'Resetar';
 
+           
             pomodoroDiv.appendChild(minutesDisplay);
             pomodoroDiv.appendChild(colon);
             pomodoroDiv.appendChild(secondsDisplay);
@@ -188,15 +186,18 @@
             pomodoroDiv.appendChild(pauseButton);
             pomodoroDiv.appendChild(resetButton);
 
+
             li.appendChild(pomodoroDiv);
 
             const completeButton = document.createElement('button');
             completeButton.textContent = 'Finalizar';
             completeButton.className = 'complete-btn';
             completeButton.addEventListener('click', () => {
+                stopCurrentTimer(taskId);
                 console.log('Botão "Finalizar" clicado');
                 li.classList.toggle('done');
                 console.log('Classe "done" alternada:', li.classList.contains('done'));
+
                 if (li.classList.contains('done')) {
                     console.log('Tarefa marcada como concluída');
 
@@ -209,18 +210,17 @@
                             estadoAtual: "concluido"
                         }).then(() => {
                             console.log('Estado atualizado para "concluido" no Firebase');
-                            toggleClearButtonVisibility(li, true); // Atualiza a visibilidade do botão "Limpar"
+
+                            exibirBotaoLimpar(); // Exibe o botão "Limpar" após a atualização no Firebase
                         }).catch((error) => {
                             console.error('Erro ao atualizar estado no Firebase:', error);
                         });
                     }
-
                 } else {
                     console.log('Tarefa desmarcada como concluída');
                     toggleClearButtonVisibility(li, false, false);
                 }
             });
-
 
             li.appendChild(completeButton);
 
@@ -229,16 +229,33 @@
             deleteButton.textContent = 'Limpar';
             deleteButton.className = 'delete-btn';
             deleteButton.style.display = 'none';
+            deleteButton.id = `delete-button-${taskId}`; // Adiciona um ID único ao botão
             deleteButton.addEventListener('click', () => {
                 console.log('Botão "Limpar" clicado');
                 taskList.removeChild(li);
                 console.log('Tarefa removida da lista');
-                localStorage.removeItem(taskName);
-                localStorage.removeItem(taskName + "_pomodoroConcluido");
-                console.log('Tarefa removida do localStorage:', taskName);
+
+                // Remover do localStorage
+                localStorage.removeItem(taskId);
+                localStorage.removeItem('timer_' + taskId);
+                localStorage.removeItem(taskId + "_pomodoroConcluido");
+                console.log('Tarefa removida do localStorage:', taskId);
+
+                // Remover do Firebase
+                const user = firebase.auth().currentUser;
+                if (user) {
+                    const userId = user.uid;
+                    const taskRef = firebase.database().ref(`usuarios/${userId}/tarefas/${taskId}`);
+                    taskRef.remove()
+                        .then(() => {
+                            console.log('Tarefa removida do Firebase:', taskId);
+                        })
+                        .catch((error) => {
+                            console.error('Erro ao remover tarefa do Firebase:', error);
+                        });
+                }
             });
             li.appendChild(deleteButton);
-            toggleClearButtonVisibility(li, false);
 
             taskList.appendChild(li);
 
@@ -249,15 +266,24 @@
             let cycle = 0;
             let currentPhase = 'work';
 
+            // Carregar estado salvo do temporizador
+            const savedTime = localStorage.getItem('timer_' + taskId);
+            if (savedTime) {
+                const [savedMinutes, savedSeconds] = savedTime.split(':').map(Number);
+                minutes = savedMinutes;
+                seconds = savedSeconds;
+                updateDisplay();
+            }
+
             function updateDisplay() {
                 minutesDisplay.textContent = String(minutes).padStart(2, '0');
                 secondsDisplay.textContent = String(seconds).padStart(2, '0');
             }
 
-            function updatePomodoroCount(taskName) {
-                let pomodoroCount = parseInt(localStorage.getItem(taskName + "_pomodoroConcluido")) || 0;
+            function updatePomodoroCount(taskId) {
+                let pomodoroCount = parseInt(localStorage.getItem(taskId + "_pomodoroConcluido")) || 0;
                 pomodoroCount++;
-                localStorage.setItem(taskName + "_pomodoroConcluido", pomodoroCount.toString());
+                localStorage.setItem(taskId + "_pomodoroConcluido", pomodoroCount.toString());                
             }
 
             function startTimer() {
@@ -268,26 +294,31 @@
                             if (minutes === 0) {
                                 clearInterval(interval);
                                 cycle++;
+                                const pomodoroCount = parseInt(localStorage.getItem(taskId + "_pomodoroConcluido")) || 0;
                                 if (currentPhase === 'work') {
-                                    updatePomodoroCount(taskName);
+                                    updatePomodoroCount(taskId);
                                 }
 
                                 if (cycle % 7 === 0) {
+                                    const pomodoroCount = parseInt(localStorage.getItem(taskId + "_pomodoroConcluido")) || 0;
                                     currentPhase = 'longBreak';
                                     minutes = 15;
-                                    alert("Descanse por 15 minutos!");
+                                    alert("Descanse por 15 minutos! Pomodoros concluídos: " + pomodoroCount);
                                 } else if (currentPhase === 'work') {
+                                    const pomodoroCount = parseInt(localStorage.getItem(taskId + "_pomodoroConcluido")) || 0;
                                     currentPhase = 'shortBreak';
                                     minutes = 5;
-                                    alert("Descanse por 5 minutos!");
+                                    alert("Descanse por 5 minutos! Pomodoros concluídos: " + pomodoroCount);
                                 } else {
                                     currentPhase = 'work';
                                     minutes = 25;
-                                    alert("Tempo de trabalho!");
+                                    alert("Tempo de trabalho! Pomodoros concluídos: " + pomodoroCount);
                                 }
+
                                 seconds = 0;
                                 updateDisplay();
                                 isPaused = true;
+                                console.log("Pomodoro concluído:", pomodoroCount);
                             } else {
                                 minutes--;
                                 seconds = 59;
@@ -296,8 +327,9 @@
                             seconds--;
                         }
                         updateDisplay();
+                        saveCurrentTimer(taskId);
                     }
-                }, 1);
+                }, 1); // Ajustado para um intervalo de 1 segundo
             }
 
             startButton.addEventListener('click', () => {
@@ -318,43 +350,55 @@
                 cycle = 0;
                 currentPhase = 'work';
                 updateDisplay();
+                localStorage.removeItem('timer_' + taskId); // Remover temporizador salvo ao resetar
             });
 
             updateDisplay();
-        }
 
-        function stopCurrentTimer(taskId) {
-            const taskDiv = document.querySelector(`li[data-task="${taskId}"] .pomodoro`);
-            const pauseButton = taskDiv.querySelector('.pauseButton');
-            if (pauseButton) {
-                pauseButton.click(); // Simula um clique no botão "Pausar" para parar o temporizador
+            function stopCurrentTimer(taskId) {
+                console.log('Tentando parar o temporizador para a tarefa:', taskId);
+                clearInterval(interval); // Limpa o intervalo diretamente
+                saveCurrentTimer(taskId); // Salva o estado atual do temporizador
+                console.log('Temporizador da tarefa parado:', taskId);
             }
-        }
 
+            function saveCurrentTimer(taskId) {
+                const currentTime = minutes + ':' + seconds;
+                localStorage.setItem('timer_' + taskId, currentTime);
+            }
 
-        function stopOtherTimers(exceptDiv) {
-            const pomodoroDivs = document.querySelectorAll('.pomodoro');
-            pomodoroDivs.forEach(div => {
-                if (div !== exceptDiv) {
-                    const pauseButton = div.querySelector('.pauseButton');
-                    if (pauseButton) {
-                        pauseButton.click();
+            function stopOtherTimers(currentDiv) {
+                const allPomodoroDivs = document.querySelectorAll('.pomodoro');
+                allPomodoroDivs.forEach(pomodoroDiv => {
+                    if (pomodoroDiv !== currentDiv) {
+                        const pauseButton = pomodoroDiv.querySelector('.pauseButton');
+                        if (pauseButton) {
+                            pauseButton.click();
+                        }
                     }
-                }
-            });
-        }
+                });
+            }
 
-        function toggleClearButtonVisibility(li, visible) {
-            const deleteButton = li.querySelector('.delete-btn');
-            if (deleteButton) {
-                console.log('Botão "Limpar" encontrado:', deleteButton);
-                deleteButton.style.display = visible ? 'block' : 'none'; // Atualiza a visibilidade do botão
-            } else {
-                console.log('Nenhum botão "Limpar" encontrado.');
+            function exibirBotaoLimpar() {
+                const deleteButton = li.querySelector(`#delete-button-${taskId}`); // Seleciona o botão "Limpar" com o ID único
+                if (deleteButton) {
+                    deleteButton.style.display = 'block';
+                    console.log('Botão "Limpar" exibido');
+                } else {
+                    console.error('Botão "delete-button" não encontrado');
+                }
             }
         }
 
 
+
+        // Função para alternar a visibilidade do botão "Limpar"
+        function toggleClearButtonVisibility(taskElement, visible) {
+            const deleteButton = taskElement.querySelector('.delete-btn');
+            if (deleteButton) {
+                deleteButton.style.display = visible ? 'block' : 'none';
+            }
+        }
 
 
         firebase.auth().onAuthStateChanged(user => {
@@ -379,6 +423,8 @@
         document.getElementById("homeLink").addEventListener("click", function () {
             window.location.href = "index.html";
         });
+
+        console.log("Todos os console.log() foram adicionados!");
     </script>
 </body>
 
