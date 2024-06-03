@@ -1,137 +1,142 @@
-/* Definições gerais */
+/* Estilo geral */
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'Poppins', sans-serif; /* Alteração da fonte para Poppins */
     margin: 0;
     padding: 0;
-    background-color: #f9f9f9;
+    background-color: #f4f4f4;
     color: #333;
+    line-height: 1.6; /* Espaçamento entre linhas aumentado */
+}
+
+a {
+    color: #007bff;
+    text-decoration: none;
 }
 
 /* Cabeçalho */
 header {
-    background-color: #ffffff;
-    padding: 1rem 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    background-color: #fff;
+    padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header h1 {
-    margin: 0;
-    font-size: 1.5rem;
-    color: #6a0dad;
+h1 {
+    text-align: center;
+    font-size: 2.5em;
 }
 
 nav {
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    gap: 15px;
 }
 
 nav a {
-    background-color: #d8b9f2;
-    color: #6a0dad;
-    text-decoration: none;
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    display: inline-block;
+    font-weight: bold;
+    padding: 10px 20px;
+    font-size: 18px;
+    transition: background-color 0.3s;
+    border-radius: 5px;
 }
 
 nav a:hover {
-    background-color: #a29bfe;
-    color: white;
+    background-color: #f0f0f0;
 }
 
-/* Banner Principal */
+#signup-link {
+    background-color: #ff4d4d;
+    color: #fff;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+#signup-link:hover {
+    background-color: #cc0000;
+    transform: scale(1.05);
+}
+
+/* Banner */
 #banner {
-    background: linear-gradient(135deg, #d8b9f2, #ffffff);
-    color: white;
+    background-color: #3f51b5;
+    color: #fff;
+    padding: 80px 0;
     text-align: center;
-    padding: 4rem 2rem;
-    background-color: #d8b9f2;
 }
 
 #banner h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 3em;
 }
 
 #banner p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+    font-size: 1.5em;
+    line-height: 1.5;
 }
 
-#banner .btn {
-    background-color: #6a0dad;
-    color: white;
-    padding: 0.75rem 1.5rem;
+.btn {
+    background-color: #007bff;
+    color: #fff;
+    padding: 15px 30px;
     border: none;
-    border-radius: 25px;
-    font-size: 1rem;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s, transform 0.3s;
+    font-size: 1.2em;
+    margin: 10px;
+    display: inline-block;
 }
 
-#banner .btn:hover {
-    background-color: #a29bfe;
+.btn:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
 }
 
-/* Seções principais */
-main {
-    padding: 2rem;
-}
-
+/* Seções */
 section {
-    margin-bottom: 2rem;
-    background-color: #ffffff;
-    padding: 2rem;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 40px;
 }
 
-section h2 {
-    color: #6a0dad;
-    font-size: 1.5rem;
-    border-bottom: 2px solid #e0e0e0;
-    padding-bottom: 0.5rem;
-    margin-bottom: 1rem;
+h2 {
+    font-size: 2em;
+    margin-bottom: 30px;
 }
 
-.feature, .tip {
-    background-color: #fafafa;
-    padding: 1rem;
-    border-radius: 8px;
-    border: 1px solid #e0e0e0;
-    margin-top: 1rem;
+.feature {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 30px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.feature h3, .tip h3 {
-    color: #6a0dad;
-    font-size: 1.2rem;
-    margin-top: 0;
+.feature h3 {
+    margin-bottom: 15px;
 }
 
-.feature p, .tip p {
-    color: #7a7a7a;
+.feature p {
+    font-size: 1.1em;
 }
+
 
 /* Galeria */
-#gallery .spinner {
+#gallery {
+    text-align: center;
+}
+
+.spinner {
     display: flex;
-    gap: 1rem;
-    overflow-x: auto;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-#gallery .image {
-    flex: 0 0 auto;
-    width: 200px;
-    height: 150px;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid #e0e0e0;
+.image {
+    width: 350px;
+    height: 250px;
+    margin: 15px;
 }
 
-#gallery img {
+.image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -139,35 +144,28 @@ section h2 {
 
 /* Rodapé */
 footer {
-    background-color: #ffffff;
-    border-top: 1px solid #e0e0e0;
-    color: #7a7a7a;
+    background-color: #3f51b5;
+    color: #fff;
+    padding: 30px;
     text-align: center;
-    padding: 1rem;
-    font-size: 0.9rem;
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        text-align: center;
-    }
-
+/* Estilos responsivos */
+@media screen and (max-width: 768px) {
     nav {
         flex-direction: column;
-        gap: 0.5rem;
+        align-items: center;
+        padding: 10px;
+        gap: 10px;
     }
 
-    main {
-        padding: 1rem;
+    nav a {
+        font-size: 16px;
+        padding: 10px 15px;
     }
 
-    section {
-        padding: 1rem;
-    }
-
-    .feature, .tip {
-        padding: 0.5rem;
+    .btn {
+        font-size: 1em;
+        padding: 10px 20px;
     }
 }
