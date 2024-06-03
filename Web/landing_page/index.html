@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Life Sync - Organize Sua Vida</title>
+    <link rel="stylesheet" href="/landing_page/style.css">
+</head>
+<body>
+    <header>
+        <h1>Life Sync</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="/lista/lista.html">Lista de Tarefas</a>
+            <a href="/pomodoro/pomodoro.html">Pomodoro Timer</a>
+            <a href="/login/login.html" id="login-link">Login</a>
+            <a href="/cadastro/cadastro.html" id="signup-link">Cadastro</a>
+            <a href="#" id="logout-link" style="display:none;">Logout</a>
+        </nav>
+    </header>
+
+    <section id="banner">
+        <h2>Organize Sua Vida com Facilidade</h2>
+        <p>Life Sync ajuda pessoas com TDAH a se organizarem melhor com uma lista de tarefas integrada ao calendário e um Pomodoro Timer eficiente.</p>
+        <button class="btn">Saiba Mais</button>
+    </section>
+
+    <main>
+        <section id="features">
+            <h2>Funcionalidades</h2>
+            <div class="feature">
+                <h3>Lista de Tarefas</h3>
+                <p>Mantenha suas tarefas organizadas e priorizadas.</p>
+            </div>
+            <div class="feature">
+                <h3>Calendário Integrado</h3>
+                <p>Veja suas tarefas em um calendário fácil de usar.</p>
+            </div>
+            <div class="feature">
+                <h3>Pomodoro Timer</h3>
+                <p>Aumente sua produtividade com a técnica Pomodoro.</p>
+            </div>
+        </section>
+
+        <section id="about">
+            <h2>Sobre Nós</h2>
+            <p>Life Sync é uma ferramenta desenvolvida para ajudar pessoas com TDAH a se organizarem e gerenciarem melhor seu tempo. Combinamos uma lista de tarefas, calendário e Pomodoro Timer para oferecer uma solução completa de produtividade.</p>
+        </section>
+
+        <section id="productivity-tips">
+            <h2>Dicas de Produtividade</h2>
+            <div class="tip">
+                <h3>Dica 1: Priorize suas tarefas</h3>
+                <p>Classifique suas tarefas diárias por ordem de importância para garantir que você está focando nas atividades mais críticas primeiro.</p>
+            </div>
+            <div class="tip">
+                <h3>Dica 2: Use a técnica Pomodoro</h3>
+                <p>Trabalhe em blocos de 25 minutos seguidos de um breve intervalo para manter a concentração e evitar a fadiga.</p>
+            </div>
+            <div class="tip">
+                <h3>Dica 3: Planeje seu dia</h3>
+                <p>Comece o dia com um plano claro do que precisa ser feito. Use o calendário integrado para visualizar suas tarefas e compromissos.</p>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>Galeria</h2>
+            <div class="spinner">
+                <div class="image">
+                    <img src="image1.jpg" alt="Imagem 1">
+                </div>
+                <div class="image">
+                    <img src="image2.jpg" alt="Imagem 2">
+                </div>
+                <div class="image">
+                    <img src="image3.jpg" alt="Imagem 3">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
+            authDomain: "life-sync-fa0ee.firebaseapp.com",
+            databaseURL: "https://life-sync-fa0ee-default-rtdb.firebaseio.com",
+            projectId: "life-sync-fa0ee",
+            storageBucket: "life-sync-fa0ee.appspot.com",
+            messagingSenderId: "78086954632",
+            appId: "1:78086954632:web:567a52d817e3de1280093d",
+            measurementId: "G-EN04957NEZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        const loginLink = document.getElementById('login-link');
+        const signupLink = document.getElementById('signup-link');
+        const logoutLink = document.getElementById('logout-link');
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginLink.style.display = 'none';
+                signupLink.style.display = 'none';
+                logoutLink.style.display = 'block';
+            } else {
+                loginLink.style.display = 'block';
+                signupLink.style.display = 'block';
+                logoutLink.style.display = 'none';
+            }
+        });
+
+        logoutLink.addEventListener('click', () => {
+            signOut(auth).then(() => {
+                window.location.href = 'index.html';
+            }).catch((error) => {
+                console.error('Erro ao fazer logout:', error);
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário - Life Sync</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.10.1/main.min.css">
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.13/index.global.min.js'></script>
+</head>
+<body>
+    <header>
+        <h1>Life Sync</h1>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="tarefas.html">Lista de Tarefas</a>
+            <a href="pomodoro.html">Pomodoro Timer</a>
+            <a href="login.html" id="login-link">Login</a>
+            <a href="cadastro.html" id="signup-link">Cadastro</a>
+            <a href="#" id="logout-link" style="display:none;">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Calendário</h2>
+        <div id="calendar"></div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
+            authDomain: "life-sync-fa0ee.firebaseapp.com",
+            databaseURL: "https://life-sync-fa0ee-default-rtdb.firebaseio.com",
+            projectId: "life-sync-fa0ee",
+            storageBucket: "life-sync-fa0ee.appspot.com",
+            messagingSenderId: "78086954632",
+            appId: "1:78086954632:web:567a52d817e3de1280093d",
+            measurementId: "G-EN04957NEZ"
+
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        const loginLink = document.getElementById('login-link');
+        const signupLink = document.getElementById('signup-link');
+        const logoutLink = document.getElementById('logout-link');
+        let userId;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginLink.style.display = 'none';
+                signupLink.style.display = 'none';
+                logoutLink.style.display = 'block';
+                userId = user.uid;
+                loadCalendarTasks();
+            } else {
+                loginLink.style.display = 'block';
+                signupLink.style.display = 'block';
+                logoutLink.style.display = 'none';
+                userId = null;
+            }
+        });
+
+        logoutLink.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = '/landing_page/index.html';
+            }).catch((error) => {
+                console.error('Erro ao fazer logout:', error);
+            });
+        });
+
+        function loadCalendarTasks() {
+            if (!userId) return;
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                events: []
+            });
+            const tasksRef = ref(database, `tasks/${userId}`);
+            onValue(tasksRef, (snapshot) => {
+                const tasks = snapshot.val();
+                const events = [];
+                for (let id in tasks) {
+                    const task = tasks[id];
+                    if (task.date) {
+                        events.push({
+                            title: task.task,
+                            start: task.date,
+                            extendedProps: {
+                                priority: task.priority,
+                                time: task.time,
+                                location: task.location
+                            }
+                        });
+                    }
+                }
+                calendar.removeAllEvents();
+                calendar.addEventSource(events);
+                calendar.render();
+            });
+        }
+    </script>
+</body>
+</html>

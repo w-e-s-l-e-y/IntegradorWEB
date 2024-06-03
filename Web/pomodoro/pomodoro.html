@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer - Life Sync</title>
+</head>
+<body>
+    <header>
+        <h1>Life Sync</h1>
+        <nav>
+            <a href="/landing_page/index.html">Home</a>
+            <a href="/lista/lista.html">Lista de Tarefas</a>
+            <a href="/pomodoro/pomodoro.html">Pomodoro Timer</a>
+            <a href="/login/login.html" id="login-link">Login</a>
+            <a href="/cadastro/cadastro.html" id="signup-link">Cadastro</a>
+            <a href="#" id="logout-link" style="display:none;">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <h2>Pomodoro Timer</h2>
+        <section id="add-pomodoro-task-section">
+            <h3>Adicionar Nova Tarefa para Pomodoro</h3>
+            <form id="add-pomodoro-task-form">
+                <label for="pomodoro-task">Tarefa:</label>
+                <input type="text" id="pomodoro-task" name="pomodoro-task" required>
+                <button type="submit">Adicionar</button>
+            </form>
+        </section>
+
+        <section id="pomodoro-tasks-section">
+            <h3>Tarefas para Pomodoro</h3>
+            <ul id="pomodoro-task-list"></ul>
+        </section>
+
+        <section id="timer-section">
+            <h3>Timer</h3>
+            <div id="timer-display">25:00</div>
+            <button id="start-timer">Iniciar</button>
+            <button id="stop-timer" disabled>Parar</button>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
+            authDomain: "life-sync-fa0ee.firebaseapp.com",
+            databaseURL: "https://life-sync-fa0ee-default-rtdb.firebaseio.com",
+            projectId: "life-sync-fa0ee",
+            storageBucket: "life-sync-fa0ee.appspot.com",
+            messagingSenderId: "78086954632",
+            appId: "1:78086954632:web:567a52d817e3de1280093d",
+            measurementId: "G-EN04957NEZ"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const database = getDatabase(app);
+
+        const addPomodoroTaskForm = document.getElementById('add-pomodoro-task-form');
+        const pomodoroTaskList = document.getElementById('pomodoro-task-list');
+        const timerDisplay = document.getElementById('timer-display');
+        const startTimerButton = document.getElementById('start-timer');
+        const stopTimerButton = document.getElementById('stop-timer');
+        
+        const loginLink = document.getElementById('login-link');
+        const signupLink = document.getElementById('signup-link');
+        const logoutLink = document.getElementById('logout-link');
+        
+        let userId;
+        let timer;
+        let currentTaskId = null;
+        let timeRemaining = 1500; // 25 minutes
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                loginLink.style.display = 'none';
+                signupLink.style.display = 'none';
+                logoutLink.style.display = 'block';
+                userId = user.uid;
+                loadPomodoroTasks();
+            } else {
+                loginLink.style.display = 'block';
+                signupLink.style.display = 'block';
+                logoutLink.style.display = 'none';
+                pomodoroTaskList.innerHTML = '';
+                userId = null;
+            }
+        });
+
+        logoutLink.addEventListener('click', () => {
+            auth.signOut().then(() => {
+                window.location.href = '/landing_page/index.html';
+            }).catch((error) => {
+                console.error('Erro ao fazer logout:', error);
+            });
+        });
+
+        addPomodoroTaskForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            if (!userId) {
+                alert('Você precisa estar logado para adicionar tarefas.');
+                return;
+            }
+
+            const task = e.target['pomodoro-task'].value;
+            const taskRef = push(ref(database, `pomodoroTasks/${userId}`));
+
+            set(taskRef, {
+                task,
+                completed: false
+            }).then(() => {
+                e.target['pomodoro-task'].value = '';
+            }).catch((error) => {
+                console.error('Erro ao adicionar tarefa:', error);
+            });
+        });
+
+        function loadPomodoroTasks() {
+            if (!userId) return;
+            const tasksRef = ref(database, `pomodoroTasks/${userId}`);
+            onValue(tasksRef, (snapshot) => {
+                const tasks = snapshot.val();
+                pomodoroTaskList.innerHTML = '';
+                for (let id in tasks) {
+                    const task = tasks[id];
+                    const li = document.createElement('li');
+                    li.innerHTML = `
+                        <span>${task.task}</span>
+                        <button onclick="startPomodoro('${id}')">Iniciar Pomodoro</button>
+                        <button onclick="completeTask('${id}')">Concluir</button>
+                        <button onclick="deleteTask('${id}')">Excluir</button>
+                    `;
+                    if (task.completed) {
+                        li.style.textDecoration = 'line-through';
+                    }
+                    pomodoroTaskList.appendChild(li);
+                }
+            });
+        }
+
+        window.startPomodoro = function (id) {
+            if (timer) {
+                alert('Um pomodoro já está em andamento.');
+                return;
+            }
+            currentTaskId = id;
+            startTimer();
+        }
+
+        window.completeTask = function (id) {
+            if (!userId) return;
+            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
+            set(taskRef, {
+                ...taskRef,
+                completed: true
+            }).catch((error) => {
+                console.error('Erro ao completar tarefa:', error);
+            });
+        }
+
+        window.deleteTask = function (id) {
+            if (!userId) return;
+            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
+            remove(taskRef).catch((error) => {
+                console.error('Erro ao excluir tarefa:', error);
+            });
+        }
+
+        startTimerButton.addEventListener('click', () => {
+            if (timer) {
+                alert('Um pomodoro já está em andamento.');
+                return;
+            }
+            startTimer();
+        });
+
+        stopTimerButton.addEventListener('click', () => {
+            clearInterval(timer);
+            timer = null;
+            timeRemaining = 1500;
+            timerDisplay.textContent = '25:00';
+            startTimerButton.disabled = false;
+            stopTimerButton.disabled = true;
+            currentTaskId = null;
+        });
+
+        function startTimer() {
+            startTimerButton.disabled = true;
+            stopTimerButton.disabled = false;
+            timer = setInterval(() => {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    alert('Pomodoro concluído!');
+                    timer = null;
+                    timeRemaining = 1500;
+                    timerDisplay.textContent = '25:00';
+                    startTimerButton.disabled = false;
+                    stopTimerButton.disabled = true;
+                    if (currentTaskId) {
+                        completeTask(currentTaskId);
+                        currentTaskId = null;
+                    }
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

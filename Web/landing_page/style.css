@@ -1,0 +1,173 @@
+/* Definições gerais */
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+    color: #333;
+}
+
+/* Cabeçalho */
+header {
+    background-color: #ffffff;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #6a0dad;
+}
+
+nav {
+    display: flex;
+    gap: 1rem;
+}
+
+nav a {
+    background-color: #d8b9f2;
+    color: #6a0dad;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+nav a:hover {
+    background-color: #a29bfe;
+    color: white;
+}
+
+/* Banner Principal */
+#banner {
+    background: linear-gradient(135deg, #d8b9f2, #ffffff);
+    color: white;
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #d8b9f2;
+}
+
+#banner h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+#banner p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+#banner .btn {
+    background-color: #6a0dad;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#banner .btn:hover {
+    background-color: #a29bfe;
+}
+
+/* Seções principais */
+main {
+    padding: 2rem;
+}
+
+section {
+    margin-bottom: 2rem;
+    background-color: #ffffff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+section h2 {
+    color: #6a0dad;
+    font-size: 1.5rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.feature, .tip {
+    background-color: #fafafa;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #e0e0e0;
+    margin-top: 1rem;
+}
+
+.feature h3, .tip h3 {
+    color: #6a0dad;
+    font-size: 1.2rem;
+    margin-top: 0;
+}
+
+.feature p, .tip p {
+    color: #7a7a7a;
+}
+
+/* Galeria */
+#gallery .spinner {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+}
+
+#gallery .image {
+    flex: 0 0 auto;
+    width: 200px;
+    height: 150px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+#gallery img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Rodapé */
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e0e0e0;
+    color: #7a7a7a;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.9rem;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    section {
+        padding: 1rem;
+    }
+
+    .feature, .tip {
+        padding: 0.5rem;
+    }
+}
