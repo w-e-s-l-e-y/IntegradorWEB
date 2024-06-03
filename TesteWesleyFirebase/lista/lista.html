@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Agenda</title>
+    <link rel="stylesheet" href="lista.css">
+</head>
+
+<body>
+    <header>
+        <h1><a id="homeLink">Life Sync</a></h1>
+        <nav>
+            <ul class="nav_links">
+                <li><a href="lista.html" id="listaLink">Agenda de tarefas</a></li>
+                <li><a href="pomodoro.html" id="pomodoroLink">Pomodoro</a></li>
+                <li><a href="cadastro.html" id="cadastroLink">Cadastrar</a></li>
+                <li><a href="login.html" id="loginLink">Login</a></li>
+                <li><a href="#" id="logoutLink">Sair</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="agenda">
+            <h2>Agenda de Tarefas</h2>
+            <form id="taskForm">
+                <input type="text" id="taskName" placeholder="Task Name" required>
+                <input type="date" id="taskDate" required>
+                <select id="taskPriority">
+                    <option value="red">High</option>
+                    <option value="green">Low</option>
+                </select>
+                <button type="submit">Add Task</button>
+            </form>
+        </div>
+        <ul id="taskList"></ul>
+
+        <div class="calendario">
+            <h2>Calendário</h2>
+
+            <div>
+                <button onclick="previousMonth()" style="margin-right: 10px;">Anterior</button>
+                <span id="currentMonthYear">Abril 2024</span>
+                <button onclick="nextMonth()" style="margin-left: 10px;">Próximo</button>
+            </div>
+            <div class="content">
+                <div id="red" class="tab-content"></div>
+                <div id="blue" class="tab-content"></div>
+                <div id="green" class="tab-content"></div>
+                <div id="gray" class="tab-content"></div>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Domingo</th>
+                        <th>Segunda</th>
+                        <th>Terça</th>
+                        <th>Quarta</th>
+                        <th>Quinta</th>
+                        <th>Sexta</th>
+                        <th>Sábado</th>
+                    </tr>
+                </thead>
+                <tbody id="calendarBody">
+                    <!-- Os dias do mês serão inseridos aqui com JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Inicialize o Firebase com sua configuração -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+    <script>
+        // Inicialize o Firebase com sua configuração
+        var firebaseConfig = {
+            apiKey: "AIzaSyBKEbvSnm0uEXBoO9EXphaIDd4muen9ZNU",
+            authDomain: "lifesync-581d7.firebaseapp.com",
+            databaseURL: "https://lifesync-581d7-default-rtdb.firebaseio.com",
+            projectId: "lifesync-581d7",
+            storageBucket: "lifesync-581d7.appspot.com",
+            messagingSenderId: "910441512297",
+            appId: "1:910441512297:web:d193f0df19aef739d791f8"
+        };
+        // Inicialize o Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        const auth = firebase.auth();
+        const db = firebase.database();
+
+        // Verifique o estado de autenticação e atualize o menu de navegação
+        firebase.auth().onAuthStateChanged(function (user) {
+            if (user) {
+                // Usuário está logado                
+                document.getElementById("listaLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "none";
+                document.getElementById("cadastroLink").style.display = "none";
+                document.getElementById("logoutLink").style.display = "block";
+            } else {
+                // Usuário não está logado               
+                document.getElementById("listaLink").style.display = "none";
+                document.getElementById("loginLink").style.display = "block";
+                document.getElementById("cadastroLink").style.display = "block";
+                document.getElementById("logoutLink").style.display = "none";
+            }
+        });
+        const currentDate = new Date();
+        let currentMonth = currentDate.getMonth(); // Janeiro é 0, Fevereiro é 1, ..., Dezembro é 11
+        let currentYear = currentDate.getFullYear();
+        const months = [
+            "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+            "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+        ];
+        let tasks = {};
+
+        function generateCalendar() {
+            const calendarBody = document.getElementById("calendarBody");
+            const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
+
+            calendarBody.innerHTML = "";
+
+            let date = 1;
+            for (let i = 0; i < 6; i++) {
+                const row = document.createElement("tr");
+
+                for (let j = 0; j < 7; j++) {
+                    const cell = document.createElement("td");
+
+                    if (i === 0 && j < firstDayOfMonth) {
+                        const cellText = document.createTextNode("");
+                        cell.appendChild(cellText);
+                    } else if (date > daysInMonth) {
+                        break;
+                    } else {
+                        const cellText = document.createTextNode(date);
+
+                        if (date === new Date().getDate() && currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear()) {
+                            cell.classList.add("today");
+                        }
+
+                        cell.appendChild(cellText);
+                        const formattedDate = formatDate(currentYear, currentMonth + 1, date);
+                        cell.dataset.date = formattedDate;
+
+                        const tasksForDate = getTasksForDate(formattedDate);
+
+                        if (tasksForDate.length > 0) {
+                            cell.classList.add("task-day");
+                        }
+
+                        cell.addEventListener("click", () => {
+                            displayTasks(formattedDate, tasksForDate);
+                        });
+
+                        tasksForDate.forEach(task => {
+                            const taskIndicator = document.createElement("span");
+                            taskIndicator.className = "task-indicator";
+                            taskIndicator.style.backgroundColor = task.color;
+                            taskIndicator.onclick = function () {
+                                if (task.color === "blue" || task.color === "red") {
+                                    task.color = "green";
+                                }
+                                generateCalendar(); // Regerar o calendário para atualizar as cores
+                            };
+                            cell.appendChild(taskIndicator);
+                        });
+                        date++;
+                    }
+
+                    row.appendChild(cell);
+                }
+
+                calendarBody.appendChild(row);
+
+                if (date > daysInMonth) {
+                    break;
+                }
+            }
+
+            document.getElementById("currentMonthYear").textContent = `${months[currentMonth]} ${currentYear}`;
+        }
+
+        function updateUI(userId, data) {
+            console.log("Atualizando UI com dados do usuário:", userId, data);
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            for (let taskId in data.tarefas) {
+                const task = data.tarefas[taskId];
+                console.log("Tarefa:", taskId, task);
+                const listItem = document.createElement('li');
+                const taskDate = task.evento ? formatDateToBR(task.evento) : 'Data não fornecida';
+                listItem.textContent = `${task.nomeTarefa} - ${taskDate} - ${task.prioridade}`;
+                taskList.appendChild(listItem);
+
+                // Adding delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.addEventListener('click', () => deleteTask(userId, taskId));
+                listItem.appendChild(deleteButton);
+
+                // Adding update button
+                const updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.addEventListener('click', () => updateTask(userId, taskId, task));
+                listItem.appendChild(updateButton);
+
+                // Adding complete button
+                const completeButton = document.createElement('button');
+                completeButton.textContent = 'Concluido';
+                completeButton.addEventListener('click', () => completeTask(userId, taskId));
+                listItem.appendChild(completeButton);
+            }
+        }
+
+        function getTasksForDate(date) {
+            return tasks[date] || [];
+        }
+
+        function formatDate(year, month, day) {
+            return `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        }
+
+        document.getElementById('taskForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const userId = auth.currentUser.uid;
+            const taskName = document.getElementById('taskName').value;
+            const taskDate = document.getElementById('taskDate').value;
+            const taskPriority = document.getElementById('taskPriority').value;
+            console.log("Adicionando nova tarefa:", taskName, taskDate, taskPriority);
+            const newTaskRef = db.ref('usuarios/' + userId + '/tarefas').push();
+            newTaskRef.set({
+                nomeTarefa: taskName,
+                evento: taskDate,
+                prioridade: taskPriority,
+                estadoAtual: 'ativo',
+                pomodoroConcluido: 0,
+                tempoInicial: Date.now(),
+                tempoFinal: Date.now()
+            }).then(() => {
+                console.log("Tarefa adicionada com sucesso");
+                alert('Task added successfully');
+                addTask(taskName, taskDate, taskPriority);
+                document.getElementById('taskForm').reset();
+            }).catch((error) => {
+                console.error('Erro ao adicionar tarefa:', error);
+                alert('Failed to add task: ' + error.message);
+            });
+        });
+
+        function addTask(task, taskDateInput, taskColor) {
+            const taskList = document.getElementById("taskList");
+            if (task.trim() !== "" && taskDateInput.trim() !== "") {
+                const dateParts = taskDateInput.split('-');
+                const taskDate = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
+                const formattedTaskDate = formatDate(taskDate.getFullYear(), taskDate.getMonth() + 1, taskDate.getDate());
+
+                if (!tasks[formattedTaskDate]) {
+                    tasks[formattedTaskDate] = [];
+                }
+                tasks[formattedTaskDate].push({
+                    text: task,
+                    color: taskColor,
+                    priority: taskColor === "red" ? "Alta" : "Baixa"
+                });
+
+                const li = document.createElement("li");
+                li.textContent = task + " - " + formattedTaskDate;
+                li.style.color = taskColor;
+                li.dataset.originalColor = taskColor; // Armazena a cor original
+
+                // Criar container para os botões
+                const buttonContainer = document.createElement("div");
+                buttonContainer.classList.add("button-container");
+
+                // Botão de Editar
+                const editButton = document.createElement("button");
+                editButton.textContent = "Editar";
+                editButton.onclick = function () {
+                    editTask(li);
+                };
+
+                // Botão de Excluir
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Excluir";
+                deleteButton.onclick = function () {
+                    deleteTask(li);
+                };
+
+                // Botão de Marcar como Feita
+                const doneButton = document.createElement("button");
+                doneButton.textContent = "Feita";
+                doneButton.onclick = function () {
+                    markAsDone(li);
+                };
+
+                // Adicionar os botões ao container
+                buttonContainer.appendChild(editButton);
+                buttonContainer.appendChild(deleteButton);
+                buttonContainer.appendChild(doneButton);
+
+                // Adicionar o container de botões ao item da lista
+                li.appendChild(buttonContainer);
+                taskList.appendChild(li);
+
+                generateCalendar(); // Atualizar o calendário após adicionar uma tarefa
+                updateTabs();
+            } else {
+                alert("Por favor, insira uma tarefa válida e selecione uma data.");
+            }
+        }
+
+
+        function editTask(li) {
+            // Função de edição da tarefa
+        }
+
+        function deleteTask(li) {
+            // Função de exclusão da tarefa
+        }
+
+        function markAsDone(li) {
+            // Função de marcar tarefa como feita
+        }
+
+        function updateTabs() {
+            // Função para atualizar as abas
+        }
+
+        function previousMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            generateCalendar();
+        }
+
+        function nextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            generateCalendar();
+        }
+
+        // Inicializa o calendário
+        generateCalendar();
+    </script>
+</body>
+
+</html>
