@@ -1,0 +1,238 @@
+/* Reset de Estilos */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo do Body */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #EBF3FF;
+}
+
+/* Estilo do Header */
+header {
+    background-color: #8290f5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2% 10%;
+    width: 100%;
+    top: 0;
+    z-index: 999; 
+}
+
+header h1 a{
+    margin: 0;
+    text-align: left;
+    color: white;
+    text-decoration: none;   
+    font-size: 48px;
+}
+
+.nav_links {
+    list-style: none;
+    text-align: right;
+}
+
+.nav_links li {
+    display: inline;
+    margin: 0 10px;
+}
+
+.nav_links li a {
+    color: #fff;
+    font-size: large;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav_links li a:hover {
+    color: #B7C2FA; /* Mudança de cor ao passar o mouse */
+}
+
+/* Estilo da Agenda */
+.agenda {
+    background-color: #D1DAFD;
+    color: #8b66f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: calc(50% - 20px); /* Alteração da largura da agenda */
+    max-width: 600px; /* Ajuste do máximo de largura */
+    
+}
+
+.agenda h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.agenda input[type="text"],
+.agenda input[type="date"],
+.agenda select,
+.agenda button {
+    width: calc(100% - 22px); /* Ajuste do tamanho dos inputs e botão para compensar o padding */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.agenda button {
+    background-color: #8290F5;
+    color: #fff;
+    cursor: pointer;
+}
+
+.agenda button:hover {
+    background-color: #9ca9f8;
+}
+
+/* Estilo do Calendário */
+.calendario {
+    background-color: #B7C2FA;
+    color: #8b66f0;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px auto;
+    width: calc(50% - 20px); /* Alteração da largura do calendário */
+    max-width: 600px;
+    
+}
+
+.calendario h2 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendario > div {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.calendario > div button {
+    background-color: #8290F5;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.calendario > div button:hover {
+    background-color: #9ca9f8;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 10px;
+    text-align: center;
+}
+
+thead {
+    background-color: #D1DAFD;
+}
+
+tbody {
+    background-color: #EBF3FF;
+}
+
+.today {
+    background-color: #D1DAFD;
+}
+
+.task-day {
+    position: relative;
+}
+
+.task-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-left: 2px;
+}
+
+/* Tabulação */
+.tab {
+    display: none;
+}
+
+.tab.active {
+    display: block;
+}
+
+.tab-content {
+    margin-bottom: 20px;
+}
+
+.tab-content li {
+    padding: 5px 0;
+}
+
+/* Estilo do Container de Tarefas */
+.task-container {
+    background-color: #EBF3FF;
+    color: #8b66f0;
+    padding: 10px 20px;
+    border-radius: 5px;
+    margin: 10px;
+    width: calc(50% - 20px); /* Definindo a largura do container de tarefas */
+    float: left; /* Mover para a esquerda */
+    display: flex; /* Exibir os itens em linha */
+    align-items: center; /* Alinhar verticalmente os itens ao centro */
+}
+
+.task-container p {
+    margin: 0;
+    font-size: 18px; /* Aumentando o tamanho da fonte */
+}
+
+/* Estilo dos Botões de Função */
+.task-container button {
+    background-color: transparent;
+    color: #8290F5;
+    border: none;
+    cursor: pointer;
+    margin-left: 10px; /* Adicionando margem entre os botões */
+}
+
+.task-container button:hover {
+    color: #9ca9f8;
+}
+
+/* Estilo do Container Principal */
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Estilo do Container de Botões */
+.button-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.button-container button {
+    margin-right: 10px; /* Espaçamento entre os botões */
+}
+
+#taskList li {
+    font-family: "Times New Roman", Times, serif; /* Substitua com a fonte desejada */
+    font-size: 20px; /* Tamanho da fonte */
+    /* Outros estilos de fonte, como cor, peso, etc., podem ser adicionados aqui */
+}
