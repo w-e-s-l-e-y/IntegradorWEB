@@ -9,11 +9,11 @@
     <header>
         <h1>Life Sync</h1>
         <nav>
-            <a href="/landing_page/index.html">Home</a>
-            <a href="/calendario/calendario.html">Lista de Tarefas</a>
-            <a href="/pomodoro/pomodoro.html">Pomodoro Timer</a>
-            <a href="/login/login.html" id="login-link">Login</a>
-            <a href="/cadastro/cadastro.html" id="signup-link">Cadastro</a>
+            <a href="/Web/landing_page/index.html">Home</a>
+            <a href="/Web/calendario/calendario.html">Calendario</a>
+            <a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a>
+            <a href="/Web/login/login.html" id="login-link">Login</a>
+            <a href="/Web/cadastro/cadastro.html" id="signup-link">Cadastro</a>
             <a href="#" id="logout-link" style="display:none;">Logout</a>
         </nav>
     </header>
@@ -118,7 +118,7 @@
 
         logoutLink.addEventListener('click', () => {
             auth.signOut().then(() => {
-                window.location.href = '/landing_page/index.html';
+                window.location.href = '/Web/landing_page/index.html';
             }).catch((error) => {
                 console.error('Erro ao fazer logout:', error);
             });

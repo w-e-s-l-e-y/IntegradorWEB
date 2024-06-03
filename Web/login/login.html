@@ -9,11 +9,11 @@
     <header>
         <h1>Life Sync</h1>
         <nav>
-            <a href="/landing_page/index.html">Home</a>
-            <a href="/lista/lista.html">Lista de Tarefas</a>
-            <a href="/pomodoro/pomodoro.html">Pomodoro Timer</a>
+            <a href="/Web/landing_page/index.html">Home</a>
+            <a href="/Web/lista/lista.html">Lista de Tarefas</a>
+            <a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a>
             <a href="login.html" id="login-link">Login</a>
-            <a href="/cadastro/cadastro.html" id="signup-link">Cadastro</a>
+            <a href="/Web/cadastro/cadastro.html" id="signup-link">Cadastro</a>
             <a href="#" id="logout-link" style="display:none;">Logout</a>
         </nav>
     </header>
@@ -68,7 +68,7 @@
                     const user = userCredential.user;
                     document.getElementById('message').innerText = "Login realizado com sucesso!";
                     setTimeout(() => {
-                        window.location.href = '/landing_page/index.html';
+                        window.location.href = '/Web/landing_page/index.html';
                     }, 2000);
                 })
                 .catch((error) => {
@@ -92,7 +92,7 @@
                     const user = result.user;
                     document.getElementById('message').innerText = "Login realizado com sucesso!";
                     setTimeout(() => {
-                        window.location.href = '/landing_page/index.html';
+                        window.location.href = '/Web/landing_page/index.html';
                     }, 2000);
                 })
                 .catch((error) => {
@@ -124,7 +124,7 @@
 
         logoutLink.addEventListener('click', () => {
             auth.signOut().then(() => {
-                window.location.href = '/landing_page/index.html';
+                window.location.href = '/Web/landing_page/index.html';
             }).catch((error) => {
                 console.error('Erro ao fazer logout:', error);
             });
