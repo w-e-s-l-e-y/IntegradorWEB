@@ -70,7 +70,7 @@
                     e.target.password.value = '';
                     e.target["confirm-password"].value = '';
                     setTimeout(() => {
-                        window.location.href = '/Web/landing_page/index.html"';
+                        window.location.href = '/Web/landing_page/index.html';
                     }, 2000);
                 })
                 .catch((error) => {
@@ -126,7 +126,7 @@
 
         logoutLink.addEventListener('click', () => {
             auth.signOut().then(() => {
-                window.location.href = '/Web/landing_page/index.html"';
+                window.location.href = '/Web/landing_page/index.html';
             }).catch((error) => {
                 console.error('Erro ao fazer logout:', error);
             });
