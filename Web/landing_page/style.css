@@ -1,171 +1,239 @@
-/* Estilo geral */
-body {
-    font-family: 'Poppins', sans-serif; /* Alteração da fonte para Poppins */
+/* Importa a fonte do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@400;500;700&display=swap');
+
+/* Reseta estilos padrões */
+* {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    box-sizing: border-box;
+}
+
+/* Estilo geral do body */
+body {
+    font-family: 'Helvetica', sans-serif;
+    background-color: #E6E6FA; /* Lavanda claro */
     color: #333;
-    line-height: 1.6; /* Espaçamento entre linhas aumentado */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }
 
-a {
-    color: #007bff;
-    text-decoration: none;
-}
-
-/* Cabeçalho */
+/* Estilo do cabeçalho */
 header {
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #4B0082; /* Roxo escuro */
+    color: white;
+    padding: 20px 40px;
 }
 
-h1 {
-    text-align: center;
-    font-size: 2.5em;
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
 }
 
+/* Estilo da navegação */
 nav {
     display: flex;
-    justify-content: center;
     align-items: center;
-    padding: 0 20px;
-    gap: 15px;
 }
 
 nav a {
-    display: inline-block;
-    font-weight: bold;
-    padding: 10px 20px;
-    font-size: 18px;
-    transition: background-color 0.3s;
-    border-radius: 5px;
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    padding: 10px 15px;
+    border: none;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+nav a#signup-link {
+    background-color: #9370DB; /* Roxo médio */
+    color: white;
+    border-radius: 25px;
 }
 
 nav a:hover {
-    background-color: #f0f0f0;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
-#signup-link {
-    background-color: #ff4d4d;
-    color: #fff;
-    transition: background-color 0.3s, transform 0.3s;
+nav a#signup-link:hover {
+    background-color: #D8BFD8; /* Roxo suave */
 }
 
-#signup-link:hover {
-    background-color: #cc0000;
-    transform: scale(1.05);
-}
-
-/* Banner */
+/* Estilo da seção de banner */
 #banner {
-    background-color: #3f51b5;
-    color: #fff;
-    padding: 80px 0;
+    background-color: #4B0082; /* Roxo escuro */
+    color: white;
+    padding: 100px 20px;
     text-align: center;
 }
 
 #banner h2 {
-    font-size: 3em;
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: white;
 }
 
 #banner p {
-    font-size: 1.5em;
-    line-height: 1.5;
+    margin-bottom: 40px;
+    font-size: 1.2em;
 }
 
-.btn {
-    background-color: #007bff;
-    color: #fff;
+#banner .btn {
+    background-color: #9370DB; /* Roxo médio */
+    color: white;
     padding: 15px 30px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    font-size: 1.2em;
-    margin: 10px;
-    display: inline-block;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
+#banner .btn:hover {
+    background-color: #D8BFD8; /* Roxo suave */
 }
 
-/* Seções */
-section {
-    padding: 40px;
+/* Estilo das seções principais */
+main {
+    padding: 20px;
+    flex: 1;
 }
 
-h2 {
-    font-size: 2em;
-    margin-bottom: 30px;
+section h2 {
+    color: #4B0082; /* Roxo escuro */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilo das funcionalidades */
+#features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    text-align: center;
 }
 
 .feature {
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 30px;
-    border-radius: 10px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    margin: 10px;
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
 }
 
 .feature h3 {
     margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #4B0082; /* Roxo escuro */
 }
 
 .feature p {
     font-size: 1.1em;
 }
 
+/* Estilo da seção sobre nós */
+#about {
+    background-color: #4B0082; /* Roxo escuro */
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    margin-bottom: 40px;
+    border-radius: 12px;
+}
 
-/* Galeria */
+#about h2 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: white;
+}
+
+#about p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Estilo das dicas de produtividade */
+#productivity-tips {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #E6E6FA; /* Fundo lavanda claro */
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+#productivity-tips h2 {
+    font-size: 2.5em;
+    color: #4B0082; /* Roxo escuro */
+    margin-bottom: 20px;
+}
+
+.tip {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.tip:hover {
+    transform: translateY(-10px);
+}
+
+.tip h3 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #4B0082; /* Roxo escuro */
+}
+
+.tip p {
+    font-size: 1.1em;
+}
+
+/* Estilo da galeria */
 #gallery {
     text-align: center;
+    margin-bottom: 40px;
 }
 
 .spinner {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
 }
 
 .image {
-    width: 350px;
-    height: 250px;
-    margin: 15px;
+    margin: 0 10px;
 }
 
 .image img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-/* Rodapé */
+/* Estilo do rodapé */
 footer {
-    background-color: #3f51b5;
-    color: #fff;
-    padding: 30px;
+    background-color: #4B0082; /* Roxo escuro */
+    color: white;
     text-align: center;
-}
-
-/* Estilos responsivos */
-@media screen and (max-width: 768px) {
-    nav {
-        flex-direction: column;
-        align-items: center;
-        padding: 10px;
-        gap: 10px;
-    }
-
-    nav a {
-        font-size: 16px;
-        padding: 10px 15px;
-    }
-
-    .btn {
-        font-size: 1em;
-        padding: 10px 20px;
-    }
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
 }
