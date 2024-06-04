@@ -1,0 +1,88 @@
+/* Additional styles for the Pomodoro Timer page */
+
+/* Header Links */
+nav a {
+    color: #c3a6e8; /* Purple link color */
+  }
+  
+  /* Login/Signup Links */
+  #login-link,
+  #signup-link {
+    color: #c3a6e8; /* Purple link color */
+  }
+  
+  /* Logout Link */
+  #logout-link {
+    color: #c3a6e8; /* Purple link color */
+  }
+  
+  /* Form Button */
+  #add-pomodoro-task-form button {
+    background-color: #c3a6e8; /* Purple button color */
+    color: #fff;
+  }
+  
+  #add-pomodoro-task-form button:hover {
+    background-color: #a18bc4; /* Darker purple on hover */
+  }
+  
+  /* Task List */
+  .task {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .task span {
+    color: #333; /* Text color for tasks */
+  }
+  
+  .task button {
+    background-color: #c3a6e8; /* Purple button color */
+    color: #fff;
+  }
+  
+  .task button:hover {
+    background-color: #a18bc4; /* Darker purple on hover */
+  }
+  
+  .completed {
+    text-decoration: line-through;
+    color: #888; /* Completed task color */
+  }
+  
+  /* Timer Section */
+  #timer-section {
+    border-top: 1px solid #ddd; /* Light border at top */
+    padding-top: 20px;
+  }
+  
+  #timer-display {
+    font-size: 36px;
+    color: #c3a6e8; /* Purple timer display color */
+  }
+  
+  #start-timer,
+  #stop-timer {
+    background-color: #c3a6e8; /* Purple button color */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+  }
+  
+  #start-timer:hover,
+  #stop-timer:hover {
+    background-color: #a18bc4; /* Darker purple on hover */
+  }
+  
+  #stop-timer {
+    opacity: 0.5; /* Disable stop button initially */
+    pointer-events: none;
+  }
+  
