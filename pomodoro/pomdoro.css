@@ -1,88 +1,183 @@
-/* Additional styles for the Pomodoro Timer page */
+/* Body styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #f8f9fa;
+  margin: 0;
+  padding: 0;
+}
 
-/* Header Links */
+/* Header styles */
+header {
+  background-color: #343a40;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+}
+
 nav a {
-    color: #c3a6e8; /* Purple link color */
-  }
-  
-  /* Login/Signup Links */
-  #login-link,
-  #signup-link {
-    color: #c3a6e8; /* Purple link color */
-  }
-  
-  /* Logout Link */
-  #logout-link {
-    color: #c3a6e8; /* Purple link color */
-  }
-  
-  /* Form Button */
-  #add-pomodoro-task-form button {
-    background-color: #c3a6e8; /* Purple button color */
-    color: #fff;
-  }
-  
-  #add-pomodoro-task-form button:hover {
-    background-color: #a18bc4; /* Darker purple on hover */
-  }
-  
-  /* Task List */
-  .task {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .task span {
-    color: #333; /* Text color for tasks */
-  }
-  
-  .task button {
-    background-color: #c3a6e8; /* Purple button color */
-    color: #fff;
-  }
-  
-  .task button:hover {
-    background-color: #a18bc4; /* Darker purple on hover */
-  }
-  
-  .completed {
-    text-decoration: line-through;
-    color: #888; /* Completed task color */
-  }
-  
-  /* Timer Section */
-  #timer-section {
-    border-top: 1px solid #ddd; /* Light border at top */
-    padding-top: 20px;
-  }
-  
-  #timer-display {
-    font-size: 36px;
-    color: #c3a6e8; /* Purple timer display color */
-  }
-  
-  #start-timer,
-  #stop-timer {
-    background-color: #c3a6e8; /* Purple button color */
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    margin-top: 10px;
-  }
-  
-  #start-timer:hover,
-  #stop-timer:hover {
-    background-color: #a18bc4; /* Darker purple on hover */
-  }
-  
-  #stop-timer {
-    opacity: 0.5; /* Disable stop button initially */
-    pointer-events: none;
-  }
-  
+  color: #f8f9fa;
+  text-decoration: none;
+  margin: 0 15px;
+  font-weight: 500;
+}
+
+nav a:hover {
+  color: #ffc107;
+}
+
+/* Main content styles */
+main {
+  padding: 40px 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+main h2, main h3 {
+  color: #343a40;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Add task form styles */
+#add-pomodoro-task-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+#add-pomodoro-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#add-pomodoro-task-form label {
+  font-size: 14px;
+  color: #495057;
+}
+
+#add-pomodoro-task-form input {
+  padding: 12px;
+  border: 1px solid #ced4da;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+#add-pomodoro-task-form button {
+  background-color: #28a745;
+  color: #fff;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#add-pomodoro-task-form button:hover {
+  background-color: #218838;
+}
+
+/* Task list styles */
+#pomodoro-tasks-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#pomodoro-task-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+#pomodoro-task-list li {
+  background-color: #e9ecef;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#pomodoro-task-list li span {
+  color: #343a40;
+  font-size: 16px;
+}
+
+#pomodoro-task-list li button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+#pomodoro-task-list li button:hover {
+  background-color: #0056b3;
+}
+
+#pomodoro-task-list li.completed {
+  text-decoration: line-through;
+  color: #6c757d;
+}
+
+/* Timer section styles */
+#timer-section {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-top: 20px;
+}
+
+#timer-display {
+  font-size: 60px;
+  color: #343a40;
+  margin-bottom: 20px;
+}
+
+#start-timer, #stop-timer {
+  background-color: #007bff;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin: 10px;
+  transition: background-color 0.3s;
+}
+
+#start-timer:hover, #stop-timer:hover {
+  background-color: #0056b3;
+}
+
+#start-timer:disabled, #stop-timer:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Footer styles */
+footer {
+  background-color: #343a40;
+  color: #fff;
+  text-align: center;
+  padding: 15px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
