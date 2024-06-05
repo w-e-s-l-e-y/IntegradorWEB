@@ -1,172 +1,268 @@
-/* Reset de estilos */
+/* Reset básico */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Estilo geral */
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  a {
-    color: #c3a6e8; /* Purple link color */
-    text-decoration: none;
-  }
-  
-  /* Cabeçalho */
-  header {
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  h1 {
-    text-align: center;
-    font-size: 2.2em;
-    margin-bottom: 10px;
-  }
-  
-  nav {
-    display: flex;
-    justify-content: center;
-  }
-  
-  nav a {
-    color: #333;
-    text-decoration: none;
-    padding: 10px 15px;
-    font-weight: bold;
-    transition: background-color 0.3s;
-  }
-  
-  nav a:hover {
-    background-color: #f5f5f5;
-  }
-  
-  #login-link,
-  #signup-link {
-    display: none; /* Esconde links de login/cadastro inicialmente */
-  }
-  
-  /* Main */
-  main {
-    padding: 40px;
-  }
-  
-  section {
-    margin-bottom: 30px;
-    padding: 20px;
-    border-radius: 5px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  h2 {
-    font-size: 1.8em;
-    margin-bottom: 15px;
-  }
-  
-  /* Formulário de adição de tarefas */
-  #add-task-form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-  
-  #add-task-form label {
-    width: calc(50% - 10px); /* Ocupa metade do espaço disponível */
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  #add-task-form input,
-  #add-task-form select {
-    width: calc(50% - 10px); /* Ocupa metade do espaço disponível */
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    margin-bottom: 10px;
-  }
-  
-  #add-task-form button {
-    background-color: #c3a6e8; /* Purple button color */
-    color: #fff;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  #add-task-form button:hover {
-    background-color: #a18bc4; /* Darker purple on hover */
-  }
-  
-  /* Lista de tarefas */
-  #tasks-section ul {
-    list-style: none;
-    padding: 0;
-  }
-  
-  .task {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .task span {
-    font-size: 1.2em;
-    display: block;
-    margin-bottom: 10px;
-  }
-  
-  .task button {
-    background-color: #c3a6e8; /* Purple button color */
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-
-
-.task {
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Arial', sans-serif;
 }
 
-.task span {
-    font-size: 1.2em;
-    display: block;
-    margin-bottom: 10px;
+/* Estilo do corpo */
+body {
+  background-color: #f5f5f5;
+  color: #333;
+  line-height: 1.6;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
-.task button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 8px 16px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
+/* Estilo do header */
+header {
+  background-color: #c3a6e8;
+  color: #fff;
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.task button:hover {
-    background-color: #0056b3;
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
 }
 
-.completed {
-    text-decoration: line-through;
-    color: #888;
+header nav ul {
+  list-style: none;
+  display: flex;
+  align-items: center;
 }
+
+header nav ul li {
+  margin-left: 20px;
+}
+
+header nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  border-radius: 15px;
+  transition: background-color 0.3s;
+}
+
+header nav ul li a#signup-link {
+  background-color: #9370DB;
+}
+
+header nav ul li a:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+header nav ul li a#signup-link:hover {
+  background-color: #D8BFD8;
+}
+
+/* Estilo principal */
+main {
+  flex: 1;
+  width: 100%;
+  margin: 2rem 0;
+  padding: 2rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  max-width: 900px;
+  margin: 2rem auto;
+}
+
+/* Estilo da seção de tarefas */
+.task-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task-section h2 {
+  color: #6200ea;
+  margin-bottom: 1rem;
+  font-size: 2rem;
+}
+
+.task-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+}
+
+#add-task-section, #tasks-section {
+  flex: 1;
+  padding: 1rem;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+#add-task-section h3, #tasks-section h3 {
+  color: #6200ea;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.form-group input, .form-group select, .form-group button {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+#open-map {
+  background-color: #6200ea;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#open-map:hover {
+  background-color: #3700b3;
+}
+
+.btn-primary {
+  background-color: #6200ea;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #3700b3;
+}
+
+.btn-secondary {
+  background-color: #9370DB;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+  background-color: #D8BFD8;
+}
+
+.btn-danger {
+  background-color: #d9534f;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.btn-danger:hover {
+  background-color: #c9302c;
+}
+
+/* Estilo das tarefas */
+#task-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 1rem;
+}
+
+#task-list li {
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.task-details {
+  max-width: 70%;
+}
+
+.task-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* Estilo do mapa */
+#map-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#map-header {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+}
+
+#close-map {
+  background-color: #6200ea;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#close-map:hover {
+  background-color: #3700b3;
+}
+
+#map {
+  width: 80%;
+  height: 80%;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+/* Estilo do footer */
+footer {
+  text-align: center;
+  padding: 1rem;
+  background-color: #f1f1f1;
+  color: #333;
+  width: 100%;
+}
+

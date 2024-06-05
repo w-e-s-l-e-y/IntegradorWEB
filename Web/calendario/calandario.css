@@ -1,0 +1,148 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+/* Estilo do corpo */
+body {
+    background-color: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Estilo do header */
+header {
+    background-color: #c3a6e8;
+    color: #fff;
+    padding: 15px 30px; /* Reduzindo o preenchimento */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.3rem; /* Reduzindo o tamanho da fonte */
+}
+
+header nav {
+    display: flex;
+    align-items: center;
+}
+
+header nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px; /* Reduzindo o preenchimento */
+    margin-left: 15px; /* Reduzindo a margem */
+    border-radius: 15px; /* Reduzindo o raio do botão */
+    transition: background-color 0.3s;
+}
+
+header nav a#signup-link {
+    background-color: #9370DB; /* Roxo médio */
+}
+
+header nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+header nav a#signup-link:hover {
+    background-color: #D8BFD8; /* Roxo suave */
+}
+
+/* Estilo principal */
+main {
+    flex: 1;
+    width: 100%;
+    margin: 1.5rem 0; /* Reduzindo a margem */
+    padding: 1.5rem; /* Reduzindo o preenchimento */
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+/* Estilo do calendário */
+#calendar {
+    width: calc(80% - 2rem); /* Reduzindo a largura */
+    max-width: 800px; /* Definindo uma largura máxima */
+    margin: 0 auto;
+    padding: 1rem; /* Reduzindo o preenchimento */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.fc {
+    width: 100%;
+}
+
+.fc-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem; /* Reduzindo a margem inferior */
+}
+
+.fc-button {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem; /* Reduzindo o preenchimento */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.fc-button:hover {
+    background-color: #3700b3;
+}
+
+.fc-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #6200ea;
+}
+
+.fc-button-primary {
+    background-color: #9370DB; /* Roxo médio */
+    border-color: #9370DB; 
+}
+
+.fc-button-primary:hover {
+    background-color: #D8BFD8; /* Roxo suave */
+}
+
+.fc-event {
+    background-color: #6200ea;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.3rem;
+    font-size: 0.9rem;
+}
+
+.fc-daygrid-day-number {
+    color: #6200ea;
+}
+
+.fc-view-harness {
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do footer */
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: #f1f1f1;
+    color: #333;
+    width: 100%;
+}
+

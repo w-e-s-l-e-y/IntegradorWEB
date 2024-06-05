@@ -3,71 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/Web/lista/lista.css">
+    <link rel="stylesheet" href="lista.css">
     <title>Lista de Tarefas - Life Sync</title>
 </head>
 <body>
     <header>
-        <h1>Life Sync</h1>
+        <div class="logo">
+            <h1>Life Sync</h1>
+        </div>
         <nav>
-            <a href="/Web/landing_page/index.html">Home</a>
-            <a href="/Web/calendario/calendario.html">Calendario</a>
-            <a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a>
-            <a href="/Web/login/login.html" id="login-link">Login</a>
-            <a href="/Web/cadastro/cadastro.html" id="signup-link">Cadastro</a>
-            <a href="#" id="logout-link" style="display:none;">Logout</a>
+            <ul>
+                <li><a href="/Web/landing_page/index.html">Home</a></li>
+                <li><a href="/Web/calendario/calendario.html">Calendário</a></li>
+                <li><a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a></li>
+                <li><a href="/Web/login/login.html" id="login-link">Login</a></li>
+                <li><a href="/Web/cadastro/cadastro.html" id="signup-link">Cadastro</a></li>
+                <li><a href="#" id="logout-link" >Logout</a></li>
+            </ul>
         </nav>
     </header>
 
     <main>
-        <h2>Lista de Tarefas</h2>
-        <section id="add-task-section">
-            <h3>Adicionar Nova Tarefa</h3>
-            <form id="add-task-form">
-                <label for="task">Tarefa:</label>
-                <input type="text" id="task" name="task" required>
+        <section class="task-section">
+            <h2>Lista de Tarefas</h2>
+            <div class="task-container">
+                <div id="add-task-section">
+                    <h3>Adicionar Nova Tarefa</h3>
+                    <form id="add-task-form">
+                        <div class="form-group">
+                            <label for="task">Tarefa:</label>
+                            <input type="text" id="task" name="task" required>
+                        </div>
 
-                <label for="priority">Prioridade:</label>
-                <select id="priority" name="priority">
-                    <option value="alta">Alta</option>
-                    <option value="media">Média</option>
-                    <option value="baixa">Baixa</option>
-                </select>
+                        <div class="form-group">
+                            <label for="priority">Prioridade:</label>
+                            <select id="priority" name="priority">
+                                <option value="alta">Alta</option>
+                                <option value="media">Média</option>
+                                <option value="baixa">Baixa</option>
+                            </select>
+                        </div>
 
-                <label for="date">Data:</label>
-                <input type="date" id="date" name="date" required>
+                        <div class="form-group">
+                            <label for="date">Data:</label>
+                            <input type="date" id="date" name="date" required>
+                        </div>
 
-                <label for="time">Tempo (opcional):</label>
-                <input type="time" id="time" name="time">
+                        <div class="form-group">
+                            <label for="time">Tempo (opcional):</label>
+                            <input type="time" id="time" name="time">
+                        </div>
 
-                <label for="location">Localização (opcional):</label>
-                <input type="text" id="location" name="location" readonly>
-                <button type="button" id="open-map">Escolher Localização</button>
+                        <div class="form-group">
+                            <label for="location">Localização (opcional):</label>
+                            <input type="text" id="location" name="location" readonly>
+                            <button type="button" id="open-map">Escolher Localização</button>
+                        </div>
 
-                <button type="submit">Adicionar</button>
-            </form>
-        </section>
+                        <button type="submit" class="btn-primary">Adicionar</button>
+                    </form>
+                </div>
 
-        <section id="tasks-section">
-            <h3>Tarefas</h3>
-            <ul id="task-list"></ul>
+                <div id="tasks-section">
+                    <h3>Tarefas</h3>
+                    <ul id="task-list"></ul>
+                </div>
+            </div>
         </section>
     </main>
 
     <div id="map-container" style="display:none;">
-        <button id="close-map">Fechar Mapa</button>
+        <div id="map-header">
+            <button id="close-map">Fechar Mapa</button>
+        </div>
         <div id="map" style="width: 100%; height: 400px;"></div>
     </div>
 
-    <footer>
-        <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
-    </footer>
+
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqLAyacljZsWMbVrv-z1WPfL2H2yfmMv0"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
@@ -78,7 +96,6 @@
             messagingSenderId: "78086954632",
             appId: "1:78086954632:web:567a52d817e3de1280093d",
             measurementId: "G-EN04957NEZ"
-
         };
 
         const app = initializeApp(firebaseConfig);
@@ -213,14 +230,15 @@
                 for (let id in tasks) {
                     const task = tasks[id];
                     const li = document.createElement('li');
+                    li.className = task.completed ? 'completed' : '';
                     li.innerHTML = `
-                        <span>${task.task} (Prioridade: ${task.priority}, Data: ${task.date}, Tempo: ${task.time ? task.time : 'N/A'}, Localização: ${task.location ? `<button onclick="viewLocation('${task.location}')">Ver Localização</button>` : 'N/A'})</span>
-                        <button onclick="completeTask('${id}')">Concluir</button>
-                        <button onclick="deleteTask('${id}')">Excluir</button>
+                        <span class="task-details">${task.task} <br> (Prioridade: ${task.priority}, Data: ${task.date}, Tempo: ${task.time ? task.time : 'N/A'}, Localização: ${task.location ? `<button class="btn-secondary" onclick="viewLocation('${task.location}')">Ver Localização</button>` : 'N/A'})</span>
+                        <div class="task-actions">
+                            <button class="btn-primary" onclick="completeTask('${id}')">Concluir</button>
+                            <button class="btn-secondary" onclick="editTask('${id}', '${task.task}', '${task.priority}', '${task.date}', '${task.time}', '${task.location}')">Editar</button>
+                            <button class="btn-danger" onclick="deleteTask('${id}')">Excluir</button>
+                        </div>
                     `;
-                    if (task.completed) {
-                        li.style.textDecoration = 'line-through';
-                    }
                     taskList.appendChild(li);
                 }
             });
@@ -229,10 +247,7 @@
         window.completeTask = function (id) {
             if (!userId) return;
             const taskRef = ref(database, `tasks/${userId}/${id}`);
-            set(taskRef, {
-                ...taskRef,
-                completed: true
-            }).catch((error) => {
+            update(taskRef, { completed: true }).catch((error) => {
                 console.error('Erro ao completar tarefa:', error);
             });
         }
@@ -243,6 +258,28 @@
             remove(taskRef).catch((error) => {
                 console.error('Erro ao excluir tarefa:', error);
             });
+        }
+
+        window.editTask = function (id, task, priority, date, time, location) {
+            const taskRef = ref(database, `tasks/${userId}/${id}`);
+            const newTask = prompt("Editar tarefa:", task);
+            const newPriority = prompt("Editar prioridade:", priority);
+            const newDate = prompt("Editar data:", date);
+            const newTime = prompt("Editar tempo:", time);
+            const newLocation = prompt("Editar localização:", location);
+
+            if (newTask && newPriority && newDate && newTime && newLocation) {
+                set(taskRef, {
+                    task: newTask,
+                    priority: newPriority,
+                    date: newDate,
+                    time: newTime,
+                    location: newLocation,
+                    completed: false
+                }).catch((error) => {
+                    console.error('Erro ao editar tarefa:', error);
+                });
+            }
         }
 
         window.viewLocation = function (location) {
