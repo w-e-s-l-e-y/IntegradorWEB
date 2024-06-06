@@ -1,3 +1,5 @@
+
+
 /* Reset CSS */
 * {
   margin: 0;
@@ -20,28 +22,35 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
 }
 
-header .logo h1 {
+header h1 {
   margin: 0;
 }
 
-header nav ul {
-  list-style: none;
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
   display: flex;
   gap: 1rem;
 }
 
-header nav ul li a {
+nav ul li a {
   color: white;
   text-decoration: none;
-  padding: 0.5rem 1rem;
-  border-radius: 5px;
+  margin-inline: 1rem;
+  border-radius: 1px;
+  border: none;
+  background-color: transparent;
+  transition: background-color 0.3s ease;
 }
 
-header nav ul li a:hover {
-  background-color: #580e93;
+nav ul li a:hover{
+  background-color: rgba(255, 255, 255, 0.2);
 }
+
 
 /* Main Content Styling */
 main {
