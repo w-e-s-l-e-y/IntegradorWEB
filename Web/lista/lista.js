@@ -1,16 +1,123 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getDatabase, ref, set, push, onValue, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
+    authDomain: "life-sync-fa0ee.firebaseapp.com",
+    databaseURL: "https://life-sync-fa0ee-default-rtdb.firebaseio.com",
+    projectId: "life-sync-fa0ee",
+    storageBucket: "life-sync-fa0ee.appspot.com",
+    messagingSenderId: "78086954632",
+    appId: "1:78086954632:web:567a52d817e3de1280093d",
+    measurementId: "G-EN04957NEZ"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const database = getDatabase(app);
+
+const taskList = document.getElementById('task-list');
+const addTaskForm = document.getElementById('add-task-form');
+
+const loginLink = document.getElementById('login-link');
+const signupLink = document.getElementById('signup-link');
+const logoutLink = document.getElementById('logout-link');
+const openMapButton = document.getElementById('open-map');
+const closeMapButton = document.getElementById('close-map');
+const locationInput = document.getElementById('location');
+const mapContainer = document.getElementById('map-container');
+const mapDiv = document.getElementById('map');
+
+let userId;
 let map;
 let marker;
 
-function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: -23.5505, lng: -46.6333 }, // Posição inicial (São Paulo)
-        zoom: 12,
-    });
+onAuthStateChanged(auth, (user) => {
+    if (user) {
+        loginLink.style.display = 'none';
+        signupLink.style.display = 'none';
+        logoutLink.style.display = 'block';
+        userId = user.uid;
+        loadTasks();
+    } else {
+        loginLink.style.display = 'block';
+        signupLink.style.display = 'block';
+        logoutLink.style.display = 'none';
+        taskList.innerHTML = '';
+        userId = null;
+    }
+});
 
-    map.addListener('click', (e) => {
-        placeMarkerAndPanTo(e.latLng, map);
+logoutLink.addEventListener('click', () => {
+    auth.signOut().then(() => {
+        window.location.href = '/Web/landing_page/index.html';
+    }).catch((error) => {
+        console.error('Erro ao fazer logout:', error);
     });
-}
+});
+
+addTaskForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (!userId) {
+        alert('Você precisa estar logado para adicionar tarefas.');
+        return;
+    }
+
+    const task = e.target.task.value.trim();
+    const priority = e.target.priority.value;
+    const date = e.target.date.value;
+    const time = e.target.time.value.trim();
+    const location = e.target.location.value.trim();
+    const taskRef = push(ref(database, `tasks/${userId}`));
+
+    set(taskRef, {
+        task,
+        priority,
+        date,
+        time: time || null,
+        location: location || null,
+        completed: false
+    }).then(() => {
+        e.target.reset();
+    }).catch((error) => {
+        console.error('Erro ao adicionar tarefa:', error);
+    });
+});
+
+openMapButton.addEventListener('click', () => {
+    mapContainer.style.display = 'block';
+    if (!map) {
+        navigator.geolocation.getCurrentPosition((position) => {
+            const userLocation = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+            };
+
+            map = new google.maps.Map(mapDiv, {
+                center: userLocation,
+                zoom: 12,
+            });
+
+            map.addListener('click', (e) => {
+                placeMarkerAndPanTo(e.latLng, map);
+            });
+        }, () => {
+            map = new google.maps.Map(mapDiv, {
+                center: { lat: -15.7942, lng: -47.8822 }, // Centro do Brasil
+                zoom: 4,
+            });
+
+            map.addListener('click', (e) => {
+                placeMarkerAndPanTo(e.latLng, map);
+            });
+        });
+    }
+});
+
+closeMapButton.addEventListener('click', () => {
+    mapContainer.style.display = 'none';
+});
 
 function placeMarkerAndPanTo(latLng, map) {
     if (marker) {
@@ -21,127 +128,112 @@ function placeMarkerAndPanTo(latLng, map) {
             map: map,
         });
     }
-    document.getElementById('localizacao').value = `${latLng.lat()},${latLng.lng()}`;
     map.panTo(latLng);
+    locationInput.value = `${latLng.lat()}, ${latLng.lng()}`;
 }
 
-function openMap() {
-    document.getElementById('map-container').style.display = 'block';
-}
-
-function closeMap() {
-    document.getElementById('map-container').style.display = 'none';
-}
-
-
-
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('nova-tarefa-form');
-    const listaTarefas = document.getElementById('lista-tarefas');
-
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const tarefa = document.getElementById('tarefa').value;
-        const data = document.getElementById('data').value;
-        const hora = document.getElementById('hora').value;
-        const prioridade = document.getElementById('prioridade').value;
-        const localizacao = document.getElementById('localizacao').value;
-        adicionarTarefa(tarefa, data, hora, prioridade, localizacao);
-        form.reset();
-        closeMap();
-    });
-
-    function adicionarTarefa(tarefa, data, hora, prioridade, localizacao) {
-        const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-        const novaTarefa = { tarefa, data, hora, prioridade, localizacao };
-        tarefas.push(novaTarefa);
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        renderizarTarefas();
-    }
-
-    function renderizarTarefas() {
-        listaTarefas.innerHTML = '';
-        const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-        tarefas.forEach((tarefaObj, index) => {
+function loadTasks() {
+    if (!userId) return;
+    const tasksRef = ref(database, `tasks/${userId}`);
+    onValue(tasksRef, (snapshot) => {
+        const tasks = snapshot.val();
+        taskList.innerHTML = '';
+        for (let id in tasks) {
+            const task = tasks[id];
             const li = document.createElement('li');
-            li.innerHTML = `
-                <span class="texto-tarefa">${tarefaObj.tarefa} - ${tarefaObj.data} ${tarefaObj.hora ? tarefaObj.hora : ''} - ${tarefaObj.prioridade}</span>
-                ${tarefaObj.localizacao ? `<a href="https://www.google.com/maps?q=${tarefaObj.localizacao}" target="_blank">Ver Localização</a>` : ''}
-                <button class="editar" data-index="${index}">Editar</button>
-                <button class="concluir" data-index="${index}">Concluir</button>
-                <div class="spinner" style="display: none;">⏳</div>
-                <div class="editar-tarefa" style="display: none;">
-                    <input type="text" class="editar-texto" value="${tarefaObj.tarefa}">
-                    <input type="date" class="editar-data" value="${tarefaObj.data}">
-                    <input type="time" class="editar-hora" value="${tarefaObj.hora}">
-                    <select class="editar-prioridade">
-                        <option value="alta"${tarefaObj.prioridade === 'alta' ? ' selected' : ''}>Alta</option>
-                        <option value="media"${tarefaObj.prioridade === 'media' ? ' selected' : ''}>Média</option>
-                        <option value="baixa"${tarefaObj.prioridade === 'baixa' ? ' selected' : ''}>Baixa</option>
-                    </select>
-                    <input type="text" class="editar-localizacao" value="${tarefaObj.localizacao}" readonly>
-                    <button type="button" class="selecionar-localizacao">Selecionar Localização</button>
-                    <button class="salvar" data-index="${index}">Salvar</button>
-                </div>
-            `;
-            listaTarefas.appendChild(li);
+            li.className = task.completed ? 'completed' : '';
+            let taskDetails = `
+                <span class="task-details">
+                    ${task.task}<br>
+                    (Prioridade: ${task.priority}, Data: ${task.date}`;
+            if (task.time) taskDetails += `, Tempo: ${task.time}`;
+            if (task.location) taskDetails += `, Localização: <button class="btn-secondary" onclick="viewLocation('${task.location}')">Ver Localização</button>`;
+            taskDetails += `)</span>`;
 
-            const editarBtn = li.querySelector('.editar');
-            const concluirBtn = li.querySelector('.concluir');
-            const salvarBtn = li.querySelector('.salvar');
-            const selecionarLocalizacaoBtn = li.querySelector('.selecionar-localizacao');
-            const editarDiv = li.querySelector('.editar-tarefa');
-            const spinner = li.querySelector('.spinner');
+            li.innerHTML = taskDetails;
 
-            editarBtn.addEventListener('click', () => {
-                editarDiv.style.display = editarDiv.style.display === 'none' ? 'block' : 'none';
-            });
+            const taskActions = document.createElement('div');
+            taskActions.className = 'task-actions';
 
-            concluirBtn.addEventListener('click', () => {
-                concluirTarefa(index);
-            });
+            const completeBtn = document.createElement('button');
+            completeBtn.className = 'btn-primary';
+            completeBtn.textContent = 'Concluir';
+            completeBtn.addEventListener('click', () => completeTask(id));
 
-            salvarBtn.addEventListener('click', () => {
-                spinner.style.display = 'inline-block';
-                setTimeout(() => {
-                    salvarTarefa(index, li);
-                    spinner.style.display = 'none';
-                    editarDiv.style.display = 'none';
-                }, 1000);
-            });
+            const editBtn = document.createElement('button');
+            editBtn.className = 'btn-secondary';
+            editBtn.textContent = 'Editar';
+            editBtn.addEventListener('click', () => editTask(id, task));
 
-            selecionarLocalizacaoBtn.addEventListener('click', () => {
-                openMap();
-                if (tarefaObj.localizacao) {
-                    const [lat, lng] = tarefaObj.localizacao.split(',').map(Number);
-                    marker = new google.maps.Marker({
-                        position: { lat, lng },
-                        map: map,
-                    });
-                    map.panTo(marker.getPosition());
-                }
-            });
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'btn-danger';
+            deleteBtn.textContent = 'Excluir';
+            deleteBtn.addEventListener('click', () => deleteTask(id));
+
+            taskActions.appendChild(completeBtn);
+            taskActions.appendChild(editBtn);
+            taskActions.appendChild(deleteBtn);
+            li.appendChild(taskActions);
+
+            taskList.appendChild(li);
+        }
+    });
+}
+
+function completeTask(id) {
+    if (!userId) return;
+    const taskRef = ref(database, `tasks/${userId}/${id}`);
+    update(taskRef, { completed: true }).catch((error) => {
+        console.error('Erro ao completar tarefa:', error);
+    });
+}
+
+function deleteTask(id) {
+    if (!userId) return;
+    const taskRef = ref(database, `tasks/${userId}/${id}`);
+    remove(taskRef).catch((error) => {
+        console.error('Erro ao excluir tarefa:', error);
+    });
+}
+
+function editTask(id, task) {
+    const taskRef = ref(database, `tasks/${userId}/${id}`);
+    const newTask = prompt("Editar tarefa:", task.task);
+    const newPriority = prompt("Editar prioridade:", task.priority);
+    const newDate = prompt("Editar data:", task.date);
+    const newTime = prompt("Editar tempo:", task.time || "");
+    const newLocation = prompt("Editar localização:", task.location || "");
+
+    if (newTask && newPriority && newDate) {
+        set(taskRef, {
+            task: newTask,
+            priority: newPriority,
+            date: newDate,
+            time: newTime || null,
+            location: newLocation || null,
+            completed: false
+        }).catch((error) => {
+            console.error('Erro ao editar tarefa:', error);
         });
     }
+}
 
-    function concluirTarefa(index) {
-        const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-        tarefas.splice(index, 1);
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        renderizarTarefas();
+window.viewLocation = function (location) {
+    const [lat, lng] = location.split(', ').map(Number);
+    mapContainer.style.display = 'block';
+    if (!map) {
+        map = new google.maps.Map(mapDiv, {
+            center: { lat, lng },
+            zoom: 12,
+        });
     }
-
-    function salvarTarefa(index, li) {
-        const tarefas = JSON.parse(localStorage.getItem('tarefas')) || [];
-        const novoTexto = li.querySelector('.editar-texto').value;
-        const novaData = li.querySelector('.editar-data').value;
-        const novaHora = li.querySelector('.editar-hora').value;
-        const novaPrioridade = li.querySelector('.editar-prioridade').value;
-        const novaLocalizacao = li.querySelector('.editar-localizacao').value;
-        tarefas[index] = { tarefa: novoTexto, data: novaData, hora: novaHora, prioridade: novaPrioridade, localizacao: novaLocalizacao };
-        localStorage.setItem('tarefas', JSON.stringify(tarefas));
-        renderizarTarefas();
+    if (marker) {
+        marker.setPosition({ lat, lng });
+    } else {
+        marker = new google.maps.Marker({
+            position: { lat, lng },
+            map: map,
+        });
     }
-
-    renderizarTarefas();
-});
+    map.panTo({ lat, lng });
+};

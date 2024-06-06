@@ -1,212 +1,164 @@
-/* Reset básico */
+/* Reset CSS */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Arial', sans-serif;
 }
 
-/* Estilo do corpo */
+/* Body Styling */
 body {
-  background-color: #f5f5f5;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
   color: #333;
-  line-height: 1.6;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
 }
 
-/* Estilo do header */
+/* Header Styling */
 header {
-  background-color: #c3a6e8;
-  color: #fff;
-  padding: 15px 30px;
+  background-color: #6a0dad;
+  color: white;
+  padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-header h1 {
+header .logo h1 {
   margin: 0;
-  font-size: 1.5rem;
 }
 
 header nav ul {
   list-style: none;
   display: flex;
-  align-items: center;
-}
-
-header nav ul li {
-  margin-left: 20px;
+  gap: 1rem;
 }
 
 header nav ul li a {
-  color: #fff;
+  color: white;
   text-decoration: none;
-  font-weight: bold;
-  padding: 8px 16px;
-  border-radius: 15px;
-  transition: background-color 0.3s;
-}
-
-header nav ul li a#signup-link {
-  background-color: #9370DB;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
 }
 
 header nav ul li a:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: #580e93;
 }
 
-header nav ul li a#signup-link:hover {
-  background-color: #D8BFD8;
-}
-
-/* Estilo principal */
+/* Main Content Styling */
 main {
-  flex: 1;
-  width: 100%;
-  margin: 2rem 0;
   padding: 2rem;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
-  max-width: 900px;
-  margin: 2rem auto;
 }
 
-/* Estilo da seção de tarefas */
 .task-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .task-section h2 {
-  color: #6200ea;
   margin-bottom: 1rem;
-  font-size: 2rem;
 }
 
 .task-container {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
   gap: 2rem;
 }
 
 #add-task-section, #tasks-section {
   flex: 1;
-  padding: 1rem;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 #add-task-section h3, #tasks-section h3 {
-  color: #6200ea;
   margin-bottom: 1rem;
-  font-size: 1.5rem;
+}
+
+#add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .form-group {
-  margin-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
+  font-weight: bold;
 }
 
-.form-group input, .form-group select, .form-group button {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
+#add-task-form input[type="text"],
+#add-task-form input[type="date"],
+#add-task-form input[type="time"],
+#add-task-form select {
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#add-task-form button {
+  align-self: flex-start;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#add-task-form .btn-primary {
+  background-color: #6a0dad;
+  color: white;
+}
+
+#add-task-form .btn-primary:hover {
+  background-color: #580e93;
+}
+
+#add-task-form .btn-secondary {
+  background-color: #9c27b0;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+#add-task-form .btn-secondary:hover {
+  background-color: #7b1fa2;
+}
+
+/* Task List Styling */
+#tasks-section {
+  max-height: 600px;
+  overflow-y: auto;
   border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-}
-
-#open-map {
-  background-color: #6200ea;
-  color: #fff;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#open-map:hover {
-  background-color: #3700b3;
-}
-
-.btn-primary {
-  background-color: #6200ea;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-.btn-primary:hover {
-  background-color: #3700b3;
-}
-
-.btn-secondary {
-  background-color: #9370DB;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-.btn-secondary:hover {
-  background-color: #D8BFD8;
-}
-
-.btn-danger {
-  background-color: #d9534f;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  display: inline-block;
-  margin-top: 0.5rem;
-}
-
-.btn-danger:hover {
-  background-color: #c9302c;
-}
-
-/* Estilo das tarefas */
-#task-list {
-  list-style: none;
-  padding: 0;
-  margin-top: 1rem;
-}
-
-#task-list li {
-  padding: 1rem;
-  background-color: #fff;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  background: #fafafa;
+}
+
+.task-list {
+  list-style: none;
+}
+
+.task-list li {
+  background: #f9f9f9;
+  padding: 1rem;
   margin-bottom: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
+.task-list li.completed {
+  background: #d4edda;
+}
+
 .task-details {
-  max-width: 70%;
+  flex: 1;
 }
 
 .task-actions {
@@ -214,55 +166,64 @@ main {
   gap: 0.5rem;
 }
 
-/* Estilo do mapa */
+.task-actions button {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: #6a0dad;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #580e93;
+}
+
+.btn-secondary {
+  background-color: #9c27b0;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #7b1fa2;
+}
+
+.btn-danger {
+  background-color: #f44336;
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #da190b;
+}
+
+/* Map Container Styling */
 #map-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  z-index: 1000;
+  justify-content: center;
 }
 
 #map-header {
+  background: white;
+  padding: 1rem;
   width: 100%;
   display: flex;
   justify-content: flex-end;
-  margin-bottom: 1rem;
-}
-
-#close-map {
-  background-color: #6200ea;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-#close-map:hover {
-  background-color: #3700b3;
 }
 
 #map {
   width: 80%;
   height: 80%;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #fff;
+  background: white;
 }
-
-/* Estilo do footer */
-footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #f1f1f1;
-  color: #333;
-  width: 100%;
-}
-
