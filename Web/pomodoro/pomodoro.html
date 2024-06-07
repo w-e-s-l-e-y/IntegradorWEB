@@ -34,13 +34,6 @@
             <h3>Tarefas para Pomodoro</h3>
             <ul id="pomodoro-task-list"></ul>
         </section>
-
-        <section id="timer-section">
-            <h3>Timer</h3>
-            <div id="timer-display">25:00</div>
-            <button id="start-timer">Iniciar</button>
-            <button id="stop-timer" disabled>Parar</button>
-        </section>
     </main>
 
     <footer>
@@ -69,18 +62,17 @@
 
         const addPomodoroTaskForm = document.getElementById('add-pomodoro-task-form');
         const pomodoroTaskList = document.getElementById('pomodoro-task-list');
-        const timerDisplay = document.getElementById('timer-display');
-        const startTimerButton = document.getElementById('start-timer');
-        const stopTimerButton = document.getElementById('stop-timer');
         
         const loginLink = document.getElementById('login-link');
         const signupLink = document.getElementById('signup-link');
         const logoutLink = document.getElementById('logout-link');
         
         let userId;
-        let timer;
+        let timer = null;
+        let breakTimer = null;
         let currentTaskId = null;
-        let timeRemaining = 1500; // 25 minutes
+        const pomodoroDuration = 1500; // 25 minutos
+        const breakDuration = 300; // 5 minutos
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -118,7 +110,8 @@
 
             set(taskRef, {
                 task,
-                completed: false
+                completed: false,
+                timer: pomodoroDuration
             }).then(() => {
                 e.target['pomodoro-task'].value = '';
             }).catch((error) => {
@@ -137,6 +130,7 @@
                     const li = document.createElement('li');
                     li.innerHTML = `
                         <span>${task.task}</span>
+                        <span id="timer-${id}">${formatTime(task.timer)}</span>
                         <button onclick="startPomodoro('${id}')">Iniciar Pomodoro</button>
                         <button onclick="completeTask('${id}')">Concluir</button>
                         <button onclick="deleteTask('${id}')">Excluir</button>
@@ -150,23 +144,32 @@
         }
 
         window.startPomodoro = function (id) {
-            if (timer) {
+            if (timer || breakTimer) {
                 alert('Um pomodoro já está em andamento.');
                 return;
             }
             currentTaskId = id;
-            startTimer();
+            startTimer(id);
         }
 
         window.completeTask = function (id) {
             if (!userId) return;
             const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
             set(taskRef, {
-                ...taskRef,
-                completed: true
+                task: document.querySelector(`#pomodoro-task-list li:nth-child(${id}) span`).textContent,
+                completed: true,
+                timer: pomodoroDuration
             }).catch((error) => {
                 console.error('Erro ao completar tarefa:', error);
             });
+
+            if (currentTaskId === id) {
+                clearInterval(timer);
+                clearInterval(breakTimer);
+                timer = null;
+                breakTimer = null;
+                currentTaskId = null;
+            }
         }
 
         window.deleteTask = function (id) {
@@ -175,48 +178,68 @@
             remove(taskRef).catch((error) => {
                 console.error('Erro ao excluir tarefa:', error);
             });
+
+            if (currentTaskId === id) {
+                clearInterval(timer);
+                clearInterval(breakTimer);
+                timer = null;
+                breakTimer = null;
+                currentTaskId = null;
+            }
         }
 
-        startTimerButton.addEventListener('click', () => {
-            if (timer) {
-                alert('Um pomodoro já está em andamento.');
-                return;
-            }
-            startTimer();
-        });
-
-        stopTimerButton.addEventListener('click', () => {
-            clearInterval(timer);
-            timer = null;
-            timeRemaining = 1500;
-            timerDisplay.textContent = '25:00';
-            startTimerButton.disabled = false;
-            stopTimerButton.disabled = true;
-            currentTaskId = null;
-        });
-
-        function startTimer() {
-            startTimerButton.disabled = true;
-            stopTimerButton.disabled = false;
-            timer = setInterval(() => {
-                timeRemaining--;
-                const minutes = Math.floor(timeRemaining / 60);
-                const seconds = timeRemaining % 60;
-                timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-                if (timeRemaining <= 0) {
-                    clearInterval(timer);
+        function startTimer(id) {
+            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
+            onValue(taskRef, (snapshot) => {
+                const task = snapshot.val();
+                if (task.timer <= 0) {
                     alert('Pomodoro concluído!');
-                    timer = null;
-                    timeRemaining = 1500;
-                    timerDisplay.textContent = '25:00';
-                    startTimerButton.disabled = false;
-                    stopTimerButton.disabled = true;
-                    if (currentTaskId) {
-                        completeTask(currentTaskId);
-                        currentTaskId = null;
-                    }
+                    completeTask(id);
+                    startBreakTimer(id);
+                } else {
+                    timer = setInterval(() => {
+                        task.timer--;
+                        updateTaskTimer(id, task.timer);
+                        if (task.timer <= 0) {
+                            clearInterval(timer);
+                            alert('Pomodoro concluído!');
+                            completeTask(id);
+                            startBreakTimer(id);
+                        }
+                    }, 1000);
+                }
+            });
+        }
+
+        function startBreakTimer(id) {
+            breakTimer = setInterval(() => {
+                breakDuration--;
+                updateTaskTimer(id, breakDuration, true);
+                if (breakDuration <= 0) {
+                    clearInterval(breakTimer);
+                    alert('Intervalo concluído! Reiniciando Pomodoro.');
+                    breakTimer = null;
+                    startTimer(id);
                 }
             }, 1000);
+        }
+
+        function updateTaskTimer(id, time, isBreak = false) {
+            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
+            set(taskRef, {
+                timer: time,
+                task: document.querySelector(`#pomodoro-task-list li:nth-child(${id}) span`).textContent,
+                completed: false
+            }).catch((error) => {
+                console.error('Erro ao atualizar timer da tarefa:', error);
+            });
+            document.getElementById(`timer-${id}`).textContent = formatTime(time);
+        }
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
         }
     </script>
 </body>

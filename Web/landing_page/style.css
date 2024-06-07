@@ -11,8 +11,8 @@
 /* Estilo geral do body */
 body {
     font-family: 'Helvetica', sans-serif;
-    background-color: #E6E6FA; /* Lavanda claro */
-    color: #333;
+    background-color: #F2F2F2; /* Branco suave */
+    color: #4B0082; /* Indigo */
     margin: 0;
     padding: 0;
     display: flex;
@@ -25,7 +25,7 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: #c3a6e8;
+    background: #8A2BE2; /* Roxo suave */
     color: white;
     padding: 20px 40px;
 }
@@ -52,7 +52,7 @@ nav a {
 }
 
 nav a#signup-link {
-    background-color: #9370DB; /* Roxo médio */
+    background-color: #9370DB; /* Roxo suave */
     color: white;
     border-radius: 25px;
 }
@@ -62,14 +62,14 @@ nav a:hover {
 }
 
 nav a#signup-link:hover {
-    background-color: #D8BFD8; /* Roxo suave */
+    background-color: #BA55D3; /* Roxo suave */
 }
 
 /* Estilo da seção de banner */
 #banner {
-    background: #c3a6e8;
+    background: #8A2BE2; /* Roxo suave */
     color: white;
-    padding: 100px 20px;
+    padding: 80px 20px;
     text-align: center;
 }
 
@@ -85,7 +85,7 @@ nav a#signup-link:hover {
 }
 
 #banner .btn {
-    background-color: #9370DB; /* Roxo médio */
+    background-color: #9370DB; /* Roxo suave */
     color: white;
     padding: 15px 30px;
     border: none;
@@ -96,7 +96,7 @@ nav a#signup-link:hover {
 }
 
 #banner .btn:hover {
-    background-color: #D8BFD8; /* Roxo suave */
+    background-color: #BA55D3; /* Roxo suave */
 }
 
 /* Estilo das seções principais */
@@ -106,7 +106,7 @@ main {
 }
 
 section h2 {
-    color: #c3a6e8; /* Roxo escuro */
+    color: #8A2BE2; /* Roxo suave */
     margin-bottom: 20px;
     text-align: center;
 }
@@ -121,10 +121,10 @@ section h2 {
 }
 
 .feature {
-    background: white;
+    background: #FFFFFF; /* Branco */
     padding: 30px;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     flex: 1 1 30%;
     margin: 10px;
     transition: transform 0.3s ease;
@@ -137,7 +137,7 @@ section h2 {
 .feature h3 {
     margin-bottom: 15px;
     font-size: 1.5em;
-    color: #c3a6e8; /* Roxo escuro */
+    color: #8A2BE2; /* Roxo suave */
 }
 
 .feature p {
@@ -146,7 +146,7 @@ section h2 {
 
 /* Estilo da seção sobre nós */
 #about {
-    background-color: #c3a6e8; /* Roxo escuro */
+    background-color: #9370DB; /* Roxo suave */
     color: white;
     padding: 60px 20px;
     text-align: center;
@@ -171,22 +171,22 @@ section h2 {
 #productivity-tips {
     margin-bottom: 40px;
     padding: 20px;
-    background-color: #E6E6FA; /* Fundo lavanda claro */
+    background-color: #FFFFFF; /* Branco */
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 #productivity-tips h2 {
     font-size: 2.5em;
-    color: #c3a6e8; /* Roxo escuro */
+    color: #8A2BE2; /* Roxo suave */
     margin-bottom: 20px;
 }
 
 .tip {
-    background: white;
+    background: #F2F2F2; /* Branco suave */
     padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
     transition: transform 0.3s ease;
 }
@@ -198,7 +198,7 @@ section h2 {
 .tip h3 {
     margin-bottom: 10px;
     font-size: 1.5em;
-    color: #c3a6e8; /* Roxo escuro */
+    color: #8A2BE2; /* Roxo suave */
 }
 
 .tip p {
@@ -224,12 +224,12 @@ section h2 {
     width: 100%;
     max-width: 300px;
     border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 /* Estilo do rodapé */
 footer {
-    background-color: #c3a6e8; /* Roxo escuro */
+    background-color: #8A2BE2; /* Roxo suave */
     color: white;
     text-align: center;
     padding: 10px 0;
