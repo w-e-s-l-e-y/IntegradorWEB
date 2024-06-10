@@ -3,48 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="pomdoro.css">
-    <title>Pomodoro Timer - Life Sync</title>
+    <title>Pomodoro com Lista de Tarefas</title>
+    <link rel="stylesheet" href="pomodoro.css">
 </head>
 <body>
     <header>
-        <h1>Life Sync</h1>
+        <h1 id="homeLink">Life Sync</h1>
         <nav>
-            <a href="/Web/landing_page/index.html">Home</a>
-            <a href="/Web/lista/lista.html">Lista de Tarefas</a>
-            <a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a>
-            <a href="/Web/login/login.html" id="login-link">Login</a>
-            <a href="/Web/cadastro/cadastro.html" id="signup-link">Cadastro</a>
-            <a href="#" id="logout-link" style="display:none;">Logout</a>
+                <a href="/Web/lista/lista.html" id="listaLink">Lista de tarefas</a>
+                <a href="/Web/calendario/calendario.html" id="pomodoroLink">Calendario</a>
+                <a href="/Web/cadastro/cadastro.html" id="cadastroLink">Cadastrar</a>
+                <a href="/Web/login/login.html" id="loginLink">Login</a>
+                <a href="#" id="logoutLink">Logout</a>
         </nav>
     </header>
 
     <main>
-        <h2>Pomodoro Timer</h2>
-        <section id="add-pomodoro-task-section">
-            <h3>Adicionar Nova Tarefa para Pomodoro</h3>
-            <form id="add-pomodoro-task-form">
-                <label for="pomodoro-task">Tarefa:</label>
-                <input type="text" id="pomodoro-task" name="pomodoro-task" required>
-                <button type="submit">Adicionar</button>
-            </form>
-        </section>
 
-        <section id="pomodoro-tasks-section">
-            <h3>Tarefas para Pomodoro</h3>
-            <ul id="pomodoro-task-list"></ul>
-        </section>
+        <input type="text" id="task" placeholder="Nova tarefa">
+        <button id="addTask">Adicionar Tarefa</button>
+        <ul id="taskList"></ul>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
-    </footer>
-
     <script type="module">
+        // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getDatabase, ref, set, push, onValue, remove } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
-
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getDatabase, ref, onValue, push, set, remove, update } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
+        
+        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
             authDomain: "life-sync-fa0ee.firebaseapp.com",
@@ -56,191 +43,290 @@
             measurementId: "G-EN04957NEZ"
         };
 
+        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const database = getDatabase(app);
+        const db = getDatabase(app);
 
-        const addPomodoroTaskForm = document.getElementById('add-pomodoro-task-form');
-        const pomodoroTaskList = document.getElementById('pomodoro-task-list');
-        
-        const loginLink = document.getElementById('login-link');
-        const signupLink = document.getElementById('signup-link');
-        const logoutLink = document.getElementById('logout-link');
-        
-        let userId;
-        let timer = null;
-        let breakTimer = null;
-        let currentTaskId = null;
-        const pomodoroDuration = 1500; // 25 minutos
-        const breakDuration = 300; // 5 minutos
+        document.addEventListener("DOMContentLoaded", () => {
+            const taskInput = document.getElementById('task');
+            const addTaskButton = document.getElementById('addTask');
+            const taskList = document.getElementById('taskList');
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                loginLink.style.display = 'none';
-                signupLink.style.display = 'none';
-                logoutLink.style.display = 'block';
-                userId = user.uid;
-                loadPomodoroTasks();
-            } else {
-                loginLink.style.display = 'block';
-                signupLink.style.display = 'block';
-                logoutLink.style.display = 'none';
-                pomodoroTaskList.innerHTML = '';
-                userId = null;
-            }
-        });
+            const loginLink = document.getElementById("loginLink");
+            const signupLink = document.getElementById("cadastroLink");
+            const logoutLink = document.getElementById("logoutLink");
+            let currentUser = null;
 
-        logoutLink.addEventListener('click', () => {
-            auth.signOut().then(() => {
-                window.location.href = '/landing_page/index.html';
-            }).catch((error) => {
-                console.error('Erro ao fazer logout:', error);
-            });
-        });
-
-        addPomodoroTaskForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            if (!userId) {
-                alert('Você precisa estar logado para adicionar tarefas.');
-                return;
-            }
-
-            const task = e.target['pomodoro-task'].value;
-            const taskRef = push(ref(database, `pomodoroTasks/${userId}`));
-
-            set(taskRef, {
-                task,
-                completed: false,
-                timer: pomodoroDuration
-            }).then(() => {
-                e.target['pomodoro-task'].value = '';
-            }).catch((error) => {
-                console.error('Erro ao adicionar tarefa:', error);
-            });
-        });
-
-        function loadPomodoroTasks() {
-            if (!userId) return;
-            const tasksRef = ref(database, `pomodoroTasks/${userId}`);
-            onValue(tasksRef, (snapshot) => {
-                const tasks = snapshot.val();
-                pomodoroTaskList.innerHTML = '';
-                for (let id in tasks) {
-                    const task = tasks[id];
-                    const li = document.createElement('li');
-                    li.innerHTML = `
-                        <span>${task.task}</span>
-                        <span id="timer-${id}">${formatTime(task.timer)}</span>
-                        <button onclick="startPomodoro('${id}')">Iniciar Pomodoro</button>
-                        <button onclick="completeTask('${id}')">Concluir</button>
-                        <button onclick="deleteTask('${id}')">Excluir</button>
-                    `;
-                    if (task.completed) {
-                        li.style.textDecoration = 'line-through';
-                    }
-                    pomodoroTaskList.appendChild(li);
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    currentUser = user;
+                    loginLink.style.display = "none";
+                    signupLink.style.display = "none";
+                    logoutLink.style.display = "block";
+                    loadTasks();
+                } else {
+                    currentUser = null;
+                    loginLink.style.display = "block";
+                    signupLink.style.display = "block";
+                    logoutLink.style.display = "none";
                 }
             });
-        }
 
-        window.startPomodoro = function (id) {
-            if (timer || breakTimer) {
-                alert('Um pomodoro já está em andamento.');
-                return;
-            }
-            currentTaskId = id;
-            startTimer(id);
-        }
+            addTaskButton.addEventListener('click', () => {
+                addTaskButton.disabled = true;
 
-        window.completeTask = function (id) {
-            if (!userId) return;
-            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
-            set(taskRef, {
-                task: document.querySelector(`#pomodoro-task-list li:nth-child(${id}) span`).textContent,
-                completed: true,
-                timer: pomodoroDuration
-            }).catch((error) => {
-                console.error('Erro ao completar tarefa:', error);
-            });
+                const user = auth.currentUser;
+                if (!user) {
+                    alert("Você precisa estar logado para criar tarefas!");
+                    addTaskButton.disabled = false;
+                    return;
+                }
 
-            if (currentTaskId === id) {
-                clearInterval(timer);
-                clearInterval(breakTimer);
-                timer = null;
-                breakTimer = null;
-                currentTaskId = null;
-            }
-        }
-
-        window.deleteTask = function (id) {
-            if (!userId) return;
-            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
-            remove(taskRef).catch((error) => {
-                console.error('Erro ao excluir tarefa:', error);
-            });
-
-            if (currentTaskId === id) {
-                clearInterval(timer);
-                clearInterval(breakTimer);
-                timer = null;
-                breakTimer = null;
-                currentTaskId = null;
-            }
-        }
-
-        function startTimer(id) {
-            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
-            onValue(taskRef, (snapshot) => {
-                const task = snapshot.val();
-                if (task.timer <= 0) {
-                    alert('Pomodoro concluído!');
-                    completeTask(id);
-                    startBreakTimer(id);
+                const task = taskInput.value.trim();
+                if (task) {
+                    const userId = user.uid;
+                    const tasksRef = ref(db, 'usuarios/' + userId + '/tarefas');
+                    const taskDate = new Date().toLocaleDateString();
+                    const taskPriority = "red";
+                    const newTaskRef = push(tasksRef);
+                    set(newTaskRef, {
+                        nomeTarefa: task,
+                        evento: taskDate,
+                        prioridade: taskPriority,
+                        estadoAtual: 'ativo',
+                        pomodoroConcluido: 0,
+                        tempoInicial: Date.now(),
+                        tempoFinal: Date.now()
+                    }).then(() => {
+                        const existingTask = taskList.querySelector(`li[data-task="${task}"]`);
+                        if (!existingTask) {
+                            renderTask(task, newTaskRef.key);
+                        } else {
+                            console.log("A tarefa já está na lista:", task);
+                        }
+                        taskInput.value = '';
+                        addTaskButton.disabled = false;
+                    }).catch(error => {
+                        console.error("Erro ao adicionar tarefa ao banco de dados:", error);
+                        addTaskButton.disabled = false;
+                    });
                 } else {
-                    timer = setInterval(() => {
-                        task.timer--;
-                        updateTaskTimer(id, task.timer);
-                        if (task.timer <= 0) {
-                            clearInterval(timer);
-                            alert('Pomodoro concluído!');
-                            completeTask(id);
-                            startBreakTimer(id);
+                    console.warn("Nenhuma tarefa especificada para adicionar.");
+                    addTaskButton.disabled = false;
+                }
+            });
+
+            function loadTasks() {
+                const userId = currentUser.uid;
+                const userRef = ref(db, 'usuarios/' + userId);
+                onValue(userRef, (snapshot) => {
+                    const data = snapshot.val();
+                    updateUI(data);
+                });
+            }
+
+            function updateUI(data) {
+                taskList.innerHTML = '';
+
+                if (data && data.tarefas) {
+                    for (let taskId in data.tarefas) {
+                        const task = data.tarefas[taskId];
+                        renderTask(task.nomeTarefa, taskId);
+                    }
+                } else {
+                    alert('Nenhuma Tarefa encontrada!');
+                }
+            }
+
+            function renderTask(taskName, taskId) {
+                const existingTask = taskList.querySelector(`li[data-task="${taskId}"]`);
+                if (existingTask) {
+                    console.warn("A tarefa já está na lista:", taskName);
+                    return;
+                }
+
+                const li = document.createElement('li');
+                li.textContent = taskName;
+                li.setAttribute('data-task', taskId);
+
+                const pomodoroDiv = document.createElement('div');
+                pomodoroDiv.className = 'pomodoro';
+
+                const minutesDisplay = document.createElement('span');
+                minutesDisplay.className = 'minutes';
+                minutesDisplay.textContent = '25';
+
+                const colon = document.createElement('span');
+                colon.textContent = ':';
+
+                const secondsDisplay = document.createElement('span');
+                secondsDisplay.className = 'seconds';
+                secondsDisplay.textContent = '00';
+
+                const startButton = document.createElement('button');
+                startButton.textContent = 'Iniciar';
+                const pauseButton = document.createElement('button');
+                pauseButton.textContent = 'Pausar';
+                pauseButton.className = 'pauseButton';
+                const resetButton = document.createElement('button');
+                resetButton.textContent = 'Resetar';
+
+                pomodoroDiv.appendChild(minutesDisplay);
+                pomodoroDiv.appendChild(colon);
+                pomodoroDiv.appendChild(secondsDisplay);
+                pomodoroDiv.appendChild(startButton);
+                pomodoroDiv.appendChild(pauseButton);
+                pomodoroDiv.appendChild(resetButton);
+
+                li.appendChild(pomodoroDiv);
+
+                const completeButton = document.createElement('button');
+                completeButton.textContent = 'Finalizar';
+                completeButton.className = 'complete-btn';
+                completeButton.addEventListener('click', () => {
+                    stopCurrentTimer(taskId);
+                    li.classList.toggle('done');
+
+                    if (li.classList.contains('done')) {
+                        const user = auth.currentUser;
+                        if (user) {
+                            const userId = user.uid;
+                            const taskRef = ref(db, `usuarios/${userId}/tarefas/${taskId}`);
+                            update(taskRef, { estadoAtual: "concluido" }).then(() => {
+                                exibirBotaoLimpar();
+                            }).catch((error) => {
+                                console.error('Erro ao atualizar estado no Firebase:', error);
+                            });
+                        }
+                    } else {
+                        toggleClearButtonVisibility(li, false);
+                    }
+                });
+
+                li.appendChild(completeButton);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Limpar';
+                deleteButton.className = 'delete-btn';
+                deleteButton.style.display = 'none';
+                deleteButton.id = `delete-button-${taskId}`;
+                deleteButton.addEventListener('click', () => {
+                    taskList.removeChild(li);
+                    const user = auth.currentUser;
+                    if (user) {
+                        const userId = user.uid;
+                        const taskRef = ref(db, `usuarios/${userId}/tarefas/${taskId}`);
+                        remove(taskRef).then(() => {
+                            console.log('Tarefa removida do Firebase:', taskId);
+                        }).catch((error) => {
+                            console.error('Erro ao remover tarefa do Firebase:', error);
+                        });
+                    }
+                });
+                li.appendChild(deleteButton);
+
+                taskList.appendChild(li);
+
+                let minutes = 25;
+                let seconds = 0;
+                let interval;
+                let isPaused = false;
+                let cycle = 0;
+
+                startButton.addEventListener('click', () => {
+                    if (interval) {
+                        clearInterval(interval);
+                    }
+
+                    interval = setInterval(() => {
+                        if (!isPaused) {
+                            if (seconds === 0) {
+                                if (minutes === 0) {
+                                    clearInterval(interval);
+                                    interval = null;
+                                    cycle++;
+                                    if (cycle % 4 === 0) {
+                                        minutes = 15;
+                                    } else {
+                                        minutes = 5;
+                                    }
+                                    seconds = 0;
+                                    startButton.textContent = 'Começar novo ciclo';
+                                    return;
+                                }
+                                minutes--;
+                                seconds = 59;
+                            } else {
+                                seconds--;
+                            }
+                            updateDisplay(minutesDisplay, secondsDisplay, minutes, seconds);
                         }
                     }, 1000);
+                });
+
+                pauseButton.addEventListener('click', () => {
+                    isPaused = !isPaused;
+                    pauseButton.textContent = isPaused ? 'Retomar' : 'Pausar';
+                });
+
+                resetButton.addEventListener('click', () => {
+                    clearInterval(interval);
+                    interval = null;
+                    minutes = 25;
+                    seconds = 0;
+                    updateDisplay(minutesDisplay, secondsDisplay, minutes, seconds);
+                });
+
+                function updateDisplay(minutesElement, secondsElement, minutes, seconds) {
+                    minutesElement.textContent = String(minutes).padStart(2, '0');
+                    secondsElement.textContent = String(seconds).padStart(2, '0');
                 }
-            });
-        }
 
-        function startBreakTimer(id) {
-            breakTimer = setInterval(() => {
-                breakDuration--;
-                updateTaskTimer(id, breakDuration, true);
-                if (breakDuration <= 0) {
-                    clearInterval(breakTimer);
-                    alert('Intervalo concluído! Reiniciando Pomodoro.');
-                    breakTimer = null;
-                    startTimer(id);
+                function stopCurrentTimer(taskId) {
+                    const taskElement = document.querySelector(`li[data-task="${taskId}"]`);
+                    const startButton = taskElement.querySelector('button');
+                    const resetButton = taskElement.querySelector('button + button + button');
+
+                    if (interval) {
+                        clearInterval(interval);
+                        interval = null;
+                    }
+                    startButton.textContent = 'Iniciar';
+                    resetButton.click();
                 }
-            }, 1000);
-        }
 
-        function updateTaskTimer(id, time, isBreak = false) {
-            const taskRef = ref(database, `pomodoroTasks/${userId}/${id}`);
-            set(taskRef, {
-                timer: time,
-                task: document.querySelector(`#pomodoro-task-list li:nth-child(${id}) span`).textContent,
-                completed: false
-            }).catch((error) => {
-                console.error('Erro ao atualizar timer da tarefa:', error);
+                function exibirBotaoLimpar() {
+                    const tarefa = document.querySelector(`li[data-task="${taskId}"]`);
+                    if (tarefa) {
+                        const botaoLimpar = tarefa.querySelector('.delete-btn');
+                        if (botaoLimpar) {
+                            botaoLimpar.style.display = 'block';
+                        }
+                    }
+                }
+
+                function toggleClearButtonVisibility(taskItem, visible) {
+                    const clearButton = taskItem.querySelector('.delete-btn');
+                    if (clearButton) {
+                        clearButton.style.display = visible ? 'block' : 'none';
+                    }
+                }
+            }
+
+            logoutLink.addEventListener("click", () => {
+                signOut(auth).then(() => {
+                    alert("Usuário deslogado com sucesso!");
+                    window.location.href = "login.html";
+                }).catch((error) => {
+                    console.error("Erro ao deslogar:", error);
+                });
             });
-            document.getElementById(`timer-${id}`).textContent = formatTime(time);
-        }
 
-        function formatTime(seconds) {
-            const minutes = Math.floor(seconds / 60);
-            const remainingSeconds = seconds % 60;
-            return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
-        }
+        });
+
+        
+
     </script>
 </body>
 </html>
