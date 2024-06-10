@@ -1,0 +1,239 @@
+/* Importa a fonte do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Helvetica:wght@400;500;700&display=swap');
+
+/* Reseta estilos padrões */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo geral do body */
+body {
+    font-family: 'Helvetica', sans-serif;
+    background-color: #F2F2F2; /* Branco suave */
+    color: #4B0082; /* Indigo */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Estilo do cabeçalho */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #8A2BE2; /* Roxo suave */
+    color: white;
+    padding: 20px 40px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+/* Estilo da navegação */
+nav {
+    display: flex;
+    align-items: center;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+    padding: 10px 15px;
+    border: none;
+    background-color: transparent;
+    transition: background-color 0.3s ease;
+}
+
+nav a#signup-link {
+    background-color: #9370DB; /* Roxo suave */
+    color: white;
+    border-radius: 25px;
+}
+
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+nav a#signup-link:hover {
+    background-color: #BA55D3; /* Roxo suave */
+}
+
+/* Estilo da seção de banner */
+#banner {
+    background: #8A2BE2; /* Roxo suave */
+    color: white;
+    padding: 150px 20px;
+    text-align: center;
+}
+
+#banner h2 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: white;
+}
+
+#banner p {
+    margin-bottom: 40px;
+    font-size: 1.2em;
+}
+
+#banner .btn {
+    background-color: #9370DB; /* Roxo suave */
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+#banner .btn:hover {
+    background-color: #BA55D3; /* Roxo suave */
+}
+
+/* Estilo das seções principais */
+main {
+    padding: 20px;
+    flex: 1;
+}
+
+section h2 {
+    color: #8A2BE2; /* Roxo suave */
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Estilo das funcionalidades */
+#features {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.feature {
+    background: #FFFFFF; /* Branco */
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    flex: 1 1 30%;
+    margin: 10px;
+    transition: transform 0.3s ease;
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+}
+
+.feature h3 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #8A2BE2; /* Roxo suave */
+}
+
+.feature p {
+    font-size: 1.1em;
+}
+
+/* Estilo da seção sobre nós */
+#about {
+    background-color: #9370DB; /* Roxo suave */
+    color: white;
+    padding: 60px 20px;
+    text-align: center;
+    margin-bottom: 40px;
+    border-radius: 12px;
+}
+
+#about h2 {
+    margin-bottom: 20px;
+    font-size: 2.5em;
+    color: white;
+}
+
+#about p {
+    font-size: 1.2em;
+    line-height: 1.5;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Estilo das dicas de produtividade */
+#productivity-tips {
+    margin-bottom: 40px;
+    padding: 20px;
+    background-color: #FFFFFF; /* Branco */
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+#productivity-tips h2 {
+    font-size: 2.5em;
+    color: #8A2BE2; /* Roxo suave */
+    margin-bottom: 20px;
+}
+
+.tip {
+    background: #F2F2F2; /* Branco suave */
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+}
+
+.tip:hover {
+    transform: translateY(-10px);
+}
+
+.tip h3 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #8A2BE2; /* Roxo suave */
+}
+
+.tip p {
+    font-size: 1.1em;
+}
+
+/* Estilo da galeria */
+#gallery {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.spinner {
+    display: flex;
+    justify-content: center;
+}
+
+.image {
+    margin: 0 10px;
+}
+
+.image img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilo do rodapé */
+footer {
+    background-color: #8A2BE2; /* Roxo suave */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
