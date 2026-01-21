@@ -1,210 +1,150 @@
-/* Reset CSS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Body Styling */
-  body {
-    font-family: 'Helvetica', sans-serif;
-    background-color: #F2F2F2; /* Branco suave */
-    color: #333;
-  }
-  
-  /* Header Styling */
-  header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #8A2BE2; /* Roxo suave */
-    color: white;
-    padding: 20px 40px;
-  }
-  
-  header h1 {
-    margin: 0;
-    font-size: 1.5em;
-  }
-  
-  nav {
-    display: flex;
-    align-items: center;
-  }
-  
-  nav a {
-    color: white;
-    text-decoration: none;
-    margin-left: 20px;
-    padding: 10px 15px;
-    border: none;
-    background-color: transparent;
-    transition: background-color 0.3s ease;
-  }
-  
-  nav a#signup-link {
-    background-color: #9370DB; /* Roxo suave */
-    color: white;
-    border-radius: 25px;
-  }
-  
-  nav a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-  
-  nav a#signup-link:hover {
-    background-color: #BA55D3; /* Roxo suave */
-  }
-  
-  /* Main Content Styling */
-  main {
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  main h1 {
-    margin-bottom: 2rem;
-    font-size: 2.5em;
-  }
-  
-  input#task {
-    padding: 1rem;
-    width: 400px;
-    margin-bottom: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 1.2rem;
-  }
-  
-  button#addTask {
-    padding: 1rem 2rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    background-color: #9370DB; /* Roxo suave */
-    color: white;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease;
-  }
-  
-  button#addTask:hover {
-    background-color: #BA55D3; /* Roxo suave */
-  }
-  
-  ul#taskList {
-    list-style: none;
-    width: 100%;
-    max-width: 900px;
-    margin-top: 2rem;
-    padding: 0;
-  }
-  
-  ul#taskList li {
-    background: #ffffff; /* Branco */
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: transform 0.3s ease, opacity 0.3s ease;
-    position: relative;
-  }
-  
-  ul#taskList li.done {
-    background: #d4edda; /* Verde claro */
-    text-decoration: line-through;
-  }
-  
-  /* Analog Clock Styling */
-  .analog-clock {
-    width: 100px;
-    height: 100px;
-    border: 8px solid #9370DB; /* Roxo suave */
-    border-radius: 50%;
-    position: relative;
-    margin-right: 1rem;
-  }
-  
-  .analog-clock .hand {
-    width: 50%;
-    height: 2px;
-    background: #333;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0% 0%;
-    transition: all 0.05s;
-  }
-  
-  .hand.hour {
-    height: 4px;
+.pomodoro-tasks-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.tasks-header-card {
+  background: var(--white);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.task-timer-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.task-timer-item {
+  background: var(--white);
+  padding: 20px 30px;
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: var(--transition);
+  border-left: 6px solid var(--primary-color);
+  position: relative;
+}
+
+.task-timer-item.done {
+  background: #d4edda;
+  border-left-color: #28a745;
+}
+
+.task-timer-item.done .task-info {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+/* Analog Clock */
+.analog-clock {
+  width: 60px;
+  height: 60px;
+  border: 4px solid var(--primary-color);
+  border-radius: 50%;
+  position: relative;
+  margin-right: 20px;
+  flex-shrink: 0;
+}
+
+.analog-clock .hand {
+  width: 50%;
+  height: 2px;
+  background: #333;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform-origin: 0% 50%;
+  transform: rotate(-90deg);
+}
+
+.analog-clock .hand.hour {
+  height: 4px;
+  width: 35%;
+}
+
+/* Pomodoro Controls */
+.pomodoro {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.pomodoro button {
+  padding: 8px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.pomodoro button:hover {
+  opacity: 0.8;
+}
+
+.startButton { background-color: #28a745; }
+.pauseButton { background-color: #FFA500; }
+.resetButton { background-color: #dc3545; }
+
+.complete-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-left: 15px;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  position: absolute;
+  right: -120px; /* Posicionado fora para não poluir, ou ajuste conforme necessário */
+  transition: var(--transition);
+}
+
+.task-timer-item.done .delete-btn {
+  right: 20px;
+  display: block !important;
+}
+
+.task-info {
+  flex: 1;
+  font-size: 1.1rem;
+}
+
+/* Responsividade */
+@media (max-width: 850px) {
+  .task-timer-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      padding-bottom: 60px;
   }
   
   .pomodoro {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+      width: 100%;
+      justify-content: space-between;
   }
   
-  .pomodoro button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-left: 0.5rem;
+  .delete-btn {
+      bottom: 15px;
+      right: 20px !important;
   }
-  
-  .pomodoro button:hover {
-    opacity: 0.8;
-  }
-  
-  .pomodoro button.pauseButton {
-    background-color: #FFA500; /* Laranja */
-    color: white;
-  }
-  
-  .pomodoro button.startButton {
-    background-color: #28a745; /* Verde */
-    color: white;
-  }
-  
-  .pomodoro button.resetButton {
-    background-color: #dc3545; /* Vermelho */
-    color: white;
-  }
-  
-  button.complete-btn {
-    background-color: #28a745; /* Verde */
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-  
-  button.complete-btn:hover {
-    opacity: 0.8;
-  }
-  
-  button.delete-btn {
-    background-color: #dc3545; /* Vermelho */
-    color: white;
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    display: none;
-    position: absolute;
-    right: 1rem;
-    font-size: 1rem;
-  }
-  
-  button.delete-btn:hover {
-    opacity: 0.8;
-  }
-  
+}

@@ -3,89 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Life Sync - Ferramenta de organização para pessoas com TDAH, incluindo lista de tarefas, calendário e Pomodoro Timer.">
     <title>Life Sync - Organize Sua Vida</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <h1>Life Sync</h1>
-        <nav>
-            <a href="index.html">Home</a>
-            <a href="/Web/lista/lista.html">Lista de Tarefas</a>
-            <a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a>
-            <a href="/login/login.html" id="login-link">Login</a>
-            <a href="/cadastro/cadastro.html" id="signup-link">Cadastro</a>
-            <a href="#" id="logout-link" style="display:none;">Logout</a>
-        </nav>
+    <header class="main-header">
+        <div class="container">
+            <h1 class="logo">Life Sync</h1>
+            <nav class="main-nav" aria-label="Navegação principal">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="/Web/lista/lista.html">Lista de Tarefas</a></li>
+                    <li><a href="/Web/pomodoro/pomodoro.html">Pomodoro Timer</a></li>
+                    <li class="auth-links">
+                        <a href="/login/login.html" id="login-link" class="btn-outline">Login</a>
+                        <a href="/cadastro/cadastro.html" id="signup-link" class="btn-primary">Cadastro</a>
+                        <button id="logout-link" class="btn-text" style="display:none;">Logout</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </header>
 
-    <section id="banner">
-        <h2>Organize Sua Vida com Facilidade</h2>
-        <p>Life Sync ajuda pessoas com TDAH a se organizarem melhor com uma lista de tarefas integrada ao calendário e um Pomodoro Timer eficiente.</p>
-        <button class="btn">Saiba Mais</button>
+    <section id="hero" class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <h2>Organize Sua Vida com Facilidade</h2>
+                <p>O Life Sync ajuda pessoas com TDAH a gerenciarem o tempo e as tarefas de forma visual e intuitiva.</p>
+                <div class="hero-actions">
+                    <a href="#features" class="btn-primary btn-large">Começar Agora</a>
+                    <a href="#about" class="btn-secondary btn-large">Saiba Mais</a>
+                </div>
+            </div>
+        </div>
     </section>
 
-    <main>
-        <section id="features">
-            <div class="feature">
-                <h3>Lista de Tarefas</h3>
-                <p>Mantenha suas tarefas organizadas e priorizadas.</p>
-            </div>
-            <div class="feature">
-                <h3>Calendário Integrado</h3>
-                <p>Veja suas tarefas em um calendário fácil de usar.</p>
-            </div>
-            <div class="feature">
-                <h3>Pomodoro Timer</h3>
-                <p>Aumente sua produtividade com a técnica Pomodoro.</p>
-            </div>
-        </section>
-
-        <section id="about">
-            <h2>Sobre Nós</h2>
-            <p>Life Sync é uma inovadora e poderosa ferramenta concebida especificamente para auxiliar indivíduos que lidam diariamente com o Transtorno de Déficit de Atenção e Hiperatividade (TDAH) a otimizarem sua organização e gerenciamento de tempo de forma eficaz e tranquila. Através de uma abordagem cuidadosamente elaborada, integramos uma variedade de funcionalidades essenciais, incluindo uma lista de tarefas abrangente, um calendário intuitivo e um Pomodoro Timer, criando assim uma solução completa e holística para impulsionar a produtividade e o bem-estar desses indivíduos. Ao oferecer uma plataforma centralizada que aborda as necessidades específicas do TDAH, capacitamos nossos usuários a enfrentarem seus desafios diários com confiança, permitindo-lhes alcançar seus objetivos de maneira mais eficiente e satisfatória.</p>
-        </section>
-
-        <section id="productivity-tips">
-            <h2>Dicas de Produtividade</h2>
-            <div class="tip">
-                <h3>Dica 1: Priorize suas tarefas</h3>
-                <p>Classifique suas tarefas diárias por ordem de importância para garantir que você está focando nas atividades mais críticas primeiro.</p>
-            </div>
-            <div class="tip">
-                <h3>Dica 2: Use a técnica Pomodoro</h3>
-                <p>Trabalhe em blocos de 25 minutos seguidos de um breve intervalo para manter a concentração e evitar a fadiga.</p>
-            </div>
-            <div class="tip">
-                <h3>Dica 3: Planeje seu dia</h3>
-                <p>Comece o dia com um plano claro do que precisa ser feito. Use o calendário integrado para visualizar suas tarefas e compromissos.</p>
+    <main class="container">
+        <section id="features" class="section-padding">
+            <h2 class="section-title">Funcionalidades Essenciais</h2>
+            <div class="features-grid">
+                <article class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3>Lista de Tarefas</h3>
+                    <p>Mantenha suas tarefas organizadas e priorizadas com um sistema visual simples.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3>Calendário Integrado</h3>
+                    <p>Visualize seus compromissos e prazos em uma interface limpa e sem distrações.</p>
+                </article>
+                <article class="feature-card">
+                    <div class="feature-icon">⏱️</div>
+                    <h3>Pomodoro Timer</h3>
+                    <p>Aumente seu foco usando blocos de tempo que respeitam o seu ritmo biológico.</p>
+                </article>
             </div>
         </section>
 
-        <section id="gallery">
-            <h2>Galeria</h2>
-            <div class="spinner">
-                <div class="image">
-                    <img src="/Web/images/imagem01.png" alt="Imagem 1">
+        <section id="about" class="about-section section-padding">
+            <div class="about-content">
+                <h2>Sobre o Life Sync</h2>
+                <p>O Life Sync é uma ferramenta concebida especificamente para auxiliar indivíduos com TDAH a otimizarem sua organização e gerenciamento de tempo. Nossa abordagem integra funcionalidades essenciais em uma solução holística para impulsionar a produtividade e o bem-estar.</p>
+            </div>
+        </section>
+
+        <section id="productivity-tips" class="section-padding">
+            <h2 class="section-title">Dicas de Produtividade</h2>
+            <div class="tips-container">
+                <div class="tip-card">
+                    <h3>1. Priorize suas tarefas</h3>
+                    <p>Use o método ABC: foque no que é crítico antes de passar para o que é apenas importante.</p>
                 </div>
-                <div class="image">
-                    <img src="image2.jpg" alt="Imagem 2">
+                <div class="tip-card">
+                    <h3>2. Técnica Pomodoro</h3>
+                    <p>Trabalhe por 25 minutos e descanse 5. Isso ajuda a manter o cérebro engajado sem exaustão.</p>
                 </div>
-                <div class="image">
-                    <img src="image3.jpg" alt="Imagem 3">
+                <div class="tip-card">
+                    <h3>3. Planeje seu dia</h3>
+                    <p>Dedique 5 minutos na noite anterior para listar as 3 tarefas principais do dia seguinte.</p>
                 </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="section-padding">
+            <h2 class="section-title">Interface do Sistema</h2>
+            <div class="gallery-grid">
+                <figure class="gallery-item">
+                    <img src="/Web/images/imagem01.png" alt="Captura de tela da lista de tarefas" loading="lazy">
+                    <figcaption>Lista de Tarefas Intuitiva</figcaption>
+                </figure>
+                <figure class="gallery-item">
+                    <img src="image2.jpg" alt="Captura de tela do calendário" loading="lazy">
+                    <figcaption>Calendário de Eventos</figcaption>
+                </figure>
+                <figure class="gallery-item">
+                    <img src="image3.jpg" alt="Captura de tela do Pomodoro Timer" loading="lazy">
+                    <figcaption>Timer de Concentração</figcaption>
+                </figure>
             </div>
         </section>
     </main>
 
-    <footer>
-        <p>&copy; 2024 Life Sync. Todos os direitos reservados.</p>
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Life Sync. Desenvolvido com foco em acessibilidade e produtividade.</p>
+        </div>
     </footer>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+        // Recomenda-se mover estas chaves para variáveis de ambiente em produção
         const firebaseConfig = {
             apiKey: "AIzaSyCh9Efra6D6DjRia4Yubq44NV28eeDPa8E",
             authDomain: "life-sync-fa0ee.firebaseapp.com",
@@ -108,20 +141,23 @@
             if (user) {
                 loginLink.style.display = 'none';
                 signupLink.style.display = 'none';
-                logoutLink.style.display = 'block';
+                logoutLink.style.display = 'inline-block';
             } else {
-                loginLink.style.display = 'block';
-                signupLink.style.display = 'block';
+                loginLink.style.display = 'inline-block';
+                signupLink.style.display = 'inline-block';
                 logoutLink.style.display = 'none';
             }
         });
 
-        logoutLink.addEventListener('click', () => {
-            signOut(auth).then(() => {
+        logoutLink.addEventListener('click', async (e) => {
+            e.preventDefault();
+            try {
+                await signOut(auth);
                 window.location.href = 'index.html';
-            }).catch((error) => {
+            } catch (error) {
                 console.error('Erro ao fazer logout:', error);
-            });
+                alert('Ocorreu um erro ao sair. Tente novamente.');
+            }
         });
     </script>
 </body>
